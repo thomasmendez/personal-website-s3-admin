@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   useRoutes,
 } from 'react-router-dom';
-import Home from './components/pages/Home';
+import Home from './components/views/Home';
+import Work from './components/views/Work';
 
 interface AppProps {
   title: string
@@ -12,6 +13,7 @@ interface AppProps {
 const AppRoutes = () => {
   const routes = useRoutes([
     { path: '/', element: <Home name="Thomas A Mendez" jobTitle='Software Engineer and Game Developer'/> },
+    { path: '/work', element: <Work /> }
   ]);
   return routes;
 };

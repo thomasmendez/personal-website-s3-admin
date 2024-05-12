@@ -1,6 +1,6 @@
 export interface Work {
-    personalWebsiteType: string
-    sortValue: string
+    readonly personalWebsiteType: 'Jobs'
+    readonly sortValue: string
     jobTitle: string
     company: string
     location: {

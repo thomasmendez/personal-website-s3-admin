@@ -5,6 +5,8 @@ import {
 } from 'react-router-dom';
 import Home from './components/views/Home';
 import Work from './components/views/Work';
+import SkillsTools from './components/views/SkillsTools';
+import Projects from './components/views/Projects';
 
 interface AppProps {
   title: string
@@ -13,7 +15,9 @@ interface AppProps {
 const AppRoutes = () => {
   const routes = useRoutes([
     { path: '/', element: <Home name="Thomas A Mendez" jobTitle='Software Engineer and Game Developer'/> },
-    { path: '/work', element: <Work /> }
+    { path: '/work', element: <Work /> },
+    { path: '/skillsTools', element: <SkillsTools /> },
+    { path: '/projects', element: <Projects /> }
   ]);
   return routes;
 };

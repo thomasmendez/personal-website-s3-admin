@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { Work } from "../types/workTypes"
-import axios from "axios"
+import { axiosGetWork } from "../services/personalWebsiteApi"
 
-export const fetchWork = createAsyncThunk(
+export const getWork = createAsyncThunk(
     'get/work',
     async (_, thunkApi) => {
         try {
-            const response = await axios.get(`http://127.0.0.1:3000/api/v1/work`)
+            const response = await axiosGetWork()
             console.log(JSON.stringify(response.data))
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,10 +20,10 @@ export const fetchWork = createAsyncThunk(
 interface WorkState {
     entities: Work[]
     status: 'idle' | 'pending' | 'succeeded' | 'failed'
-    error: WorkStateError | null | unknown;
+    error: StateError | null | unknown;
 }
 
-interface WorkStateError {
+interface StateError {
     message: string,
     statusCode: number
 }
@@ -44,14 +44,14 @@ export const workSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchWork.pending, (state) => {
+            .addCase(getWork.pending, (state) => {
                 state.status = 'pending'
             })
-            .addCase(fetchWork.fulfilled, (state, action) => {
+            .addCase(getWork.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 state.entities = action.payload
             })
-            .addCase(fetchWork.rejected, (state, action) => {
+            .addCase(getWork.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.payload
             })

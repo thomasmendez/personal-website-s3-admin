@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux"
 import { getWorkError, getWorkStatus, selectAllWork } from "../../store/workApiSlice"
 import React, { useEffect } from "react"
-import { fetchWork } from "../../store/workApiSlice"
+import { getWork } from "../../store/workApiSlice"
 import { AppDispatch } from "../../store/store"
 import { Work } from "../../types/workTypes"
 import { formatDateToMonthYear } from "../../utils/dateFormat"
@@ -14,7 +14,7 @@ const WorkView = () => {
     
     useEffect(() => {
         if (workStatus === 'idle') {
-            dispatch(fetchWork())
+            dispatch(getWork())
         }
     }, [workStatus, dispatch])
 

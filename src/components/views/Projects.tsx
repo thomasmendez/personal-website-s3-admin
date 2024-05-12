@@ -5,7 +5,7 @@ import { getProjects } from "../../store/projectsApiSlice"
 import { AppDispatch } from "../../store/store"
 import { Project } from "../../types/projectTypes"
 
-const projectsView = () => {
+const ProjectsView = () => {
     const dispatch = useDispatch<AppDispatch>()
     const projects = useSelector(selectAllProjects)
     const projectsStatus = useSelector(getProjectsStatus)
@@ -76,4 +76,4 @@ const projectsView = () => {
     )
 }
 
-export default projectsView
+export default ProjectsView

@@ -26,39 +26,39 @@ const ProjectsView = () => {
                 <p>Success</p>
                 {projects.map((projects: Project, index: number) => (
                   <React.Fragment key={index}>
-                    <p>Category: {projects.Category}</p>
-                    <p>Name: {projects.Name}</p>
-                    <p>Description: {projects.Description}</p>
-                    <p>Features Description: {projects.FeaturesDescription}</p>
-                    <p>Role: {projects.Role}</p>
+                    <p>Category: {projects.category}</p>
+                    <p>Name: {projects.name}</p>
+                    <p>Description: {projects.description}</p>
+                    <p>Features Description: {projects.featuresDescription}</p>
+                    <p>Role: {projects.role}</p>
                     <ul>
-                        {projects.Tasks.map((task: string, listIndex: number) => (
+                        {projects.tasks.map((task: string, listIndex: number) => (
                             <li key={listIndex}>{task}</li>
                         ))}
                     </ul>
-                    <p>Team Size: {projects?.TeamSize}</p>
+                    <p>Team Size: {projects?.teamSize}</p>
                     <ul>
-                        {projects.TeamRoles?.map((teamRoles: string, listIndex: number) => (
+                        {projects.teamRoles?.map((teamRoles: string, listIndex: number) => (
                             <li key={listIndex}>{teamRoles}</li>
                         ))}
                     </ul>
                     <ul>
-                        {projects.CloudServices?.map((cloudService: string, listIndex: number) => (
+                        {projects.cloudServices?.map((cloudService: string, listIndex: number) => (
                             <li key={listIndex}>{cloudService}</li>
                         ))}
                     </ul>
                     <ul>
-                        {projects.Tools.map((tool: string, listIndex: number) => (
+                        {projects.tools.map((tool: string, listIndex: number) => (
                             <li key={listIndex}>{tool}</li>
                         ))}
                     </ul>
-                    <p>Duration: {projects.Duration}</p>
-                    <p>StartDate: {projects.StartDate}</p>
-                    <p>EndDate: {projects.EndDate}</p>
-                    <p>Notes: {projects.Notes}</p>
-                    <p>Link: {projects.Link}</p>
-                    <p>Link Type: {projects.LinkType}</p>
-                    <p>Media Link: {projects.MediaLink}</p>
+                    <p>Duration: {projects.duration}</p>
+                    <p>StartDate: {projects.startDate}</p>
+                    <p>EndDate: {projects.endDate}</p>
+                    <p>Notes: {projects.notes}</p>
+                    <p>Link: {projects.link}</p>
+                    <p>Link Type: {projects.linkType}</p>
+                    <p>Media Link: {projects.mediaLink}</p>
                     <br />
                   </React.Fragment>
                 ))}

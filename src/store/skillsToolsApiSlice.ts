@@ -3,7 +3,7 @@ import { SkillsTools } from "../types/skillsToolsTypes"
 import { axiosGetSkillsTools } from "../services/personalWebsiteApi"
 
 export const getSkillsTools = createAsyncThunk(
-    'get/work',
+    'get/skillsTools',
     async (_, thunkApi) => {
         try {
             const response = await axiosGetSkillsTools()

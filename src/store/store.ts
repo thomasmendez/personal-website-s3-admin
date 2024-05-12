@@ -1,9 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit"
 import workReducer from "./workApiSlice"
+import skillsToolsReducer from "./skillsToolsApiSlice"
+import projectsReducer from "./projectsApiSlice"
 
 export const store = configureStore({
     reducer: {
-        work: workReducer
+        work: workReducer,
+        skillsTools: skillsToolsReducer,
+        projects: projectsReducer
     },
 })
 

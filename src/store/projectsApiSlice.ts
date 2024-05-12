@@ -38,7 +38,7 @@ export const ProjectsSlice = createSlice({
     name: 'projects',
     initialState: initialState,
     reducers: {
-        ProjectsAdded: (state, action) => {
+        projectsAdded: (state, action) => {
             state.entities.push(action.payload)
         },
     },
@@ -59,10 +59,10 @@ export const ProjectsSlice = createSlice({
 })
 
 
-export const selectAllProjects = (state: { Projects: ProjectsState }) => state.Projects.entities;
-export const getProjectsStatus = (state: { Projects: ProjectsState }) => state.Projects.status;
-export const getProjectsError = (state: { Projects: ProjectsState }) => state.Projects.error;
+export const selectAllProjects = (state: { projects: ProjectsState }) => state.projects.entities;
+export const getProjectsStatus = (state: { projects: ProjectsState }) => state.projects.status;
+export const getProjectsError = (state: { projects: ProjectsState }) => state.projects.error;
 
-export const { ProjectsAdded } = ProjectsSlice.actions
+export const { projectsAdded } = ProjectsSlice.actions
 
 export default ProjectsSlice.reducer

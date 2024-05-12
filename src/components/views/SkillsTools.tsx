@@ -26,10 +26,10 @@ const SkillsToolsView = () => {
                 <p>Success</p>
                 {skillsTools.map((skillsTools: SkillsTools, index: number) => (
                   <React.Fragment key={index}>
-                    <p>Category: {skillsTools.Category}</p>
-                    <p>Type: {skillsTools.Type}</p>
+                    <p>Category: {skillsTools.category}</p>
+                    <p>Type: {skillsTools.type}</p>
                     <ul>
-                        {skillsTools.List.map((skillTool: string, listIndex: number) => (
+                        {skillsTools.list.map((skillTool: string, listIndex: number) => (
                             <li key={listIndex}>{skillTool}</li>
                         ))}
                     </ul>

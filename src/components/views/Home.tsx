@@ -5,7 +5,7 @@ interface HomeProps {
   jobTitle: string
 }
 
-const App: FC<HomeProps> = ({ name, jobTitle }) => {
+const HomeView: FC<HomeProps> = ({ name, jobTitle }) => {
   return (
     <>
       <h1>{name}</h1>
@@ -14,4 +14,4 @@ const App: FC<HomeProps> = ({ name, jobTitle }) => {
   )
 }
 
-export default App
+export default HomeView

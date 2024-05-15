@@ -4,8 +4,15 @@ import Home from './Home'
 
 describe('Home', () => {
   it('renders the Home component', () => {
-    render(<Home name='name' jobTitle='title'/>)
+    // arrange
+    const name = 'John Doe'
+    const jobTitle = 'Software Engineer'
+
+    // act
+    render(<Home name={name} jobTitle={jobTitle}/>)
     
-    screen.debug(); // prints out the jsx in the Home component unto the command line
+    // assert
+    expect(screen.getByText(name)).toBeTruthy()
+    expect(screen.getByText(jobTitle)).toBeTruthy()
   })
 })

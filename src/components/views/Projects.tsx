@@ -37,16 +37,19 @@ const ProjectsView = () => {
                         ))}
                     </ul>
                     <p>Team Size: {projects?.teamSize}</p>
+                    <p>Team Roles:</p>
                     <ul>
                         {projects.teamRoles?.map((teamRoles: string, listIndex: number) => (
                             <li key={listIndex}>{teamRoles}</li>
                         ))}
                     </ul>
+                    <p>Cloud Services:</p>
                     <ul>
                         {projects.cloudServices?.map((cloudService: string, listIndex: number) => (
                             <li key={listIndex}>{cloudService}</li>
                         ))}
                     </ul>
+                    <p>Tools:</p>
                     <ul>
                         {projects.tools.map((tool: string, listIndex: number) => (
                             <li key={listIndex}>{tool}</li>

@@ -1,4 +1,7 @@
-import { FC } from 'react';
+import { FC} from 'react';
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+
 import {
   BrowserRouter as Router,
   useRoutes,
@@ -7,6 +10,8 @@ import Home from './components/views/Home';
 import Work from './components/views/Work';
 import SkillsTools from './components/views/SkillsTools';
 import Projects from './components/views/Projects';
+
+const isAuthEnabled = import.meta.env.VITE_AUTH_ENABLED
 
 interface AppProps {
   title: string
@@ -24,9 +29,19 @@ const AppRoutes = () => {
 
 const App: FC<AppProps> = () => {
   return (
-    <Router>
-      <AppRoutes />
-    </Router>
+    <>
+      {isAuthEnabled === "true" ? (
+        <Authenticator>
+          <Router>
+            <AppRoutes />
+          </Router>
+        </Authenticator>
+      ) : (
+        <Router>
+          <AppRoutes />
+        </Router>
+      )}
+    </>
   );
 }
 

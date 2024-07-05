@@ -1,52 +1,69 @@
+import { Amplify } from 'aws-amplify'
+import { fetchAuthSession } from 'aws-amplify/auth';
 import { Work } from './../types/workTypes';
 import { SkillsTools } from './../types/skillsToolsTypes';
-import { Project } from './../types//projectTypes';
+import { Project } from './../types/projectTypes';
+import config from '../auth/config.ts'
 import axios from 'axios'
 
 export const baseUrl = import.meta.env.VITE_PERSONAL_WEBSITE_SERVICE
 
 const axiosInstance = axios.create()
 
-const options = {
-    headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*",
-        "Access-Control-Allow-Headers": "*",
+Amplify.configure(config)
+
+async function fetchSessionToken() {
+  const session = await fetchAuthSession();
+  const sessionToken = session.tokens?.idToken?.toString()
+  return sessionToken
+}
+
+async function getHeaders() {
+    const sessionToken = await fetchSessionToken()
+    console.log(sessionToken)
+    const options = {
+        headers: {
+            'Authorization': `Bearer ${sessionToken}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        }
     }
+    return options    
 }
 
-export const axiosGetWork = () => {
-    return axiosInstance.get(`${baseUrl}/api/v1/work`, options)
+export async function axiosGetWork() {
+    return axiosInstance.get(`${baseUrl}/api/v1/work`, await getHeaders())
 }
 
-export const axiosPostWork = (newWork: Work) => {
-    return axiosInstance.post(`${baseUrl}/api/v1/work}`, newWork, options)
+export async function axiosPostWork(newWork: Work) {
+    return axiosInstance.post(`${baseUrl}/api/v1/work}`, newWork, await getHeaders())
 }
 
-export const axiosPutWork = (updateWork: Work) => {
-    return axiosInstance.put(`${baseUrl}/api/v1/work`, updateWork, options)
+export async function axiosPutWork(updateWork: Work) {
+    return axiosInstance.put(`${baseUrl}/api/v1/work`, updateWork, await getHeaders())
 }
 
-export const axiosGetSkillsTools = () => {
-    return axiosInstance.get(`${baseUrl}/api/v1/skillsTools`, options)
+export async function axiosGetSkillsTools() {
+    return axiosInstance.get(`${baseUrl}/api/v1/skillsTools`, await getHeaders())
 }
 
-export const axiosPostSkillsTools = (newSkillsTools: SkillsTools) => {
-    return axiosInstance.post(`${baseUrl}/api/v1/skillsTools}`, newSkillsTools, options)
+export async function axiosPostSkillsTools(newSkillsTools: SkillsTools) {
+    return axiosInstance.post(`${baseUrl}/api/v1/skillsTools}`, newSkillsTools, await getHeaders())
 }
 
-export const axiosPutSkillsTools = (newSkillsTools: SkillsTools) => {
-    return axiosInstance.put(`${baseUrl}/api/v1/skillsTools`, newSkillsTools, options)
+export async function axiosPutSkillsTools(newSkillsTools: SkillsTools) {
+    return axiosInstance.put(`${baseUrl}/api/v1/skillsTools`, newSkillsTools, await getHeaders())
 }
 
-export const axiosGetProjects = () => {
-    return axiosInstance.get(`${baseUrl}/api/v1/projects`, options)
+export async function axiosGetProjects() {
+    return axiosInstance.get(`${baseUrl}/api/v1/projects`, await getHeaders())
 }
 
-export const axiosPostProject = (newProject: Project) => {
-    return axiosInstance.post(`${baseUrl}/api/v1/projects`, newProject, options)
+export async function axiosPostProject(newProject: Project) {
+    return axiosInstance.post(`${baseUrl}/api/v1/projects`, newProject, await getHeaders())
 }
 
-export const axiosPutProject = (updateProject: Project) => {
-    return axiosInstance.put(`${baseUrl}/api/v1/project`, updateProject, options)
+export async function axiosPutProject(updateProject: Project) {
+    return axiosInstance.put(`${baseUrl}/api/v1/project`, updateProject, await getHeaders())
 }

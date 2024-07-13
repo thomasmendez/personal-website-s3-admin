@@ -32,14 +32,15 @@ const HomeView: FC<HomeProps> = ({ name, jobTitle }) => {
     <div className="h-screen">
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
       <div className={`${darkMode && "dark"}`}>
-        <main className="flex min-h-screen text-center flex-col dark:bg-neutral-900">
+        <main className="flex min-h-screen text-center flex-col bg-neutral-200 dark:bg-neutral-900">
           <section className="p-12 bg-neutral-200 dark:bg-neutral-800">
             <h1>Image here</h1>
             <h1 className="text-xl font-semibold dark:text-white">{name}</h1>
             <h1 className="text-xl font-semibold text-zinc-500 dark:text-white">{jobTitle}</h1>
           </section>
           <section className="flex justify-center">
-            <About 
+            <About
+              darkMode={darkMode}
               aboutMeDetails="details"
               educationDetails="details"
               educationStartDate="start date"

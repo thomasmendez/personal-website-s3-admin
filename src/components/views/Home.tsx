@@ -40,7 +40,6 @@ const HomeView: FC<HomeProps> = ({ name, jobTitle }) => {
           </section>
           <section className="flex justify-center">
             <About
-              darkMode={darkMode}
               aboutMeDetails="details"
               educationDetails="details"
               educationStartDate="start date"

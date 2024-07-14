@@ -26,8 +26,8 @@ const Footer: FC<FooterProps> = ({ websites }) => {
           ))}
         </ul>
       </section>
-      <section className="justify-end text-black dark:text-white text-center">
-        <p>contact info</p>
+      <section className="justify-end text-center">
+        <p className="text-black dark:text-white">contact info</p>
       </section>
     </footer>
   )

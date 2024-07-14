@@ -4,7 +4,11 @@ export default {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      minHeight: {
+        '80vh': '80vh',
+      },
+    },
   },
   plugins: [require('daisyui'),],
   darkMode: "class",

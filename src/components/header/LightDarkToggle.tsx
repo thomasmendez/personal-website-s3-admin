@@ -12,7 +12,7 @@ const LightDarkToggle: FC<LightDarkToggle> = ({ darkMode, toggleDarkMode }) => {
         type="checkbox"
         checked={darkMode}
         onChange={toggleDarkMode}
-        className="toggle theme-controller bg-base-content col-span-2 col-start-1 row-start-1 [--tglbg:theme(colors.gray.300)] checked:bg-blue-300 checked:[--tglbg:theme(colors.blue.800)]" />
+        className="toggle theme-controller bg-base-content col-span-2 col-start-1 row-start-1 [--tglbg:theme(colors.gray.600)] checked:bg-gray-300 checked:[--tglbg:theme(colors.gray.500)]" />
       <svg
         className="stroke-base-100 fill-base-100 col-start-1 row-start-1"
         width="14"

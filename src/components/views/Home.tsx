@@ -3,6 +3,7 @@ import Header from "../Header/Header"
 import About from "../About/About"
 import Footer from "../Footer/Footer"
 import { Websites } from "../../types/websiteTypes"
+import ProfilePic from "../../../src/assets/pic.jpeg";
 
 interface HomeProps {
   name: string
@@ -33,8 +34,10 @@ const HomeView: FC<HomeProps> = ({ name, jobTitle }) => {
       <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
       <div className={`${darkMode && "dark"}`}>
         <main className="flex min-h-80vh text-center flex-col bg-neutral-200 dark:bg-neutral-900">
-          <section className="pt-12 pb-12 bg-neutral-200 dark:bg-neutral-800">
-            <h1>Image here</h1>
+          <section className="flex justify-center pt-12 bg-neutral-200 dark:bg-neutral-800">
+            <img className="rounded-full w-48 h-48" src={ProfilePic} alt="profile picture" />
+          </section>
+          <section className="pt-6 pb-6 bg-neutral-200 dark:bg-neutral-800">
             <h1 className="text-xl font-semibold dark:text-white">{name}</h1>
             <h1 className="text-xl font-semibold text-zinc-500 dark:text-white">{jobTitle}</h1>
           </section>

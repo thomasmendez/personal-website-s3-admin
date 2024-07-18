@@ -10,7 +10,7 @@ const Footer: FC<FooterProps> = ({ websites }) => {
   return(
     <footer className="grid grid-cols-6 pt-6 pb-6 items-center border-t-[1px] bg-neutral-200 border-gray-500 dark:bg-zinc-800">
       <section className="col-start-2 col-span-1 text-center">
-        <p className="text-black dark:text-white">
+        <p>
             ©
             {' '}
             {new Date().getFullYear()}
@@ -21,7 +21,7 @@ const Footer: FC<FooterProps> = ({ websites }) => {
       <section className="flex justify-center col-span-2 text-center">
         <ul className="space-y-2">
           {websites.map((item, index) => (
-            <li key={index} className="text-black dark:text-white">
+            <li key={index}>
                 {item.text}
             </li>
           ))}

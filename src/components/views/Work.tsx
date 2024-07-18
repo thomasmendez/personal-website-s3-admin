@@ -27,7 +27,7 @@ const WorkView = () => {
             content = <React.Fragment>
                 {work.map((employment: Work, index: number) => (
                   <React.Fragment key={index}>
-                    <section className="grid grid-cols-12 pt-4 pb-4">
+                    <section className="grid grid-cols-12 pt-4 pb-4 bg-neutral-200 dark:bg-neutral-900">
                         <div className="flex col-start-2 col-span-8 justify-between">
                             <div className="flex space-x-1">
                                 <p className="font-bold">{employment.jobTitle}</p>
@@ -37,7 +37,7 @@ const WorkView = () => {
                             </div>
                         </div>
                         <div className="col-span-2 font-bold">
-                            <div>{formatDateToMonthYear(employment.startDate)} - {formatDateToMonthYear(employment.endDate)}</div>
+                            <p>{formatDateToMonthYear(employment.startDate)} - {formatDateToMonthYear(employment.endDate)}</p>
                         </div>
                         <div className="col-start-2 col-span-10">
                             <p className="italic">{employment.jobRole}</p>

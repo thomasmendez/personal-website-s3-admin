@@ -5,3 +5,9 @@
 * {
   @apply transition-colors duration-200;
 }
+
+@layer base {
+  p, li {
+    @apply text-black dark:text-white;
+  }
+}

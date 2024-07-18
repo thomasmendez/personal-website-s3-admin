@@ -23,21 +23,25 @@ const SkillsToolsView = () => {
         content = <Loading />;
     } else if (skillsToolsStatus === 'succeeded') {
         if (skillsTools && skillsTools.length > 0) {
-            content = <>
-                <p>Success</p>
+            content = <React.Fragment>
                 {skillsTools.map((skillsTools: SkillsTools, index: number) => (
                   <React.Fragment key={index}>
-                    <p>Category: {skillsTools.category}</p>
-                    <p>Type: {skillsTools.type}</p>
-                    <ul>
-                        {skillsTools.list.map((skillTool: string, listIndex: number) => (
-                            <li key={listIndex}>{skillTool}</li>
-                        ))}
-                    </ul>
-                    <br />
+                    <section className="grid grid-cols-12 pt-4 pb-4 bg-neutral-200 dark:bg-neutral-900">
+                        <div className="col-start-4 col-span-6 space-y-2">
+                            <p className="text-xl underline">{skillsTools.category}</p>
+                            <div className="flex space-x-1">
+                                <p className="font-bold">{skillsTools.type}: </p>
+                                <ul className="flex space-x-1">
+                                    {skillsTools.list.map((skillTool: string, listIndex: number) => (
+                                        <li key={listIndex}>{`${skillTool} ${listIndex !== skillsTools.list.length - 1 ? ',' : ''}`}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
                   </React.Fragment>
                 ))}
-            </>
+            </React.Fragment>
         }
     } else if (skillsToolsStatus === 'failed') {
         content = <p>{skillsToolsError}</p>;
@@ -45,7 +49,6 @@ const SkillsToolsView = () => {
 
     return (
         <section>
-            <h2>Skills Tools</h2>
             {content}
         </section>
     )

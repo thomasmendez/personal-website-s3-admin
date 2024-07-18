@@ -4,6 +4,7 @@ import React, { useEffect } from "react"
 import { getSkillsTools } from "../../store/skillsToolsApiSlice"
 import { AppDispatch } from "../../store/store"
 import { SkillsTools } from "../../types/skillsToolsTypes"
+import Loading from "../Loading/Loading"
 
 const SkillsToolsView = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -19,7 +20,7 @@ const SkillsToolsView = () => {
 
     let content;
     if (skillsToolsStatus === 'pending') {
-        content = <p>"Loading..."</p>;
+        content = <Loading />;
     } else if (skillsToolsStatus === 'succeeded') {
         if (skillsTools && skillsTools.length > 0) {
             content = <>

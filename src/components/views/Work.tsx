@@ -5,7 +5,7 @@ import { getWork } from "../../store/workApiSlice"
 import { AppDispatch } from "../../store/store"
 import { Work } from "../../types/workTypes"
 import { formatDateToMonthYear } from "../../utils/dateFormat"
-import TitleHeader from "../TitleHeader/TitleHeader"
+import Loading from "../Loading/Loading"
 
 const WorkView = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -21,7 +21,7 @@ const WorkView = () => {
 
     let content;
     if (workStatus === 'pending') {
-        content = <p>"Loading..."</p>;
+        content = <Loading />;
     } else if (workStatus === 'succeeded') {
         if (work && work.length > 0) {
             content = <>
@@ -49,7 +49,6 @@ const WorkView = () => {
 
     return (
         <section>
-            <h2>Work</h2>
             {content}
         </section>
     )

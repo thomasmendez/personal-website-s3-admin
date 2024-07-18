@@ -4,6 +4,7 @@ import React, { useEffect } from "react"
 import { getProjects } from "../../store/projectsApiSlice"
 import { AppDispatch } from "../../store/store"
 import { Project } from "../../types/projectTypes"
+import Loading from "../Loading/Loading.jsx"
 
 const ProjectsView = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -19,7 +20,7 @@ const ProjectsView = () => {
 
     let content;
     if (projectsStatus === 'pending') {
-        content = <p>"Loading..."</p>;
+        content = <Loading/>;
     } else if (projectsStatus === 'succeeded') {
         if (projects && projects.length > 0) {
             content = <>
@@ -73,7 +74,6 @@ const ProjectsView = () => {
 
     return (
         <section>
-            <h2>Projects</h2>
             {content}
         </section>
     )

@@ -1,5 +1,5 @@
 import { FC } from "react"
-import LightDarkToggle from "./LightDarkToggle"
+import DarkModeToggle from "./DarkModeToggle"
 
 interface HeaderProps {
   darkMode: boolean
@@ -25,7 +25,7 @@ const Header: FC<HeaderProps> = ({ darkMode, toggleDarkMode }) => {
             </details>
             <a href="/resume" className="btn btn-ghost text-gray-300 dark:text-gray-400">Resume</a>
             <a href="/storybook" className="btn btn-ghost text-gray-300 dark:text-gray-400">Storybook</a>
-            <LightDarkToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
+            <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
           </div>
         </div>
       </div>

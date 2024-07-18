@@ -1,11 +1,11 @@
 import { FC } from 'react'
 
-interface LightDarkToggle {
+interface DarkModeToggle {
   darkMode: boolean
   toggleDarkMode: () => void
 }
 
-const LightDarkToggle: FC<LightDarkToggle> = ({ darkMode, toggleDarkMode }) => {
+const DarkModeToggle: FC<DarkModeToggle> = ({ darkMode, toggleDarkMode }) => {
   return(
     <label className="grid cursor-pointer place-items-center">
       <input
@@ -43,4 +43,4 @@ const LightDarkToggle: FC<LightDarkToggle> = ({ darkMode, toggleDarkMode }) => {
   )
 }
 
-export default LightDarkToggle
+export default DarkModeToggle

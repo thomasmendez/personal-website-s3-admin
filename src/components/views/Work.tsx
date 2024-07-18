@@ -24,24 +24,35 @@ const WorkView = () => {
         content = <Loading />;
     } else if (workStatus === 'succeeded') {
         if (work && work.length > 0) {
-            content = <>
-                <p>Success</p>
+            content = <React.Fragment>
                 {work.map((employment: Work, index: number) => (
                   <React.Fragment key={index}>
-                    <p>Job Title: {employment.jobTitle}</p>
-                    <p>Company: {employment.company}</p>
-                    <p>Location: {employment.location.city}, {employment.location.state}</p>
-                    <p>{formatDateToMonthYear(employment.startDate)} - {formatDateToMonthYear(employment.endDate)}</p>
-                    <p>Job Role: {employment.jobRole}</p>
-                    <ul>
-                        {employment.jobDescription.map((task: string, jobDescriptionIndex: number) => (
-                            <li key={jobDescriptionIndex}>{task}</li>
-                        ))}
-                    </ul>
-                    <br />
+                    <section className="grid grid-cols-12 pt-4 pb-4">
+                        <div className="flex col-start-2 col-span-8 justify-between">
+                            <div className="flex space-x-1">
+                                <p className="font-bold">{employment.jobTitle}</p>
+                                <p>at</p>
+                                <p className="italic">{employment.company},</p>
+                                <p>{employment.location.city}, {employment.location.state}</p>
+                            </div>
+                        </div>
+                        <div className="col-span-2 font-bold">
+                            <div>{formatDateToMonthYear(employment.startDate)} - {formatDateToMonthYear(employment.endDate)}</div>
+                        </div>
+                        <div className="col-start-2 col-span-10">
+                            <p className="italic">{employment.jobRole}</p>
+                        </div>
+                        <div className="col-start-2 col-span-10">
+                            <ul className="list-disc list-inside">
+                                {employment.jobDescription.map((task: string, jobDescriptionIndex: number) => (
+                                    <li key={jobDescriptionIndex}>{task}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </section>
                   </React.Fragment>
                 ))}
-            </>
+            </React.Fragment>
         }
     } else if (workStatus === 'failed') {
         content = <p>{workError}</p>;

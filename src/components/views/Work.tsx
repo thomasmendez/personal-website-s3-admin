@@ -49,7 +49,6 @@ const WorkView = () => {
 
     return (
         <section>
-            <TitleHeader title="Work"/>
             <h2>Work</h2>
             {content}
         </section>

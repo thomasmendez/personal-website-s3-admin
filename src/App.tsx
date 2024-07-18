@@ -17,14 +17,16 @@ import { Websites } from './types/websiteTypes';
 import components from './auth/components';
 import { useSelector } from 'react-redux';
 import { getDarkMode } from './store/darkModeSlice';
+import TitleHeader from './components/TitleHeader/TitleHeader';
 
 const isAuthEnabled = import.meta.env.VITE_AUTH_ENABLED
 
 interface AppPage {
   pageComponent: ReactNode
+  title?: string
 }
 
-const AppPage: FC<AppPage> = ({ pageComponent }) => {
+const AppPage: FC<AppPage> = ({ pageComponent, title }) => {
   const darkMode = useSelector(getDarkMode)
 
   const websites: Websites[] = [
@@ -42,6 +44,7 @@ const AppPage: FC<AppPage> = ({ pageComponent }) => {
   return(
     <div className={`${darkMode && "dark"}`}>
       <Header/>
+      {title && <TitleHeader title={title}/>}
       {pageComponent}
       <Footer websites={websites}/>
     </div>
@@ -52,9 +55,10 @@ const AppRoutes = () => {
   const routes = useRoutes([
     { path: '/', element: <AppPage pageComponent={<Home />} />},
     { path: '/about', element: <AppPage pageComponent={<Home />} />},
-    { path: '/work', element: <AppPage pageComponent={<Work />} /> },
-    { path: '/skillsTools', element: <AppPage pageComponent={<SkillsTools />} /> },
-    { path: '/projects', element: <AppPage pageComponent={<Projects />} /> }
+    { path: '/work', element: <AppPage title='Where I Worked' pageComponent={<Work />} /> },
+    { path: '/skills-tools', element: <AppPage title='Skills & Tools' pageComponent={<SkillsTools />} /> },
+    { path: '/vr-ar', element: <AppPage title='Virtual Reality (VR) / Augmented Reality (AR) Projects' pageComponent={<Projects />} /> },
+    { path: '/software-engineering', element: <AppPage title='Software Engineering Projects' pageComponent={<Projects />} /> }
   ]);
   return routes;
 }

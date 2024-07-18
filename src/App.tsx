@@ -14,11 +14,9 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { Websites } from './types/websiteTypes';
 
-const isAuthEnabled = import.meta.env.VITE_AUTH_ENABLED
+import components from './auth/components';
 
-interface AppProps {
-  title: string
-}
+const isAuthEnabled = import.meta.env.VITE_AUTH_ENABLED
 
 interface AppPage {
   pageComponent: ReactNode
@@ -59,13 +57,13 @@ const AppRoutes = () => {
     { path: '/projects', element: <AppPage pageComponent={<Projects />} /> }
   ]);
   return routes;
-};
+}
 
-const App: FC<AppProps> = () => {
+const App = () => {
   return (
     <>
       {isAuthEnabled === "true" ? (
-        <Authenticator>
+        <Authenticator components={components}>
           <Router>
             <AppRoutes />
           </Router>

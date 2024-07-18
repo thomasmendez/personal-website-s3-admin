@@ -19,8 +19,8 @@ const Header: FC<HeaderProps> = ({ darkMode, toggleDarkMode }) => {
             <details className="relative group">
               <summary className="btn btn-ghost text-gray-300 dark:text-gray-400">Projects</summary>
               <ul className="text-zinc-500 dark:text-zinc-300 absolute hidden space-y-2 group-hover:block shadow-lg p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900">
-                <li><a href="/software-engineering" className="btn btn-ghost text-gray-300 dark:text-gray-400">Software Engineering</a></li>
-                <li><a href="/vr-ar" className="btn btn-ghost text-gray-300 dark:text-gray-400">VR / AR</a></li>
+                <li><a href="/software-engineering" className="btn btn-ghost text-gray-400">Software Engineering</a></li>
+                <li><a href="/vr-ar" className="btn btn-ghost text-gray-400">VR / AR</a></li>
               </ul>
             </details>
             <a href="/resume" className="btn btn-ghost text-gray-300 dark:text-gray-400">Resume</a>

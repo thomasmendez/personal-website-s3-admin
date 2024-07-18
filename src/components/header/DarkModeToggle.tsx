@@ -1,11 +1,21 @@
-import { FC } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch } from '../../store/store'
+import { changeDarkMode, getDarkMode } from '../../store/darkModeSlice'
 
 interface DarkModeToggle {
   darkMode: boolean
   toggleDarkMode: () => void
 }
 
-const DarkModeToggle: FC<DarkModeToggle> = ({ darkMode, toggleDarkMode }) => {
+const DarkModeToggle = () => {
+
+  const dispatch = useDispatch<AppDispatch>()
+  const darkMode = useSelector(getDarkMode)
+
+  const toggleDarkMode = () => {
+    dispatch(changeDarkMode(!darkMode))
+  }
+
   return(
     <label className="grid cursor-pointer place-items-center">
       <input

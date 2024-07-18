@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
@@ -15,6 +15,8 @@ import Footer from './components/Footer/Footer';
 import { Websites } from './types/websiteTypes';
 
 import components from './auth/components';
+import { useSelector } from 'react-redux';
+import { getDarkMode } from './store/darkModeSlice';
 
 const isAuthEnabled = import.meta.env.VITE_AUTH_ENABLED
 
@@ -23,10 +25,7 @@ interface AppPage {
 }
 
 const AppPage: FC<AppPage> = ({ pageComponent }) => {
-  const [darkMode, setDarkMode] = useState(false)
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
-  }
+  const darkMode = useSelector(getDarkMode)
 
   const websites: Websites[] = [
     {
@@ -42,7 +41,7 @@ const AppPage: FC<AppPage> = ({ pageComponent }) => {
   ]
   return(
     <div className={`${darkMode && "dark"}`}>
-      <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
+      <Header/>
       {pageComponent}
       <Footer websites={websites}/>
     </div>
@@ -51,7 +50,8 @@ const AppPage: FC<AppPage> = ({ pageComponent }) => {
 
 const AppRoutes = () => {
   const routes = useRoutes([
-    { path: '/', element: <AppPage pageComponent={<Home name="Thomas A Mendez" jobTitle='Software Engineer and Game Developer'/>} />},
+    { path: '/', element: <AppPage pageComponent={<Home />} />},
+    { path: '/about', element: <AppPage pageComponent={<Home />} />},
     { path: '/work', element: <AppPage pageComponent={<Work />} /> },
     { path: '/skillsTools', element: <AppPage pageComponent={<SkillsTools />} /> },
     { path: '/projects', element: <AppPage pageComponent={<Projects />} /> }

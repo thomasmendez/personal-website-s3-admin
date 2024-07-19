@@ -27,42 +27,78 @@ const ProjectsView = () => {
                 {projects.map((projects: Project, index: number) => (
                   <React.Fragment key={index}>
                     <section className="grid grid-cols-12 pt-4 pb-4 bg-neutral-200 dark:bg-neutral-900">
-                        <p>Category: {projects.category}</p>
-                        <p>Name: {projects.name}</p>
-                        <p>Description: {projects.description}</p>
-                        <p>Features Description: {projects.featuresDescription}</p>
-                        <p>Role: {projects.role}</p>
-                        <ul>
-                            {projects.tasks.map((task: string, listIndex: number) => (
-                                <li key={listIndex}>{task}</li>
-                            ))}
-                        </ul>
-                        <p>Team Size: {projects?.teamSize}</p>
-                        <p>Team Roles:</p>
-                        <ul>
-                            {projects.teamRoles?.map((teamRoles: string, listIndex: number) => (
-                                <li key={listIndex}>{teamRoles}</li>
-                            ))}
-                        </ul>
-                        <p>Cloud Services:</p>
-                        <ul>
-                            {projects.cloudServices?.map((cloudService: string, listIndex: number) => (
-                                <li key={listIndex}>{cloudService}</li>
-                            ))}
-                        </ul>
-                        <p>Tools:</p>
-                        <ul>
-                            {projects.tools.map((tool: string, listIndex: number) => (
-                                <li key={listIndex}>{tool}</li>
-                            ))}
-                        </ul>
+                        <div className="col-start-3 col-span-7">
+                            <p className="text-xl font-bold">{projects.name}</p>
+                        </div>
+                        <div className="col-start-3 col-span-3">
+                            <p className="underline">Project Description:</p>
+                            <p>{projects.description}</p>
+                        </div>
+                        <div className="flex col-start-3 col-span-3 space-x-1">
+                            <p className="underline">MyRole:</p>
+                            <p>{projects.role}</p>
+                        </div>
+                        <div className="col-start-3 col-span-3 space-x-5">
+                            <p className="underline">My Tasks:</p>
+                            <ul className="list-disc list-inside">
+                                {projects.tasks.map((task: string, listIndex: number) => (
+                                    <li key={listIndex}>{task}</li>
+                                ))}
+                            </ul>
+                        </div>
+                        {projects.teamSize !== null && (
+                            <div className="flex col-start-3 col-span-3 space-x-1">
+                                <p className="underline">Team Size:</p>
+                                <p>{projects.teamSize}</p>
+                            </div>
+                        )}
+                        {projects.teamRoles !== null && (
+                            <div className="col-start-3 col-span-3 space-x-5">
+                                <p className="underline">Team Roles:</p>
+                                <ul className="list-disc list-inside">
+                                    {projects.teamRoles.map((task: string, listIndex: number) => (
+                                        <li key={listIndex}>{task}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                        {projects.cloudServices !== null && (
+                            <div className="col-start-3 col-span-3 space-x-5">
+                                <p className="underline">Cloud Services:</p>
+                                <ul className="list-disc list-inside">
+                                    {projects.cloudServices.map((cloudService: string, listIndex: number) => (
+                                        <li key={listIndex}>{cloudService}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                        <div className="col-start-3 col-span-3 space-x-5">
+                            <p className="underline">Tools:</p>
+                            <ul className="list-disc list-inside">
+                                {projects.tools.map((cloudService: string, listIndex: number) => (
+                                    <li key={listIndex}>{cloudService}</li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className="flex col-start-3 col-span-3 space-x-1">
+                            <p className="underline">Project Duration:</p>
+                            <p>{projects.duration}</p>
+                        </div>
+                        <div className="flex col-start-3 col-span-3 space-x-1">
+                            <p className="underline">Project Date:</p>
+                            <p>{projects.startDate} - {projects.endDate}</p>
+                        </div>
+                        <div className="col-start-3 col-span-3 space-x-1">
+                            <p className="italic">*{projects.notes}*</p>
+                        </div>
+                        {/* <p>Category: {projects.category}</p>
                         <p>Duration: {projects.duration}</p>
                         <p>StartDate: {projects.startDate}</p>
                         <p>EndDate: {projects.endDate}</p>
                         <p>Notes: {projects.notes}</p>
                         <p>Link: {projects.link}</p>
                         <p>Link Type: {projects.linkType}</p>
-                        <p>Media Link: {projects.mediaLink}</p>
+                        <p>Media Link: {projects.mediaLink}</p> */}
                     </section>
                   </React.Fragment>
                 ))}

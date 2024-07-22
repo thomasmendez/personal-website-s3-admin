@@ -9,7 +9,7 @@ const HomeView = () => {
           <img className="rounded-full w-48 h-48" src={ProfilePic} alt="profile picture" />
         </section>
         <section className="pt-6 pb-6">
-          <h1 className="text-xl font-semibold text-zinc-400 dark:text-white">Thomas A. Mendez</h1>
+          <h1 className="text-2xl font-semibold text-zinc-400 dark:text-white">Thomas A. Mendez</h1>
           <h1 className="text-xl font-semibold text-zinc-500 dark:text-white">Software Engineer and Game Developer</h1>
         </section>
       </section>

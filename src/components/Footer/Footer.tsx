@@ -8,8 +8,8 @@ interface FooterProps {
 
 const Footer: FC<FooterProps> = ({ websites }) => {
   return(
-    <footer className="grid grid-cols-6 pt-6 pb-6 items-center border-t-[1px] bg-neutral-100 border-gray-500 dark:bg-zinc-800">
-      <section className="col-start-2 col-span-1 text-center">
+    <footer className="md:grid md:grid-cols-6 pt-6 pb-6 items-center border-t-[1px] bg-neutral-100 border-gray-500 dark:bg-zinc-800">
+      <section className="md:col-start-2 md:col-span-1 text-center">
         <p>
             ©
             {' '}
@@ -18,7 +18,7 @@ const Footer: FC<FooterProps> = ({ websites }) => {
             Copyright
         </p>
       </section>
-      <section className="flex justify-center col-span-2 text-center">
+      <section className="flex justify-center pt-4 pb-4 md:col-span-2 text-center">
         <ul className="space-y-2">
           {websites.map((item, index) => (
             <li key={index}>
@@ -27,7 +27,7 @@ const Footer: FC<FooterProps> = ({ websites }) => {
           ))}
         </ul>
       </section>
-      <section className="flex justify-end">
+      <section className="flex justify-center md:justify-end">
         <Icon
           href="https://www.linkedin.com/in/thomas-a-mendez"
           svgIcon={

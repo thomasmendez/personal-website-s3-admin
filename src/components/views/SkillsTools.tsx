@@ -26,7 +26,7 @@ const SkillsToolsView = () => {
             content = <React.Fragment>
                 {skillsTools.map((skillsTools: SkillsTools, index: number) => (
                   <React.Fragment key={index}>
-                    <section className="grid grid-cols-12 pt-4 pb-4 bg-neutral-200 dark:bg-neutral-900">
+                    <section className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="col-start-4 col-span-6 space-y-2">
                             <p className="text-xl underline">{skillsTools.category}</p>
                             <div className="flex space-x-1">

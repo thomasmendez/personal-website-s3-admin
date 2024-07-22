@@ -8,7 +8,7 @@ interface FooterProps {
 
 const Footer: FC<FooterProps> = ({ websites }) => {
   return(
-    <footer className="grid grid-cols-6 pt-6 pb-6 items-center border-t-[1px] bg-neutral-200 border-gray-500 dark:bg-zinc-800">
+    <footer className="grid grid-cols-6 pt-6 pb-6 items-center border-t-[1px] bg-neutral-100 border-gray-500 dark:bg-zinc-800">
       <section className="col-start-2 col-span-1 text-center">
         <p>
             ©

@@ -11,7 +11,7 @@ interface AboutProps {
 
 const About: FC<AboutProps> = ({ aboutMeDetails, educationDetails, educationStartDate, educationEndDate, degreeMinors }) => {
   return(
-    <section className="grid grid-cols-12 sm:gap-12 md:gap-22 bg-neutral-200 dark:bg-neutral-900">
+    <section className="grid grid-cols-12 sm:gap-12 md:gap-22 bg-neutral-100 dark:bg-neutral-900">
       <section className="p-4 col-start-3 col-span-7">
         <section className="space-y-2">
           <p className="text-left text-xl font-semibold">About Me</p>

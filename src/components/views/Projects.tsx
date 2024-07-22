@@ -33,6 +33,38 @@ const CardMedia: FC<CardMediaProps> = ({ projectName, mediaLink }) => {
     }
 }
 
+interface TopicList {
+    topic: string,
+    list: string[],
+}
+
+const TopicList: FC<TopicList> = ({ topic, list }) => {
+    return(
+        <div className="space-x-5">
+            <p className="underline">{topic}:</p>
+            <ul className="list-disc list-inside">
+                {list.map((item: string, listIndex: number) => (
+                    <li key={listIndex}>{item}</li>
+                ))}
+            </ul>
+        </div>
+    )
+}
+
+interface TopicInline {
+    topic: string,
+    description: string,
+}
+
+const TopicInline: FC<TopicInline> = ({ topic, description }) => {
+    return(
+        <div className="flex space-x-1">
+            <p className="underline">{topic}:</p>
+            <p>{description}</p>
+        </div>
+    )
+}
+
 const ProjectsView = () => {
     const dispatch = useDispatch<AppDispatch>()
     const projects = useSelector(selectAllProjects)
@@ -62,78 +94,20 @@ const ProjectsView = () => {
                                 <p className="underline">Project Description:</p>
                                 <p>{project.description}</p>
                             </div>
-                            <div className="flex space-x-1">
-                                <p className="underline">MyRole:</p>
-                                <p>{project.role}</p>
-                            </div>
-                            <div className="space-x-5">
-                                <p className="underline">My Tasks:</p>
-                                <ul className="list-disc list-inside">
-                                    {project.tasks.map((task: string, listIndex: number) => (
-                                        <li key={listIndex}>{task}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                            {project.teamSize !== null && (
-                                <div className="flex space-x-1">
-                                    <p className="underline">Team Size:</p>
-                                    <p>{project.teamSize}</p>
-                                </div>
-                            )}
-                            {project.teamRoles !== null && (
-                                <div className="space-x-5">
-                                    <p className="underline">Team Roles:</p>
-                                    <ul className="list-disc list-inside">
-                                        {project.teamRoles.map((task: string, listIndex: number) => (
-                                            <li key={listIndex}>{task}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-                            {project.cloudServices !== null && (
-                                <div className="space-x-5">
-                                    <p className="underline">Cloud Services:</p>
-                                    <ul className="list-disc list-inside">
-                                        {project.cloudServices.map((cloudService: string, listIndex: number) => (
-                                            <li key={listIndex}>{cloudService}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-                            <div className="space-x-5">
-                                <p className="underline">Tools:</p>
-                                <ul className="list-disc list-inside">
-                                    {project.tools.map((cloudService: string, listIndex: number) => (
-                                        <li key={listIndex}>{cloudService}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="flex space-x-1">
-                                <p className="underline">Project Duration:</p>
-                                <p>{project.duration}</p>
-                            </div>
-                            <div className="flex space-x-1">
-                                <p className="underline">Project Date:</p>
-                                <p>{project.startDate} - {project.endDate}</p>
-                            </div>
+                            <TopicInline topic="My Role" description={project.role} />
+                            <TopicList topic="My Tasks" list={project.tasks} />
+                            {project.teamSize !== null && (<TopicInline topic="Team Size" description={project.teamSize} />)}
+                            {project?.teamRoles && (<TopicList topic="Team Roles" list={project.teamRoles} />)}
+                            {project?.cloudServices && (<TopicList topic="Cloud Services" list={project.cloudServices} />)}
+                            <TopicList topic="Tools" list={project.tools} />
+                            <TopicInline topic="Project Duration" description={project.duration} />
+                            <TopicInline topic="Project Date" description={`${project.startDate} - ${project.endDate}`} />
                             <div className="space-x-1">
                                 <p className="italic">*{project.notes}*</p>
                             </div>
                         </div>
                         <div className="col-span-6">
                             <div className="card bg-base-100 shadow-x1 dark:bg-neutral-800">
-                              {/* {(project?.mediaLink) && (
-                                <figure>
-                                  {getMediaLinkSourceType(project.mediaLink!) === 'video/mp4' ? (
-                                    <video controls>
-                                      <source src={project.mediaLink!} type="video/mp4"/>
-                                      Your browser does not support the video tag
-                                    </video>
-                                  ) : (
-                                    <img src={project.mediaLink!} alt={`${project.name} Image`} />
-                                  )}
-                                </figure>
-                              )} */}
                               { project?.mediaLink && (<CardMedia projectName={project.name} mediaLink={project.mediaLink} />)}
                               <div className="card-body">
                                 <p className="card-title">{project.name} Features</p>

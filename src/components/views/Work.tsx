@@ -28,12 +28,12 @@ const WorkView = () => {
                 {work.map((employment: Work, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="flex sm:col-start-3 sm:col-span-7 col-start-3 col-span-9 justify-between">
-                            <div className="flex space-x-1">
-                                <p className="font-bold">{employment.jobTitle}</p>
-                                <p>at</p>
-                                <p className="italic">{employment.company},</p>
-                                <p>{employment.location.city}, {employment.location.state}</p>
-                            </div>
+                            <p className="space-x-1">
+                                <span className="font-bold">{employment.jobTitle}</span>
+                                <span>at</span>
+                                <span className="italic">{employment.company},</span>
+                                <span>{employment.location.city}, {employment.location.state}</span>
+                            </p>
                         </div>
                         <div className="sm:col-span-2 col-start-3 col-span-9 font-bold">
                             <p>{formatDateToMonthYear(employment.startDate)} - {formatDateToMonthYear(employment.endDate)}</p>

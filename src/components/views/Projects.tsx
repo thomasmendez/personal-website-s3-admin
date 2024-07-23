@@ -85,8 +85,8 @@ const ProjectsView = () => {
             content = <React.Fragment>
                 {projects.map((project: Project, index: number) => (
                   <React.Fragment key={index}>
-                    <section className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
-                        <div className="col-start-3 col-span-3 space-y-3">
+                    <section className="grid grid-cols-12 sm:pl-0 pt-4 pb-4 pl-4 bg-neutral-100 dark:bg-neutral-900">
+                        <div className="sm:col-start-2 sm:col-span-3 md:col-start-3 md:col-span-3 col-span-12 space-y-3">
                             <div className="col-start-3 col-span-7">
                                 <p className="text-xl font-bold">{project.name}</p>
                             </div>
@@ -106,7 +106,7 @@ const ProjectsView = () => {
                                 <p className="italic">*{project.notes}*</p>
                             </div>
                         </div>
-                        <div className="col-span-6">
+                        <div className="sm:col-span-7 md:col-span-6 col-span-12">
                             <div className="card bg-base-100 shadow-x1 dark:bg-neutral-800">
                               { project?.mediaLink && (<CardMedia projectName={project.name} mediaLink={project.mediaLink} />)}
                               <div className="card-body">

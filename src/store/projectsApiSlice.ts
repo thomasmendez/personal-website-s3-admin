@@ -1,21 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createSelector } from "@reduxjs/toolkit"
 import { Project } from "../types/projectTypes"
-import { axiosGetProjects } from "../services/personalWebsiteApi"
-
-export const getProjects = createAsyncThunk(
-    'get/projects',
-    async (_, thunkApi) => {
-        try {
-            const response = await axiosGetProjects()
-            console.log(JSON.stringify(response.data))
-            return response.data
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            console.log(error)
-            return thunkApi.rejectWithValue(error.response.data)
-        }
-    }
-)
+import { projectsApi } from "../services/projectsApi"; // Adjust the path as necessary
 
 interface ProjectsState {
     entities: Project[]
@@ -44,20 +29,30 @@ export const ProjectsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getProjects.pending, (state) => {
+            // .addCase(getProjects.pending, (state) => {
+            //     state.status = 'pending'
+            // })
+            // .addCase(getProjects.fulfilled, (state, action) => {
+            //     state.status = 'succeeded'
+            //     state.entities = action.payload
+            // })
+            // .addCase(getProjects.rejected, (state, action) => {
+            //     state.status = 'failed'
+            //     state.error = action.payload
+            // })
+            .addMatcher(projectsApi.endpoints.getProjects.matchPending, (state) => {
                 state.status = 'pending'
             })
-            .addCase(getProjects.fulfilled, (state, action) => {
+            .addMatcher(projectsApi.endpoints.getProjects.matchFulfilled, (state, action) => {
                 state.status = 'succeeded'
                 state.entities = action.payload
             })
-            .addCase(getProjects.rejected, (state, action) => {
+            .addMatcher(projectsApi.endpoints.getProjects.matchRejected, (state, action) => {
                 state.status = 'failed'
-                state.error = action.payload
+                state.error = action.error
             })
     }
 })
-
 
 export const selectAllProjects = (state: { projects: ProjectsState }) => state.projects.entities;
 export const getProjectsStatus = (state: { projects: ProjectsState }) => state.projects.status;

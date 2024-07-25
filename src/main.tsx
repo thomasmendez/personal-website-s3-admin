@@ -5,6 +5,9 @@ import './index.css'
 
 import { store } from './store/store.ts'
 import { Provider } from 'react-redux'
+import { projectsApi } from './services/projectsApi.ts'
+
+store.dispatch(projectsApi.endpoints.getProjects.initiate())
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

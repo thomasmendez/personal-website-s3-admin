@@ -50,18 +50,18 @@ const Header = () => {
       <div className="drawer-side z-20">
         <label htmlFor="my-drawer" className="drawer-overlay w-screen"></label>
         <ul className="menu p-4 w-80 bg-base-100 dark:bg-zinc-800 text-base-content">
-          <li><a href="/about" className="btn btn-ghost text-gray-300 dark:text-gray-400">About</a></li>
-          <li><a href="/work" className="btn btn-ghost text-gray-300 dark:text-gray-400">Work</a></li>
-          <li><a href="/skills-tools" className="btn btn-ghost text-gray-300 dark:text-gray-400">Skills & Tools</a></li>
+          <li><a href="/about" className="btn btn-ghost text-gray-400 dark:text-gray-400">About</a></li>
+          <li><a href="/work" className="btn btn-ghost text-gray-400 dark:text-gray-400">Work</a></li>
+          <li><a href="/skills-tools" className="btn btn-ghost text-gray-400 dark:text-gray-400">Skills & Tools</a></li>
           <li><details className="relative group">
-            <summary className="btn btn-ghost text-gray-300 dark:text-gray-400">Projects</summary>
+            <summary className="btn btn-ghost text-gray-400 dark:text-gray-400">Projects</summary>
             <ul className="text-zinc-500 dark:text-zinc-300 space-y-2 shadow-lg p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900">
               <li><a href="/software-engineering" className="btn btn-ghost text-gray-400">Software Engineering</a></li>
               <li><a href="/vr-ar" className="btn btn-ghost text-gray-400">VR / AR</a></li>
             </ul>
           </details></li>
-          <li><a href="/resume" className="btn btn-ghost text-gray-300 dark:text-gray-400">Resume</a></li>
-          <li><a href="/storybook" className="btn btn-ghost text-gray-300 dark:text-gray-400">Storybook</a></li>
+          <li><a href="/resume" className="btn btn-ghost text-gray-400 dark:text-gray-400">Resume</a></li>
+          <li><a href="/storybook" className="btn btn-ghost text-gray-400 dark:text-gray-400">Storybook</a></li>
         </ul>
       </div>
     </div>

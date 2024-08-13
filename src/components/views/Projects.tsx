@@ -1,9 +1,69 @@
 import { useSelector, useDispatch } from "react-redux"
 import { getProjectsError, getProjectsStatus, selectAllProjects } from "../../store/projectsApiSlice"
-import React, { useEffect } from "react"
+import React, { FC, useEffect } from "react"
 import { getProjects } from "../../store/projectsApiSlice"
 import { AppDispatch } from "../../store/store"
 import { Project } from "../../types/projectTypes"
+import Loading from "../Loading/Loading"
+
+interface CardMediaProps {
+    projectName: string,
+    mediaLink: string
+}
+
+const CardMedia: FC<CardMediaProps> = ({ projectName, mediaLink }) => {
+    const mediaType = mediaLink.split('.').pop()
+    switch(mediaType) {
+        case 'mp4':
+            return(
+                <video controls>
+                    <source src={mediaLink} type="video/mp4"/>
+                    Your browser does not support the video tag
+                </video>
+            )
+        case 'png' || 'jpeg':
+            return(
+                <img src={mediaLink} alt={`${projectName} Image`} />
+            )
+        default:
+            console.error("Media has an invalid extension")
+            return(
+                <React.Fragment />
+            )
+    }
+}
+
+interface TopicList {
+    topic: string,
+    list: string[],
+}
+
+const TopicList: FC<TopicList> = ({ topic, list }) => {
+    return(
+        <div className="space-x-5">
+            <p className="underline">{topic}:</p>
+            <ul className="list-disc list-inside">
+                {list.map((item: string, listIndex: number) => (
+                    <li key={listIndex}>{item}</li>
+                ))}
+            </ul>
+        </div>
+    )
+}
+
+interface TopicInline {
+    topic: string,
+    description: string,
+}
+
+const TopicInline: FC<TopicInline> = ({ topic, description }) => {
+    return(
+        <div className="flex space-x-1">
+            <p className="underline">{topic}:</p>
+            <p>{description}</p>
+        </div>
+    )
+}
 
 const ProjectsView = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -19,53 +79,47 @@ const ProjectsView = () => {
 
     let content;
     if (projectsStatus === 'pending') {
-        content = <p>"Loading..."</p>;
+        content = <Loading />;
     } else if (projectsStatus === 'succeeded') {
         if (projects && projects.length > 0) {
-            content = <>
-                <p>Success</p>
-                {projects.map((projects: Project, index: number) => (
-                  <React.Fragment key={index}>
-                    <p>Category: {projects.category}</p>
-                    <p>Name: {projects.name}</p>
-                    <p>Description: {projects.description}</p>
-                    <p>Features Description: {projects.featuresDescription}</p>
-                    <p>Role: {projects.role}</p>
-                    <ul>
-                        {projects.tasks.map((task: string, listIndex: number) => (
-                            <li key={listIndex}>{task}</li>
-                        ))}
-                    </ul>
-                    <p>Team Size: {projects?.teamSize}</p>
-                    <p>Team Roles:</p>
-                    <ul>
-                        {projects.teamRoles?.map((teamRoles: string, listIndex: number) => (
-                            <li key={listIndex}>{teamRoles}</li>
-                        ))}
-                    </ul>
-                    <p>Cloud Services:</p>
-                    <ul>
-                        {projects.cloudServices?.map((cloudService: string, listIndex: number) => (
-                            <li key={listIndex}>{cloudService}</li>
-                        ))}
-                    </ul>
-                    <p>Tools:</p>
-                    <ul>
-                        {projects.tools.map((tool: string, listIndex: number) => (
-                            <li key={listIndex}>{tool}</li>
-                        ))}
-                    </ul>
-                    <p>Duration: {projects.duration}</p>
-                    <p>StartDate: {projects.startDate}</p>
-                    <p>EndDate: {projects.endDate}</p>
-                    <p>Notes: {projects.notes}</p>
-                    <p>Link: {projects.link}</p>
-                    <p>Link Type: {projects.linkType}</p>
-                    <p>Media Link: {projects.mediaLink}</p>
-                    <br />
-                  </React.Fragment>
+            content = <React.Fragment>
+                {projects.map((project: Project, index: number) => (
+                    <section key={index} className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
+                        <div className="sm:col-start-2 sm:col-span-3 md:col-start-3 md:col-span-3 col-span-12 space-y-3">
+                            <div className="col-start-3 col-span-7">
+                                <p className="text-xl font-bold">{project.name}</p>
+                            </div>
+                            <div>
+                                <p className="underline">Project Description:</p>
+                                <p>{project.description}</p>
+                            </div>
+                            <TopicInline topic="My Role" description={project.role} />
+                            <TopicList topic="My Tasks" list={project.tasks} />
+                            {project.teamSize !== null && (<TopicInline topic="Team Size" description={project.teamSize} />)}
+                            {project?.teamRoles && (<TopicList topic="Team Roles" list={project.teamRoles} />)}
+                            {project?.cloudServices && (<TopicList topic="Cloud Services" list={project.cloudServices} />)}
+                            <TopicList topic="Tools" list={project.tools} />
+                            <TopicInline topic="Project Duration" description={project.duration} />
+                            <TopicInline topic="Project Date" description={`${project.startDate} - ${project.endDate}`} />
+                            <div className="space-x-1">
+                                <p className="italic">*{project.notes}*</p>
+                            </div>
+                        </div>
+                        <div className="sm:col-span-7 md:col-span-6 col-span-12">
+                            <div className="card bg-base-100 shadow-x1 dark:bg-neutral-800">
+                              { project?.mediaLink && (<CardMedia projectName={project.name} mediaLink={project.mediaLink} />)}
+                              <div className="card-body">
+                                <p className="card-title">{project.name} Features</p>
+                                <p className="pt-2 pb-6">{project.featuresDescription}</p>
+                                <div className="card-actions">
+                                  {project.link && (<a href="https://youtube.com"><button className="btn btn-neutral dark:bg-neutral-700">{project?.linkType}</button></a>)}
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    </section>
                 ))}
-            </>
+            </React.Fragment>
         }
     } else if (projectsStatus === 'failed') {
         content = <p>{projectsError}</p>;
@@ -73,7 +127,6 @@ const ProjectsView = () => {
 
     return (
         <section>
-            <h2>Projects</h2>
             {content}
         </section>
     )

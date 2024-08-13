@@ -4,6 +4,7 @@ import React, { useEffect } from "react"
 import { getSkillsTools } from "../../store/skillsToolsApiSlice"
 import { AppDispatch } from "../../store/store"
 import { SkillsTools } from "../../types/skillsToolsTypes"
+import Loading from "../Loading/Loading"
 
 const SkillsToolsView = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -19,24 +20,26 @@ const SkillsToolsView = () => {
 
     let content;
     if (skillsToolsStatus === 'pending') {
-        content = <p>"Loading..."</p>;
+        content = <Loading />;
     } else if (skillsToolsStatus === 'succeeded') {
         if (skillsTools && skillsTools.length > 0) {
-            content = <>
-                <p>Success</p>
+            content = <React.Fragment>
                 {skillsTools.map((skillsTools: SkillsTools, index: number) => (
-                  <React.Fragment key={index}>
-                    <p>Category: {skillsTools.category}</p>
-                    <p>Type: {skillsTools.type}</p>
-                    <ul>
-                        {skillsTools.list.map((skillTool: string, listIndex: number) => (
-                            <li key={listIndex}>{skillTool}</li>
-                        ))}
-                    </ul>
-                    <br />
-                  </React.Fragment>
+                    <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
+                        <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
+                            <p className="text-xl underline">{skillsTools.category}</p>
+                            <div className="flex space-x-1">
+                                <p className="font-bold">{skillsTools.type}:</p>
+                                <ul className="flex space-x-1">
+                                    {skillsTools.list.map((skillTool: string, listIndex: number) => (
+                                        <li key={listIndex}>{`${skillTool}${listIndex !== skillsTools.list.length - 1 ? ',' : ''}`}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
                 ))}
-            </>
+            </React.Fragment>
         }
     } else if (skillsToolsStatus === 'failed') {
         content = <p>{skillsToolsError}</p>;
@@ -44,7 +47,6 @@ const SkillsToolsView = () => {
 
     return (
         <section>
-            <h2>Skills Tools</h2>
             {content}
         </section>
     )

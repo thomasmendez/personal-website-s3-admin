@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { getProjectsError, getProjectsStatus, selectAllProjects } from "../../store/projectsApiSlice"
-import React, { FC, useEffect } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { getProjects } from "../../store/projectsApiSlice"
 import { AppDispatch } from "../../store/store"
 import { Project } from "../../types/projectTypes"
@@ -34,17 +34,32 @@ const CardMedia: FC<CardMediaProps> = ({ projectName, mediaLink }) => {
 }
 
 interface TopicList {
+    isEditMode: boolean,
     topic: string,
     list: string[],
 }
 
-const TopicList: FC<TopicList> = ({ topic, list }) => {
+const TopicList: FC<TopicList> = ({ isEditMode, topic, list }) => {
+    const inputName = topic.toLowerCase().replace(/ /g, '-')
     return(
         <div className="space-x-5">
             <p className="underline">{topic}:</p>
-            <ul className="list-disc list-inside">
+            <ul className="list-disc">
                 {list.map((item: string, listIndex: number) => (
-                    <li key={listIndex}>{item}</li>
+                    <li key={listIndex}>
+                        {isEditMode ? (
+                            <input
+                                type="text"
+                                name={inputName}
+                                id={inputName}
+                                defaultValue={item}
+                                className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
+                            />
+                        ) : (
+                            item
+                        )}
+                    </li>
                 ))}
             </ul>
         </div>
@@ -52,20 +67,35 @@ const TopicList: FC<TopicList> = ({ topic, list }) => {
 }
 
 interface TopicInline {
+    isEditMode: boolean,
     topic: string,
     description: string,
 }
 
-const TopicInline: FC<TopicInline> = ({ topic, description }) => {
+const TopicInline: FC<TopicInline> = ({ isEditMode, topic, description }) => {
+    const inputName = topic.toLowerCase().replace(/ /g, '-')
     return(
         <div className="flex space-x-1">
             <p className="underline">{topic}:</p>
-            <p>{description}</p>
+            {isEditMode ? (
+                <input
+                    type="text"
+                    name={inputName}
+                    id={inputName}
+                    defaultValue={description}
+                    className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${description.length + 1}ch`}}
+                />
+            ) : (
+                <p>{description}</p>
+            )}
         </div>
     )
 }
 
+
 const ProjectsView = () => {
+    const [isEditMode, setIsEditMode] = useState(false)
     const dispatch = useDispatch<AppDispatch>()
     const projects = useSelector(selectAllProjects)
     const projectsStatus = useSelector(getProjectsStatus)
@@ -87,27 +117,50 @@ const ProjectsView = () => {
                     <section key={index} className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="sm:col-start-2 sm:col-span-3 md:col-start-3 md:col-span-3 col-span-12 space-y-3">
                             <div className="col-start-3 col-span-7">
-                                <p className="text-xl font-bold">{project.name}</p>
+                                {isEditMode ? (
+                                    <input
+                                        type="text"
+                                        name="project-name"
+                                        id="project-name"
+                                        placeholder="Project Name"
+                                        defaultValue={project.name}
+                                        className="block font-bold rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        style={{ fontSize: "1.125rem", lineHeight: "1.75rem"}}
+                                    />
+                                ) : (
+                                    <p className="text-xl font-bold">{project.name}</p>
+                                )}
                             </div>
                             <div>
                                 <p className="underline">Project Description:</p>
-                                <p>{project.description}</p>
+                                {isEditMode ? (
+                                    <textarea
+                                        rows={1}
+                                        name="project-description"
+                                        id="project-description"
+                                        defaultValue={project.description}
+                                        className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                    />
+                                ) : (
+                                    <p>{project.description}</p>
+                                )}
                             </div>
-                            <TopicInline topic="My Role" description={project.role} />
-                            <TopicList topic="My Tasks" list={project.tasks} />
-                            {project.teamSize !== null && (<TopicInline topic="Team Size" description={project.teamSize} />)}
-                            {project?.teamRoles && (<TopicList topic="Team Roles" list={project.teamRoles} />)}
-                            {project?.cloudServices && (<TopicList topic="Cloud Services" list={project.cloudServices} />)}
-                            <TopicList topic="Tools" list={project.tools} />
-                            <TopicInline topic="Project Duration" description={project.duration} />
-                            <TopicInline topic="Project Date" description={`${project.startDate} - ${project.endDate}`} />
+                            <TopicInline isEditMode={isEditMode} topic="My Role" description={project.role} />
+                            <TopicList isEditMode={isEditMode} topic="My Tasks" list={project.tasks} />
+                            {project.teamSize !== null && (<TopicInline isEditMode={isEditMode} topic="Team Size" description={project.teamSize} />)}
+                            {project?.teamRoles && (<TopicList isEditMode={isEditMode} topic="Team Roles" list={project.teamRoles} />)}
+                            {project?.cloudServices && (<TopicList isEditMode={isEditMode} topic="Cloud Services" list={project.cloudServices} />)}
+                            <TopicList isEditMode={isEditMode} topic="Tools" list={project.tools} />
+                            <TopicInline isEditMode={isEditMode} topic="Project Duration" description={project.duration} />
+                            <TopicInline isEditMode={isEditMode} topic="Project Date" description={`${project.startDate} - ${project.endDate}`} />
                             <div className="space-x-1">
                                 <p className="italic">*{project.notes}*</p>
                             </div>
                         </div>
                         <div className="sm:col-span-7 md:col-span-6 col-span-12">
                             <div className="card bg-base-100 shadow-x1 dark:bg-neutral-800">
-                              { project?.mediaLink && (<CardMedia projectName={project.name} mediaLink={project.mediaLink} />)}
+                              {project?.mediaLink && (<CardMedia projectName={project.name} mediaLink={project.mediaLink} />)}
                               <div className="card-body">
                                 <p className="card-title">{project.name} Features</p>
                                 <p className="pt-2 pb-6">{project.featuresDescription}</p>
@@ -116,6 +169,13 @@ const ProjectsView = () => {
                                 </div>
                               </div>
                             </div>
+                        </div>
+                        <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12">
+                            {isEditMode ? (
+                                <button className="after:content-['\01F441']" onClick={() => {setIsEditMode(false)}}></button>
+                            ) : (
+                                <button className="after:content-['\0270F']" onClick={() => {setIsEditMode(true)}}></button>
+                            )}
                         </div>
                     </section>
                 ))}

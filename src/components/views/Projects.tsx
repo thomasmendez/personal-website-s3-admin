@@ -134,8 +134,7 @@ const ProjectsView = () => {
                             <div>
                                 <p className="underline">Project Description:</p>
                                 {isEditMode ? (
-                                    <textarea
-                                        rows={1}
+                                    <input
                                         name="project-description"
                                         id="project-description"
                                         defaultValue={project.description}

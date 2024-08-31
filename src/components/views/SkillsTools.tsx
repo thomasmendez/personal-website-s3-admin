@@ -1,5 +1,6 @@
+import { ChangeEvent } from 'react';
 import { useSelector, useDispatch } from "react-redux"
-import { getSkillsToolsError, getSkillsToolsStatus, selectAllSkillsTools } from "../../store/skillsToolsApiSlice"
+import { getSkillsToolsError, getSkillsToolsStatus, selectAllSkillsTools, handleSkillsToolsTypeChange } from "../../store/skillsToolsApiSlice"
 import React, { useEffect, useState } from "react"
 import { getSkillsTools } from "../../store/skillsToolsApiSlice"
 import { AppDispatch } from "../../store/store"
@@ -12,6 +13,11 @@ const SkillsToolsView = () => {
     const skillsTools = useSelector(selectAllSkillsTools)
     const skillsToolsStatus = useSelector(getSkillsToolsStatus)
     const skillsToolsError = useSelector(getSkillsToolsError)
+
+    const handleSkillsToolsCategoryChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(handleSkillsToolsTypeChange({index, value: newValue}))
+    };
     
     useEffect(() => {
         if (skillsToolsStatus === 'idle') {
@@ -37,6 +43,7 @@ const SkillsToolsView = () => {
                                         defaultValue={skillsTools.category}
                                         className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillsTools.category.length + 1}ch`}}
+                                        onChange={handleSkillsToolsCategoryChange(index)}
                                     />:
                                 </div>
                             ) : (

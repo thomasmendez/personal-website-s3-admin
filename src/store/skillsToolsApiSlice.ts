@@ -58,6 +58,16 @@ export const skillsToolsSlice = createSlice({
                     type: value,
                 };
             }
+        },
+        skillsToolsListChange: (state, action) => {
+            const { index, listIndex, value } = action.payload;
+            console.log(index, listIndex, value)
+            if (index >= 0 && index < state.entities.length) {
+                const list = state.entities[index].list;
+                if (listIndex >= 0 && listIndex < list.length) {
+                    list[listIndex] = value;
+                }
+            }
         }
     },
     extraReducers: (builder) => {
@@ -81,6 +91,7 @@ export const selectAllSkillsTools = (state: { skillsTools: SkillsToolsState }) =
 export const getSkillsToolsStatus = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.status;
 export const getSkillsToolsError = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.error;
 
-export const { skillsToolsAdded, skillsToolsCategoryChange, skillsToolsTypeChange } = skillsToolsSlice.actions
+export const { skillsToolsAdded, skillsToolsCategoryChange, skillsToolsTypeChange,
+    skillsToolsListChange } = skillsToolsSlice.actions
 
 export default skillsToolsSlice.reducer

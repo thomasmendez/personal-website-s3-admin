@@ -50,8 +50,8 @@ const TopicList: FC<TopicList> = ({ isEditMode, topic, list }) => {
                         {isEditMode ? (
                             <input
                                 type="text"
-                                name={inputName}
-                                id={inputName}
+                                name={`${inputName}-${listIndex}`}
+                                id={`${inputName}-${listIndex}`}
                                 defaultValue={item}
                                 className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
@@ -120,8 +120,8 @@ const ProjectsView = () => {
                                 {isEditMode ? (
                                     <input
                                         type="text"
-                                        name="project-name"
-                                        id="project-name"
+                                        name={`project-name-${index}`}
+                                        id={`project-name-${index}`}
                                         placeholder="Project Name"
                                         defaultValue={project.name}
                                         className="block font-bold rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -135,8 +135,8 @@ const ProjectsView = () => {
                                 <p className="underline">Project Description:</p>
                                 {isEditMode ? (
                                     <input
-                                        name="project-description"
-                                        id="project-description"
+                                        name={`project-description-${index}`}
+                                        id={`project-description-${index}`}
                                         defaultValue={project.description}
                                         className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
@@ -153,18 +153,57 @@ const ProjectsView = () => {
                             <TopicList isEditMode={isEditMode} topic="Tools" list={project.tools} />
                             <TopicInline isEditMode={isEditMode} topic="Project Duration" description={project.duration} />
                             <TopicInline isEditMode={isEditMode} topic="Project Date" description={`${project.startDate} - ${project.endDate}`} />
-                            <div className="space-x-1">
-                                <p className="italic">*{project.notes}*</p>
-                            </div>
+                            {isEditMode ? (
+                                <input
+                                    name={`project-notes-${index}`}
+                                    id={`project-notes-${index}`}
+                                    defaultValue={project.notes!}
+                                    className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                />
+                            ) : (
+                                <div className="space-x-1">
+                                    <p className="italic">*{project.notes}*</p>
+                                </div>
+                            )}
                         </div>
                         <div className="sm:col-span-7 md:col-span-6 col-span-12">
                             <div className="card bg-base-100 shadow-x1 dark:bg-neutral-800">
                               {project?.mediaLink && (<CardMedia projectName={project.name} mediaLink={project.mediaLink} />)}
                               <div className="card-body">
                                 <p className="card-title">{project.name} Features</p>
-                                <p className="pt-2 pb-6">{project.featuresDescription}</p>
+                                {isEditMode ? (
+                                    <input
+                                        name={`features-description-${index}`}
+                                        id={`features-description-${index}`}
+                                        defaultValue={project.featuresDescription}
+                                        className="pt-2 pb-6 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                    />
+                                ) : (
+                                    <p className="pt-2 pb-6">{project.featuresDescription}</p>
+                                )}
                                 <div className="card-actions">
-                                  {project.link && (<a href="https://youtube.com"><button className="btn btn-neutral dark:bg-neutral-700">{project?.linkType}</button></a>)}
+                                    {project.link && (isEditMode ? (
+                                        <div className="flex">
+                                            <input
+                                                name={`link-type-${index}`}
+                                                id={`link-type-${index}`}
+                                                defaultValue={project.linkType!}
+                                                className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                            />
+                                            <input
+                                                name={`link-${index}`}
+                                                id={`link-${index}`}
+                                                defaultValue={project.link!}
+                                                className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <a href={project.link}><button className="btn btn-neutral dark:bg-neutral-700">{project?.linkType}</button></a>
+                                    ))}
                                 </div>
                               </div>
                             </div>

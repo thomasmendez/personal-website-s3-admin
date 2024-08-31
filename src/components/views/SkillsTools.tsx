@@ -3,13 +3,13 @@ import { useSelector, useDispatch } from "react-redux"
 import { getSkillsToolsError, getSkillsToolsStatus, selectAllSkillsTools,
     skillsToolsCategoryChange, skillsToolsTypeChange, skillsToolsListChange } from "../../store/skillsToolsApiSlice"
 import React, { useEffect, useState } from "react"
-import { getSkillsTools } from "../../store/skillsToolsApiSlice"
+import { getSkillsTools, putSkillsTools } from "../../store/skillsToolsApiSlice"
 import { AppDispatch } from "../../store/store"
 import { SkillsTools } from "../../types/skillsToolsTypes"
 import Loading from "../Loading/Loading"
 
 const SkillsToolsView = () => {
-    const [isEditMode, setIsEditMode] = useState(false)
+    const [isEditMode, setIsEditMode] = useState(null)
     const dispatch = useDispatch<AppDispatch>()
     const skillsTools = useSelector(selectAllSkillsTools)
     const skillsToolsStatus = useSelector(getSkillsToolsStatus)
@@ -35,6 +35,12 @@ const SkillsToolsView = () => {
             dispatch(getSkillsTools())
         }
     }, [skillsToolsStatus, dispatch])
+
+    useEffect(() => {
+        if (isEditMode === false && skillsTools.length > 0) {
+            dispatch(putSkillsTools(skillsTools[0]))
+        }
+    }, [isEditMode, skillsTools, dispatch])
 
     let content;
     if (skillsToolsStatus === 'pending') {

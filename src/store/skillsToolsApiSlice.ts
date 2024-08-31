@@ -1,12 +1,27 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { SkillsTools } from "../types/skillsToolsTypes"
-import { axiosGetSkillsTools } from "../services/personalWebsiteApi"
+import { axiosGetSkillsTools, axiosPutSkillsTools } from "../services/personalWebsiteApi"
 
 export const getSkillsTools = createAsyncThunk(
     'get/skillsTools',
     async (_, thunkApi) => {
         try {
             const response = await axiosGetSkillsTools()
+            console.log(JSON.stringify(response.data))
+            return response.data
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.log(error)
+            return thunkApi.rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const putSkillsTools = createAsyncThunk(
+    'put/skillsTools',
+    async (updateSkillsTools: SkillsTools, thunkApi) => {
+        try {
+            const response = await axiosPutSkillsTools(updateSkillsTools)
             console.log(JSON.stringify(response.data))
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

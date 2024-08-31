@@ -27,7 +27,6 @@ const SkillsToolsView = () => {
 
     const handleSkillsToolsListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
-      console.log(index, listIndex)
       dispatch(skillsToolsListChange({index, listIndex, value: newValue}))
     }
     
@@ -79,17 +78,24 @@ const SkillsToolsView = () => {
                                 )}
                                 <ul className="flex space-x-1">
                                     {skillsTools.list.map((skillTool: string, listIndex: number) => (
-                                        <li key={listIndex}>
+                                        <li key={listIndex} className='flex space-x-1'>
                                             {isEditMode ? (
-                                                <input
-                                                    type="text"
-                                                    name={`${skillsTools.type}-${listIndex}`}
-                                                    id={`${skillsTools.type}-${listIndex}`}
-                                                    defaultValue={skillTool}
-                                                    className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                    style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillTool.length + 1}ch`}}
-                                                    onChange={handleSkillsToolsListChange(index, listIndex)}
-                                                />
+                                                <React.Fragment>
+                                                    <input
+                                                        type="text"
+                                                        name={`${skillsTools.type}-${listIndex}`}
+                                                        id={`${skillsTools.type}-${listIndex}`}
+                                                        defaultValue={skillTool}
+                                                        className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillTool.length + 1}ch`}}
+                                                        onChange={handleSkillsToolsListChange(index, listIndex)}
+                                                    />
+                                                    {(listIndex === skillsTools.list.length - 1) && (
+                                                        <button className="bg-gray-500 hover:bg-gray-700 px-1 rounded-full">
+                                                          +
+                                                        </button>
+                                                    )}
+                                                </React.Fragment>
                                             ) : (
                                                 `${skillTool}${listIndex !== skillsTools.list.length - 1 ? ',' : ''}`
                                             )}

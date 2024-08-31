@@ -41,12 +41,21 @@ export const skillsToolsSlice = createSlice({
         skillsToolsAdded: (state, action) => {
             state.entities.push(action.payload)
         },
-        handleSkillsToolsTypeChange: (state, action) => {
+        skillsToolsCategoryChange: (state, action) => {
             const { index, value } = action.payload;
             if (index >= 0 && index < state.entities.length) {
                 state.entities[index] = {
                     ...state.entities[index],
                     category: value,
+                };
+            }
+        },
+        skillsToolsTypeChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    type: value,
                 };
             }
         }
@@ -72,6 +81,6 @@ export const selectAllSkillsTools = (state: { skillsTools: SkillsToolsState }) =
 export const getSkillsToolsStatus = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.status;
 export const getSkillsToolsError = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.error;
 
-export const { skillsToolsAdded, handleSkillsToolsTypeChange } = skillsToolsSlice.actions
+export const { skillsToolsAdded, skillsToolsCategoryChange, skillsToolsTypeChange } = skillsToolsSlice.actions
 
 export default skillsToolsSlice.reducer

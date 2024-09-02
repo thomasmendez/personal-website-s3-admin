@@ -36,6 +36,7 @@ interface SkillsToolsState {
     entities: SkillsTools[]
     status: 'idle' | 'pending' | 'succeeded' | 'failed'
     error: StateError | null | unknown;
+    mode: 'view' | 'edit'
 }
 
 interface StateError {
@@ -47,6 +48,7 @@ const initialState: SkillsToolsState = {
     entities: [],
     status: 'idle',
     error: null,
+    mode: 'view',
 }
 
 export const skillsToolsSlice = createSlice({
@@ -55,6 +57,9 @@ export const skillsToolsSlice = createSlice({
     reducers: {
         skillsToolsAdded: (state, action) => {
             state.entities.push(action.payload)
+        },
+        skillsToolsModeChange: (state, action) => {
+            state.mode = action.payload
         },
         skillsToolsCategoryChange: (state, action) => {
             const { index, value } = action.payload;
@@ -76,12 +81,17 @@ export const skillsToolsSlice = createSlice({
         },
         skillsToolsListChange: (state, action) => {
             const { index, listIndex, value } = action.payload;
-            console.log(index, listIndex, value)
             if (index >= 0 && index < state.entities.length) {
                 const list = state.entities[index].list;
                 if (listIndex >= 0 && listIndex < list.length) {
                     list[listIndex] = value;
                 }
+            }
+        },
+        skillsToolsListAdd: (state, action) => {
+            const { index, newItem } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index].list.push(newItem);
             }
         }
     },
@@ -101,12 +111,13 @@ export const skillsToolsSlice = createSlice({
     }
 })
 
+export const getSkillsToolsMode = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.mode;
 
 export const selectAllSkillsTools = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.entities;
 export const getSkillsToolsStatus = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.status;
 export const getSkillsToolsError = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.error;
 
-export const { skillsToolsAdded, skillsToolsCategoryChange, skillsToolsTypeChange,
-    skillsToolsListChange } = skillsToolsSlice.actions
+export const { skillsToolsAdded, skillsToolsModeChange, skillsToolsListAdd,
+    skillsToolsCategoryChange, skillsToolsTypeChange, skillsToolsListChange } = skillsToolsSlice.actions
 
 export default skillsToolsSlice.reducer

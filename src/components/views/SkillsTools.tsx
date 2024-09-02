@@ -1,19 +1,23 @@
 import { ChangeEvent } from 'react';
 import { useSelector, useDispatch } from "react-redux"
 import { getSkillsToolsError, getSkillsToolsStatus, selectAllSkillsTools,
-    skillsToolsCategoryChange, skillsToolsTypeChange, skillsToolsListChange } from "../../store/skillsToolsApiSlice"
-import React, { useEffect, useState } from "react"
+    getSkillsToolsMode, skillsToolsModeChange, skillsToolsListAdd,
+    skillsToolsCategoryChange, skillsToolsTypeChange,
+    skillsToolsListChange,
+ } from "../../store/skillsToolsApiSlice"
+import React, { useEffect } from "react"
 import { getSkillsTools, putSkillsTools } from "../../store/skillsToolsApiSlice"
 import { AppDispatch } from "../../store/store"
 import { SkillsTools } from "../../types/skillsToolsTypes"
 import Loading from "../Loading/Loading"
 
 const SkillsToolsView = () => {
-    const [isEditMode, setIsEditMode] = useState(null)
     const dispatch = useDispatch<AppDispatch>()
     const skillsTools = useSelector(selectAllSkillsTools)
     const skillsToolsStatus = useSelector(getSkillsToolsStatus)
     const skillsToolsError = useSelector(getSkillsToolsError)
+
+    const mode = useSelector(getSkillsToolsMode)
 
     const handleSkillsToolsCategoryChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
@@ -29,18 +33,22 @@ const SkillsToolsView = () => {
       const newValue = event.target.value
       dispatch(skillsToolsListChange({index, listIndex, value: newValue}))
     }
+
+    const handleSkillsToolsListAdd = (index: number, newItem: string) => (event: MouseEvent<HTMLButtonElement>) => {
+      dispatch(skillsToolsListAdd({index, newItem}))
+    }
+
+    useEffect(() => {
+        if (mode === "edit" && skillsTools.length > 0) {
+            dispatch(putSkillsTools(skillsTools[0]))
+        }
+    }, [mode, skillsTools, dispatch])
     
     useEffect(() => {
         if (skillsToolsStatus === 'idle') {
             dispatch(getSkillsTools())
         }
     }, [skillsToolsStatus, dispatch])
-
-    useEffect(() => {
-        if (isEditMode === false && skillsTools.length > 0) {
-            dispatch(putSkillsTools(skillsTools[0]))
-        }
-    }, [isEditMode, skillsTools, dispatch])
 
     let content;
     if (skillsToolsStatus === 'pending') {
@@ -51,7 +59,7 @@ const SkillsToolsView = () => {
                 {skillsTools.map((skillsTools: SkillsTools, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
-                            {isEditMode ? (
+                            {mode === "edit" ? (
                                 <div className="flex font-bold">
                                     <input
                                         type="text"
@@ -67,7 +75,7 @@ const SkillsToolsView = () => {
                                 <p className="text-xl underline">{skillsTools.category}</p>
                             )}
                             <div className="flex space-x-1">
-                                {isEditMode ? (
+                                {mode === "edit" ? (
                                     <div className="flex font-bold">
                                         <input
                                             type="text"
@@ -85,7 +93,7 @@ const SkillsToolsView = () => {
                                 <ul className="flex space-x-1">
                                     {skillsTools.list.map((skillTool: string, listIndex: number) => (
                                         <li key={listIndex} className='flex space-x-1'>
-                                            {isEditMode ? (
+                                            {mode === "edit" ? (
                                                 <React.Fragment>
                                                     <input
                                                         type="text"
@@ -97,7 +105,10 @@ const SkillsToolsView = () => {
                                                         onChange={handleSkillsToolsListChange(index, listIndex)}
                                                     />
                                                     {(listIndex === skillsTools.list.length - 1) && (
-                                                        <button className="bg-gray-500 hover:bg-gray-700 px-1 rounded-full">
+                                                        <button
+                                                            className="bg-neutral-200 hover:bg-neutral-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1 rounded-full"
+                                                            onClick={() => dispatch(handleSkillsToolsListAdd(index, ''))}
+                                                        >
                                                           +
                                                         </button>
                                                     )}
@@ -111,10 +122,10 @@ const SkillsToolsView = () => {
                             </div>
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12">
-                            {isEditMode ? (
-                                <button className="after:content-['\01F441']" onClick={() => {setIsEditMode(false)}}></button>
+                            {mode === "edit" ? (
+                                <button className="after:content-['\01F441']" onClick={() => {dispatch(skillsToolsModeChange("view"))}}></button>
                             ) : (
-                                <button className="after:content-['\0270F']" onClick={() => {setIsEditMode(true)}}></button>
+                                <button className="after:content-['\0270F']" onClick={() => {dispatch(skillsToolsModeChange("edit"))}}></button>
                             )}
                         </div>
                     </section>

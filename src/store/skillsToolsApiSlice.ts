@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { SkillsTools } from "../types/skillsToolsTypes"
-import { axiosPostSkillsTools, axiosGetSkillsTools, axiosPutSkillsTools } from "../services/personalWebsiteApi"
+import { axiosPostSkillsTools, axiosGetSkillsTools, axiosPutSkillsTools, axiosDeleteSkillsTools } from "../services/personalWebsiteApi"
 
 export const postSkillsTools = createAsyncThunk(
     'post/skillsTools',
@@ -37,6 +37,21 @@ export const putSkillsTools = createAsyncThunk(
     async (updateSkillsTools: SkillsTools, thunkApi) => {
         try {
             const response = await axiosPutSkillsTools(updateSkillsTools)
+            console.log(JSON.stringify(response.data))
+            return response.data
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.log(error)
+            return thunkApi.rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const deleteSkillsTools = createAsyncThunk(
+    'delete/skillsTools',
+    async (deleteSkillsTools: SkillsTools, thunkApi) => {
+        try {
+            const response = await axiosDeleteSkillsTools(deleteSkillsTools)
             console.log(JSON.stringify(response.data))
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -120,6 +135,15 @@ export const skillsToolsSlice = createSlice({
             if (index >= 0 && index < state.entities.length) {
                 state.entities[index].list.push(newItem);
             }
+        },
+        skillsToolsDelete: (state, action) => {
+            const { index } = action.payload
+            if (index >= 0 && index < state.entities.length) {
+                state.entities.splice(index, 1)
+            }
+            if (index >= 0 && index < state.mode.length) {
+                state.mode.splice(index, 1)
+            }
         }
     },
     extraReducers: (builder) => {
@@ -149,7 +173,7 @@ export const getSkillsToolsStatus = (state: { skillsTools: SkillsToolsState }) =
 export const getSkillsToolsError = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.error;
 
 export const { skillsToolsAdded, skillsToolsModeChange, skillsToolsListAdd,
-    skillsToolsAdd,
+    skillsToolsAdd, skillsToolsDelete,
     skillsToolsCategoryChange, skillsToolsTypeChange, skillsToolsListChange } = skillsToolsSlice.actions
 
 export default skillsToolsSlice.reducer

@@ -20,10 +20,9 @@ async function fetchSessionToken() {
 
 async function getHeaders() {
     const sessionToken = await fetchSessionToken()
-    console.log(sessionToken)
     const options = {
         headers: {
-            'Authorization': `Bearer ${sessionToken}`,
+            "Authorization": `Bearer ${sessionToken}`,
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "*",
             "Access-Control-Allow-Headers": "*",
@@ -44,6 +43,19 @@ export async function axiosPutWork(updateWork: Work) {
     return axiosInstance.put(`${baseUrl}/api/v1/work`, updateWork, await getHeaders())
 }
 
+export async function axiosDeleteWork(deleteWork: Work) {
+    const sessionToken = await fetchSessionToken()
+    return axiosInstance.delete(`${baseUrl}/api/v1/work`, {
+        headers: {
+            "Authorization": `Bearer ${sessionToken}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        },
+        data: deleteWork
+    })
+}
+
 export async function axiosGetSkillsTools() {
     return axiosInstance.get(`${baseUrl}/api/v1/skillsTools`, await getHeaders())
 }
@@ -56,6 +68,19 @@ export async function axiosPutSkillsTools(newSkillsTools: SkillsTools) {
     return axiosInstance.put(`${baseUrl}/api/v1/skillsTools`, newSkillsTools, await getHeaders())
 }
 
+export async function axiosDeleteSkillsTools(deleteSkillsTools: SkillsTools) {
+    const sessionToken = await fetchSessionToken()
+    return axiosInstance.delete(`${baseUrl}/api/v1/skillsTools`, {
+        headers: {
+            "Authorization": `Bearer ${sessionToken}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        },
+        data: deleteSkillsTools
+    })
+}
+
 export async function axiosGetProjects() {
     return axiosInstance.get(`${baseUrl}/api/v1/projects`, await getHeaders())
 }
@@ -66,4 +91,17 @@ export async function axiosPostProject(newProject: Project) {
 
 export async function axiosPutProject(updateProject: Project) {
     return axiosInstance.put(`${baseUrl}/api/v1/project`, updateProject, await getHeaders())
+}
+
+export async function axiosDeleteProject(deleteProject: Project) {
+    const sessionToken = await fetchSessionToken()
+    return axiosInstance.delete(`${baseUrl}/api/v1/project`, {
+        headers: {
+            "Authorization": `Bearer ${sessionToken}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        },
+        data: deleteProject
+    })
 }

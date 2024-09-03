@@ -1,10 +1,11 @@
 import { ChangeEvent } from 'react';
 import { useSelector, useDispatch } from "react-redux"
 import { getSkillsToolsError, getSkillsToolsStatus, selectAllSkillsTools,
-    skillsToolsAdd, 
+    skillsToolsAdd, skillsToolsDelete,
     getSkillsToolsMode, skillsToolsModeChange, skillsToolsListAdd,
     skillsToolsCategoryChange, skillsToolsTypeChange,
     skillsToolsListChange,
+    deleteSkillsTools,
  } from "../../store/skillsToolsApiSlice"
 import React, { useEffect } from "react"
 import { getSkillsTools, putSkillsTools } from "../../store/skillsToolsApiSlice"
@@ -41,6 +42,11 @@ const SkillsToolsView = () => {
 
     const handleSkillsToolsAdd = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
       dispatch(skillsToolsAdd({index}))
+    }
+
+    const handleSkillsToolsDelete = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
+      dispatch(skillsToolsDelete({index}))
+      dispatch(deleteSkillsTools(skillsTools[index]))
     }
 
     useEffect(() => {
@@ -128,7 +134,7 @@ const SkillsToolsView = () => {
                                 </ul>
                             </div>
                         </div>
-                        <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12">
+                        <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                             {mode[index] === 'edit' ? (
                                 <button className="after:content-['\01F441']" onClick={() => {dispatch(skillsToolsModeChange({index, mode: "view"}))}}></button>
                             ) : (
@@ -136,10 +142,16 @@ const SkillsToolsView = () => {
                             )}
                             {/* https://emojipedia.org/ */}
                             <button
-                                className="bg-neutral-200 hover:bg-neutral-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1"
+                                className="bg-blue-200 hover:bg-blue-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1"
                                 onClick={() => dispatch(handleSkillsToolsAdd(index+1))}
                             >
                               +
+                            </button>
+                            <button
+                                className="bg-red-400 hover:bg-red-300 dark:bg-red-500 dark-hover:bg-red-700 px-1"
+                                onClick={() => dispatch(handleSkillsToolsDelete(index))}
+                            >
+                              -
                             </button>
                         </div>
                     </section>

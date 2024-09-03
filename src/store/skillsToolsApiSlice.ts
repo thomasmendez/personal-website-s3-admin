@@ -1,6 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { SkillsTools } from "../types/skillsToolsTypes"
-import { axiosGetSkillsTools, axiosPutSkillsTools } from "../services/personalWebsiteApi"
+import { axiosPostSkillsTools, axiosGetSkillsTools, axiosPutSkillsTools } from "../services/personalWebsiteApi"
+
+export const postSkillsTools = createAsyncThunk(
+    'post/skillsTools',
+    async (postSkillsTools: SkillsTools, thunkApi) => {
+        try {
+            const response = await axiosPostSkillsTools(postSkillsTools)
+            console.log(JSON.stringify(response.data))
+            return response.data
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.log(error)
+            return thunkApi.rejectWithValue(error.response.data)
+        }
+    }
+)
 
 export const getSkillsTools = createAsyncThunk(
     'get/skillsTools',
@@ -36,7 +51,7 @@ interface SkillsToolsState {
     entities: SkillsTools[]
     status: 'idle' | 'pending' | 'succeeded' | 'failed'
     error: StateError | null | unknown;
-    mode: 'view' | 'edit'
+    mode: string[]
 }
 
 interface StateError {
@@ -48,7 +63,7 @@ const initialState: SkillsToolsState = {
     entities: [],
     status: 'idle',
     error: null,
-    mode: 'view',
+    mode: []
 }
 
 export const skillsToolsSlice = createSlice({
@@ -58,8 +73,20 @@ export const skillsToolsSlice = createSlice({
         skillsToolsAdded: (state, action) => {
             state.entities.push(action.payload)
         },
+        skillsToolsAdd: (state, action) => {
+            const { index } = action.payload
+            const newItem: SkillsTools = {
+                personalWebsiteType: `SkillsTools${index}`,
+                sortValue: `newType${index}`,
+                category: `newCategory${index}`,
+                type: `newType${index}`,
+                list: [`newItem${index}`]
+            }
+            state.entities.push(newItem)
+        },
         skillsToolsModeChange: (state, action) => {
-            state.mode = action.payload
+            const { index, mode } = action.payload
+            state.mode[index] = mode
         },
         skillsToolsCategoryChange: (state, action) => {
             const { index, value } = action.payload;
@@ -103,6 +130,10 @@ export const skillsToolsSlice = createSlice({
             .addCase(getSkillsTools.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 state.entities = action.payload
+                state.mode.length = state.entities.length
+                for (let i = 0; i < state.entities.length; i++) {
+                    state.mode[i] = 'view'
+                }
             })
             .addCase(getSkillsTools.rejected, (state, action) => {
                 state.status = 'failed'
@@ -118,6 +149,7 @@ export const getSkillsToolsStatus = (state: { skillsTools: SkillsToolsState }) =
 export const getSkillsToolsError = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.error;
 
 export const { skillsToolsAdded, skillsToolsModeChange, skillsToolsListAdd,
+    skillsToolsAdd,
     skillsToolsCategoryChange, skillsToolsTypeChange, skillsToolsListChange } = skillsToolsSlice.actions
 
 export default skillsToolsSlice.reducer

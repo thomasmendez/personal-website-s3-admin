@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react';
 import { useSelector, useDispatch } from "react-redux"
 import { getSkillsToolsError, getSkillsToolsStatus, selectAllSkillsTools,
+    skillsToolsAdd, 
     getSkillsToolsMode, skillsToolsModeChange, skillsToolsListAdd,
     skillsToolsCategoryChange, skillsToolsTypeChange,
     skillsToolsListChange,
@@ -38,9 +39,15 @@ const SkillsToolsView = () => {
       dispatch(skillsToolsListAdd({index, newItem}))
     }
 
+    const handleSkillsToolsAdd = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
+      dispatch(skillsToolsAdd({index}))
+    }
+
     useEffect(() => {
-        if (mode === "edit" && skillsTools.length > 0) {
-            dispatch(putSkillsTools(skillsTools[0]))
+        for (let i = 0; i < mode.length; i++) {
+            if (mode[i] === 'edit') {
+                dispatch(putSkillsTools(skillsTools[i]))
+            }
         }
     }, [mode, skillsTools, dispatch])
     
@@ -59,7 +66,7 @@ const SkillsToolsView = () => {
                 {skillsTools.map((skillsTools: SkillsTools, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
-                            {mode === "edit" ? (
+                            {(mode[index] === 'edit') ? (
                                 <div className="flex font-bold">
                                     <input
                                         type="text"
@@ -75,7 +82,7 @@ const SkillsToolsView = () => {
                                 <p className="text-xl underline">{skillsTools.category}</p>
                             )}
                             <div className="flex space-x-1">
-                                {mode === "edit" ? (
+                                {mode[index] === 'edit' ? (
                                     <div className="flex font-bold">
                                         <input
                                             type="text"
@@ -93,7 +100,7 @@ const SkillsToolsView = () => {
                                 <ul className="flex space-x-1">
                                     {skillsTools.list.map((skillTool: string, listIndex: number) => (
                                         <li key={listIndex} className='flex space-x-1'>
-                                            {mode === "edit" ? (
+                                            {mode[index] === 'edit' ? (
                                                 <React.Fragment>
                                                     <input
                                                         type="text"
@@ -122,11 +129,18 @@ const SkillsToolsView = () => {
                             </div>
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12">
-                            {mode === "edit" ? (
-                                <button className="after:content-['\01F441']" onClick={() => {dispatch(skillsToolsModeChange("view"))}}></button>
+                            {mode[index] === 'edit' ? (
+                                <button className="after:content-['\01F441']" onClick={() => {dispatch(skillsToolsModeChange({index, mode: "view"}))}}></button>
                             ) : (
-                                <button className="after:content-['\0270F']" onClick={() => {dispatch(skillsToolsModeChange("edit"))}}></button>
+                                <button className="after:content-['\0270F']" onClick={() => {dispatch(skillsToolsModeChange({index, mode: 'edit'}))}}></button>
                             )}
+                            {/* https://emojipedia.org/ */}
+                            <button
+                                className="bg-neutral-200 hover:bg-neutral-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1"
+                                onClick={() => dispatch(handleSkillsToolsAdd(index+1))}
+                            >
+                              +
+                            </button>
                         </div>
                     </section>
                 ))}

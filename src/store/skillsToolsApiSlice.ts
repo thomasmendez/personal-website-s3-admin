@@ -136,6 +136,15 @@ export const skillsToolsSlice = createSlice({
                 state.entities[index].list.push(newItem);
             }
         },
+        skillsToolsListRemove: (state, action) => {
+            const { index, listIndex } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                const list = state.entities[index].list;
+                if (listIndex >= 0 && listIndex < list.length) {
+                    list.splice(listIndex, 1);
+                }
+            }
+        },
         skillsToolsDelete: (state, action) => {
             const { index } = action.payload
             if (index >= 0 && index < state.entities.length) {
@@ -172,7 +181,8 @@ export const selectAllSkillsTools = (state: { skillsTools: SkillsToolsState }) =
 export const getSkillsToolsStatus = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.status;
 export const getSkillsToolsError = (state: { skillsTools: SkillsToolsState }) => state.skillsTools.error;
 
-export const { skillsToolsAdded, skillsToolsModeChange, skillsToolsListAdd,
+export const { skillsToolsAdded, skillsToolsModeChange, 
+    skillsToolsListAdd, skillsToolsListRemove,
     skillsToolsAdd, skillsToolsDelete,
     skillsToolsCategoryChange, skillsToolsTypeChange, skillsToolsListChange } = skillsToolsSlice.actions
 

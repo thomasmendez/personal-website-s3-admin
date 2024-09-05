@@ -2,9 +2,9 @@ import { ChangeEvent } from 'react';
 import { useSelector, useDispatch } from "react-redux"
 import { getSkillsToolsError, getSkillsToolsStatus, selectAllSkillsTools,
     skillsToolsAdd, skillsToolsDelete,
-    getSkillsToolsMode, skillsToolsModeChange, skillsToolsListAdd,
+    getSkillsToolsMode, skillsToolsModeChange,
     skillsToolsCategoryChange, skillsToolsTypeChange,
-    skillsToolsListChange,
+    skillsToolsListChange, skillsToolsListAdd, skillsToolsListRemove,
     deleteSkillsTools,
  } from "../../store/skillsToolsApiSlice"
 import React, { useEffect } from "react"
@@ -39,7 +39,7 @@ const SkillsToolsView = () => {
     const handleSkillsToolsListAdd = (index: number, newItem: string) => (event: MouseEvent<HTMLButtonElement>) => {
       dispatch(skillsToolsListAdd({index, newItem}))
     }
-
+  
     const handleSkillsToolsAdd = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
       dispatch(skillsToolsAdd({index}))
     }
@@ -108,7 +108,8 @@ const SkillsToolsView = () => {
                                         <li key={listIndex} className='flex space-x-1'>
                                             {mode[index] === 'edit' ? (
                                                 <React.Fragment>
-                                                    <input
+                                                    <div className="flex rounded-lg shadow-sm">
+                                                      <input
                                                         type="text"
                                                         name={`${skillsTools.type}-${listIndex}`}
                                                         id={`${skillsTools.type}-${listIndex}`}
@@ -116,7 +117,14 @@ const SkillsToolsView = () => {
                                                         className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillTool.length + 1}ch`}}
                                                         onChange={handleSkillsToolsListChange(index, listIndex)}
-                                                    />
+                                                      />
+                                                      <span
+                                                        className="cursor-pointer px-1 inline-flex items-center min-w-fit rounded-e-md border border-s-0 border-gray-200 bg-gray-50 text-sm dark:bg-neutral-700 dark:border-neutral-700 hover:bg-gray-300 dark:hover:bg-neutral-600"
+                                                        onClick={() => dispatch(skillsToolsListRemove({index, listIndex}))}
+                                                      >
+                                                        <span className="text-sm text-gray-500 dark:text-neutral-400">x</span>
+                                                      </span>
+                                                    </div>
                                                     {(listIndex === skillsTools.list.length - 1) && (
                                                         <button
                                                             className="bg-neutral-200 hover:bg-neutral-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1 rounded-full"

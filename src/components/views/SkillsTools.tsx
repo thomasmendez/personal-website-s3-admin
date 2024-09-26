@@ -39,6 +39,10 @@ const SkillsToolsView = () => {
     const handleSkillsToolsListAdd = (index: number, newItem: string) => (event: MouseEvent<HTMLButtonElement>) => {
       dispatch(skillsToolsListAdd({index, newItem}))
     }
+
+    const handleSkillsToolsListRemove = (index: number, listIndex: number) => (event: MouseEvent<HTMLButtonElement>) => {
+        dispatch(skillsToolsListRemove({index, listIndex}))
+    }
   
     const handleSkillsToolsAdd = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
       dispatch(skillsToolsAdd({index}))
@@ -51,7 +55,7 @@ const SkillsToolsView = () => {
 
     useEffect(() => {
         for (let i = 0; i < mode.length; i++) {
-            if (mode[i] === 'edit') {
+            if (mode[i] === 'view') {
                 dispatch(putSkillsTools(skillsTools[i]))
             }
         }
@@ -94,7 +98,7 @@ const SkillsToolsView = () => {
                                             type="text"
                                             name={`skills-tools-type-${index}`}
                                             id={`skills-tools-type-${index}`}
-                                            defaultValue={skillsTools.type}
+                                            value={skillsTools.type}
                                             className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillsTools.type.length + 1}ch`}}
                                             onChange={handleSkillsToolsTypeChange(index)}
@@ -113,14 +117,14 @@ const SkillsToolsView = () => {
                                                         type="text"
                                                         name={`${skillsTools.type}-${listIndex}`}
                                                         id={`${skillsTools.type}-${listIndex}`}
-                                                        defaultValue={skillTool}
+                                                        value={skillTool}
                                                         className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillTool.length + 1}ch`}}
                                                         onChange={handleSkillsToolsListChange(index, listIndex)}
                                                       />
                                                       <span
                                                         className="cursor-pointer px-1 inline-flex items-center min-w-fit rounded-e-md border border-s-0 border-gray-200 bg-gray-50 text-sm dark:bg-neutral-700 dark:border-neutral-700 hover:bg-gray-300 dark:hover:bg-neutral-600"
-                                                        onClick={() => dispatch(skillsToolsListRemove({index, listIndex}))}
+                                                        onClick={handleSkillsToolsListRemove(index, listIndex)}
                                                       >
                                                         <span className="text-sm text-gray-500 dark:text-neutral-400">x</span>
                                                       </span>
@@ -128,7 +132,7 @@ const SkillsToolsView = () => {
                                                     {(listIndex === skillsTools.list.length - 1) && (
                                                         <button
                                                             className="bg-neutral-200 hover:bg-neutral-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1 rounded-full"
-                                                            onClick={() => dispatch(handleSkillsToolsListAdd(index, ''))}
+                                                            onClick={handleSkillsToolsListAdd(index, '')}
                                                         >
                                                           +
                                                         </button>

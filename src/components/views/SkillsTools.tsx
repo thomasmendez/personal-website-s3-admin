@@ -3,14 +3,16 @@ import { useSelector, useDispatch } from "react-redux"
 import { getSkillsToolsError, getSkillsToolsStatus, selectAllSkillsTools,
     skillsToolsAdd, skillsToolsDelete,
     getSkillsToolsMode, skillsToolsModeChange,
-    skillsToolsCategoryChange, skillsToolsTypeChange,
-    skillsToolsListChange, skillsToolsListAdd, skillsToolsListRemove,
+    skillsToolsValueChange, skillsToolsCategoryChange,
+    skillsToolsListChange, skillsToolsCategoryListAdd, skillsToolsCategoryListRemove,
+    skillsToolsAddCategory, skillsToolsDeleteCategory,
     deleteSkillsTools,
+    postSkillsTools,
  } from "../../store/skillsToolsApiSlice"
 import React, { useEffect } from "react"
 import { getSkillsTools, putSkillsTools } from "../../store/skillsToolsApiSlice"
 import { AppDispatch } from "../../store/store"
-import { SkillsTools } from "../../types/skillsToolsTypes"
+import { Categories, SkillsTools } from "../../types/skillsToolsTypes"
 import Loading from "../Loading/Loading"
 
 const SkillsToolsView = () => {
@@ -21,27 +23,35 @@ const SkillsToolsView = () => {
 
     const mode = useSelector(getSkillsToolsMode)
 
-    const handleSkillsToolsCategoryChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+    const handleSkillsToolsValueChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
-      dispatch(skillsToolsCategoryChange({index, value: newValue}))
+      dispatch(skillsToolsValueChange({index, value: newValue}))
     }
 
-    const handleSkillsToolsTypeChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+    const handleSkillsToolsCategoryChange = (index: number, categoryIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
-      dispatch(skillsToolsTypeChange({index, value: newValue}))
+      dispatch(skillsToolsCategoryChange({index, categoryIndex, value: newValue}))
     }
 
-    const handleSkillsToolsListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+    const handleSkillsToolsCategoryListChange = (index: number, categoryIndex: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
-      dispatch(skillsToolsListChange({index, listIndex, value: newValue}))
+      dispatch(skillsToolsListChange({index, categoryIndex, listIndex, value: newValue}))
     }
 
-    const handleSkillsToolsListAdd = (index: number, newItem: string) => (event: MouseEvent<HTMLButtonElement>) => {
-      dispatch(skillsToolsListAdd({index, newItem}))
+    const handleSkillsToolsCategoryListAdd = (index: number, categoryIndex: number, newItem: string) => (event: MouseEvent<HTMLButtonElement>) => {
+      dispatch(skillsToolsCategoryListAdd({index, categoryIndex, newItem}))
     }
 
-    const handleSkillsToolsListRemove = (index: number, listIndex: number) => (event: MouseEvent<HTMLButtonElement>) => {
-        dispatch(skillsToolsListRemove({index, listIndex}))
+    const handleSkillsToolsCategoryListRemove = (index: number, categoryIndex: number, listIndex: number) => (event: MouseEvent<HTMLButtonElement>) => {
+        dispatch(skillsToolsCategoryListRemove({index, categoryIndex, listIndex}))
+    }
+
+    const handleSkillsToolsAddCategory = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
+      dispatch(skillsToolsAddCategory({index}))
+    }
+
+    const handleSkillsToolsDeleteCategory = (index: number, categoryIndex: number) => (event: MouseEvent<HTMLButtonElement>) => {
+      dispatch(skillsToolsDeleteCategory({index, categoryIndex}))
     }
   
     const handleSkillsToolsAdd = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
@@ -55,8 +65,13 @@ const SkillsToolsView = () => {
 
     useEffect(() => {
         for (let i = 0; i < mode.length; i++) {
-            if (mode[i] === 'view') {
+            if (mode[i] === 'editDone') {
                 dispatch(putSkillsTools(skillsTools[i]))
+                dispatch(skillsToolsModeChange({index: i, mode: 'updated'}))
+            }
+            if (mode[i] === 'newItemDone') {
+                dispatch(postSkillsTools(skillsTools[i]))
+                dispatch(skillsToolsModeChange({index: i, mode: 'created'}))
             }
         }
     }, [mode, skillsTools, dispatch])
@@ -73,84 +88,40 @@ const SkillsToolsView = () => {
     } else if (skillsToolsStatus === 'succeeded') {
         if (skillsTools && skillsTools.length > 0) {
             content = <React.Fragment>
-                {skillsTools.map((skillsTools: SkillsTools, index: number) => (
+                {skillsTools.map((skillsToolsValue: SkillsTools, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
-                            {(mode[index] === 'edit') ? (
+                            {(mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <div className="flex font-bold">
                                     <input
                                         type="text"
-                                        name={`skills-tools-category-${index}`}
-                                        id={`skills-tools-category-${index}`}
-                                        defaultValue={skillsTools.category}
+                                        name={`skills-tools-${index}`}
+                                        id={`skills-tools-${index}`}
+                                        defaultValue={skillsToolsValue.sortValue}
                                         className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillsTools.category.length + 1}ch`}}
-                                        onChange={handleSkillsToolsCategoryChange(index)}
+                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillsToolsValue.sortValue.length + 1}ch`}}
+                                        onChange={handleSkillsToolsValueChange(index)}
                                     />:
                                 </div>
                             ) : (
-                                <p className="text-xl underline">{skillsTools.category}</p>
+                                <p className="text-xl underline">{skillsToolsValue.sortValue}</p>
                             )}
-                            <div className="flex space-x-1">
-                                {mode[index] === 'edit' ? (
-                                    <div className="flex font-bold">
-                                        <input
-                                            type="text"
-                                            name={`skills-tools-type-${index}`}
-                                            id={`skills-tools-type-${index}`}
-                                            value={skillsTools.type}
-                                            className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillsTools.type.length + 1}ch`}}
-                                            onChange={handleSkillsToolsTypeChange(index)}
-                                        />:
-                                    </div>
-                                ) : (
-                                    <p className="font-bold">{skillsTools.type}:</p>
-                                )}
-                                <ul className="flex space-x-1">
-                                    {skillsTools.list.map((skillTool: string, listIndex: number) => (
-                                        <li key={listIndex} className='flex space-x-1'>
-                                            {mode[index] === 'edit' ? (
-                                                <React.Fragment>
-                                                    <div className="flex rounded-lg shadow-sm">
-                                                      <input
-                                                        type="text"
-                                                        name={`${skillsTools.type}-${listIndex}`}
-                                                        id={`${skillsTools.type}-${listIndex}`}
-                                                        value={skillTool}
-                                                        className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillTool.length + 1}ch`}}
-                                                        onChange={handleSkillsToolsListChange(index, listIndex)}
-                                                      />
-                                                      <span
-                                                        className="cursor-pointer px-1 inline-flex items-center min-w-fit rounded-e-md border border-s-0 border-gray-200 bg-gray-50 text-sm dark:bg-neutral-700 dark:border-neutral-700 hover:bg-gray-300 dark:hover:bg-neutral-600"
-                                                        onClick={handleSkillsToolsListRemove(index, listIndex)}
-                                                      >
-                                                        <span className="text-sm text-gray-500 dark:text-neutral-400">x</span>
-                                                      </span>
-                                                    </div>
-                                                    {(listIndex === skillsTools.list.length - 1) && (
-                                                        <button
-                                                            className="bg-neutral-200 hover:bg-neutral-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1 rounded-full"
-                                                            onClick={handleSkillsToolsListAdd(index, '')}
-                                                        >
-                                                          +
-                                                        </button>
-                                                    )}
-                                                </React.Fragment>
-                                            ) : (
-                                                `${skillTool}${listIndex !== skillsTools.list.length - 1 ? ',' : ''}`
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
-                            {mode[index] === 'edit' ? (
-                                <button className="after:content-['\01F441']" onClick={() => {dispatch(skillsToolsModeChange({index, mode: "view"}))}}></button>
+                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                <button className="after:content-['\01F441']" onClick={() => {
+                                    if (mode[index] === 'newItem') {
+                                        dispatch(skillsToolsModeChange({index, mode: 'newItemDone'}))
+                                    } else if (mode[index] === 'edit') {
+                                        dispatch(skillsToolsModeChange({index, mode: 'editDone'}))
+                                    } else {
+                                        dispatch(skillsToolsModeChange({index, mode: "view"}))
+                                    }
+                                }}></button>
                             ) : (
-                                <button className="after:content-['\0270F']" onClick={() => {dispatch(skillsToolsModeChange({index, mode: 'edit'}))}}></button>
+                                <button className="after:content-['\0270F']" onClick={() => {
+                                    dispatch(skillsToolsModeChange({index, mode: 'edit'}))
+                                }}></button>
                             )}
                             {/* https://emojipedia.org/ */}
                             <button
@@ -166,6 +137,80 @@ const SkillsToolsView = () => {
                               -
                             </button>
                         </div>
+                        {skillsToolsValue.categories?.map((categories: Categories, categoryIndex) => (
+                            <div key={`${skillsToolsValue.sortValue}-${categoryIndex}`} className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
+                                <div className="flex space-x-1">
+                                    {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                        <div className="flex font-bold">
+                                            <input
+                                                type="text"
+                                                name={`skills-tools-category-${categoryIndex}`}
+                                                id={`skills-tools-category-${categoryIndex}`}
+                                                value={categories.category}
+                                                className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${categories.category.length + 1}ch`}}
+                                                onChange={handleSkillsToolsCategoryChange(index, categoryIndex)}
+                                            />:
+                                        </div>
+                                    ) : (
+                                        <p className="font-bold">{categories.category}:</p>
+                                    )}
+                                    <ul className="flex space-x-1">
+                                        {categories.list.map((item: string, listIndex) => (
+                                            <li key={`${skillsToolsValue.sortValue}-${categories.category}-${categoryIndex}-list-${listIndex}`} className='flex space-x-1'>
+                                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                                    <React.Fragment>
+                                                        <div className="flex rounded-lg shadow-sm">
+                                                          <input
+                                                            type="text"
+                                                            name={`${skillsToolsValue.sortValue}-${categories.category}-${listIndex}`}
+                                                            id={`${skillsToolsValue.sortValue}-${categories.category}-${listIndex}`}
+                                                            value={item}
+                                                            className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
+                                                            onChange={handleSkillsToolsCategoryListChange(index, categoryIndex, listIndex)}
+                                                          />
+                                                          <span
+                                                            className="cursor-pointer px-1 inline-flex items-center min-w-fit rounded-e-md border border-s-0 border-gray-200 bg-gray-50 text-sm dark:bg-neutral-700 dark:border-neutral-700 hover:bg-gray-300 dark:hover:bg-neutral-600"
+                                                            onClick={handleSkillsToolsCategoryListRemove(index, categoryIndex, listIndex)}
+                                                          >
+                                                            <span className="text-sm text-gray-500 dark:text-neutral-400">x</span>
+                                                          </span>
+                                                        </div>
+                                                        {(listIndex === categories.list.length - 1) && (
+                                                            <button
+                                                                className="bg-neutral-200 hover:bg-neutral-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1 rounded-full"
+                                                                onClick={handleSkillsToolsCategoryListAdd(index, categoryIndex, '')}
+                                                            >
+                                                              +
+                                                            </button>
+                                                        )}
+                                                        {(listIndex === categories.list.length - 1) && (
+                                                            <button
+                                                                className="bg-red-400 hover:bg-red-300 dark:bg-red-500 dark-hover:bg-red-700 px-1 rounded-full"
+                                                                onClick={handleSkillsToolsDeleteCategory(index, categoryIndex)}
+                                                            >
+                                                              -
+                                                            </button>
+                                                        )}
+                                                    </React.Fragment>
+                                                ) : (
+                                                    `${item}${listIndex !== categories.list.length - 1 ? ',' : ''}`
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div> 
+                                {mode[index] === 'edit' || mode[index] === 'newItem' && (categoryIndex === skillsToolsValue.categories.length - 1) && (
+                                    <button
+                                        className="bg-blue-200 hover:bg-blue-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1"
+                                        onClick={() => dispatch(handleSkillsToolsAddCategory(index))}
+                                    >
+                                      +
+                                    </button>
+                                )}
+                            </div>
+                        ))}
                     </section>
                 ))}
             </React.Fragment>

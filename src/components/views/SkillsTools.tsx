@@ -201,7 +201,7 @@ const SkillsToolsView = () => {
                                         ))}
                                     </ul>
                                 </div> 
-                                {mode[index] === 'edit' || mode[index] === 'newItem' && (categoryIndex === skillsToolsValue.categories.length - 1) && (
+                                {(mode[index] === 'edit' || mode[index] === 'newItem') && (categoryIndex === skillsToolsValue.categories.length - 1) && (
                                     <button
                                         className="bg-blue-200 hover:bg-blue-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1"
                                         onClick={() => dispatch(handleSkillsToolsAddCategory(index))}

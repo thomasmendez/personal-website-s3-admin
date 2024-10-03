@@ -100,7 +100,6 @@ export const skillsToolsSlice = createSlice({
                 categories: [newCategory]
             }
             state.entities.push(newItem)
-            console.log("edit mode")
             state.mode.push('newItem')
         },
         skillsToolsModeChange: (state, action) => {
@@ -117,40 +116,28 @@ export const skillsToolsSlice = createSlice({
             }
         },
         skillsToolsCategoryChange: (state, action) => {
-            const { index, categoryIndex, value } = action.payload;
-            // if (index >= 0 && index < state.entities.length) {
-            //     // if (categoryIndex >= 0 && categoryIndex < state.entities[index].categories.length) {
-            //     //     // console.log("here")
-            //     //     // state.entities[index].categories[categoryIndex] = {
-            //     //     //     ...state.entities[index].categories[categoryIndex],
-            //     //     //     category: value,
-            //     //     // }
-            //     //     state.entities[index].categories[categoryIndex].category = value
-            //     // }
-            //     state.entities[index].categories[categoryIndex].category = value
-            // }
-            // Ensure valid indices
-        if (index >= 0 && index < state.entities.length && categoryIndex >= 0 && categoryIndex < state.entities[index].categories.length) {
-            state.entities = state.entities.map((skillTool, i) => {
-                // Check if this is the correct SkillsTools item to update
-                if (i === index) {
-                    return {
-                        ...skillTool,
-                        categories: skillTool.categories.map((cat, j) => {
-                            // Check if this is the correct Category item to update
-                            if (j === categoryIndex) {
-                              return {
-                                ...cat,
-                                category: value,  // Only update the 'category' field
-                              };
-                            }
-                            return cat;
-                        }),
-                    };
-                }
-                return skillTool;
-            });
-        }
+        const { index, categoryIndex, value } = action.payload;
+            if (index >= 0 && index < state.entities.length && categoryIndex >= 0 && categoryIndex < state.entities[index].categories.length) {
+                state.entities = state.entities.map((skillTool, i) => {
+                    // Check if this is the correct SkillsTools item to update
+                    if (i === index) {
+                        return {
+                            ...skillTool,
+                            categories: skillTool.categories.map((cat, j) => {
+                                // Check if this is the correct Category item to update
+                                if (j === categoryIndex) {
+                                  return {
+                                    ...cat,
+                                    category: value,  // Only update the 'category' field
+                                  };
+                                }
+                                return cat;
+                            }),
+                        };
+                    }
+                    return skillTool;
+                });
+            }
         },
         skillsToolsListChange: (state, action) => {
             const { index, categoryIndex, listIndex, value } = action.payload;
@@ -204,7 +191,6 @@ export const skillsToolsSlice = createSlice({
                 state.mode.splice(index, 1)
             }
         }
-
     },
     extraReducers: (builder) => {
         builder

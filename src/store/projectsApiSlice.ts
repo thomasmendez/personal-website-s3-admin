@@ -1,13 +1,58 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { Project } from "../types/projectTypes"
-import { axiosGetProjects } from "../services/personalWebsiteApi"
+import { axiosPostProject, axiosGetProjects, axiosPutProject, axiosDeleteProject } from "../services/personalWebsiteApi"
+
+export const postProjects = createAsyncThunk(
+    'post/projects',
+    async (postProjects: Project, thunkApi) => {
+        try {
+            const response = await axiosPostProject(postProjects)
+            console.log(`Response POST: ${JSON.stringify(response.data)}`)
+            return response.data
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.log(error)
+            return thunkApi.rejectWithValue(error.response.data)
+        }
+    }
+)
 
 export const getProjects = createAsyncThunk(
     'get/projects',
     async (_, thunkApi) => {
         try {
             const response = await axiosGetProjects()
-            console.log(JSON.stringify(response.data))
+            console.log(`Response GET: ${JSON.stringify(response.data)}`)
+            return response.data
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.log(error)
+            return thunkApi.rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const putProjects = createAsyncThunk(
+    'put/projects',
+    async (updateProjects: Project, thunkApi) => {
+        try {
+            const response = await axiosPutProject(updateProjects)
+            console.log(`Response PUT: ${JSON.stringify(response.data)}`)
+            return response.data
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.log(error)
+            return thunkApi.rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const deleteProjects = createAsyncThunk(
+    'delete/projects',
+    async (deleteProjects: Project, thunkApi) => {
+        try {
+            const response = await axiosDeleteProject(deleteProjects)
+            console.log(`Response DELETE: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -21,6 +66,7 @@ interface ProjectsState {
     entities: Project[]
     status: 'idle' | 'pending' | 'succeeded' | 'failed'
     error: StateError | null | unknown;
+    mode: string[]
 }
 
 interface StateError {
@@ -32,6 +78,7 @@ const initialState: ProjectsState = {
     entities: [],
     status: 'idle',
     error: null,
+    mode: []
 }
 
 export const ProjectsSlice = createSlice({
@@ -41,6 +88,104 @@ export const ProjectsSlice = createSlice({
         projectsAdded: (state, action) => {
             state.entities.push(action.payload)
         },
+        projectsAdd: (state, action) => {
+            const { index } = action.payload
+            const newItem: Project = {
+                personalWebsiteType: `Projects`,
+                sortValue: `newProject${index}`,
+                category: `newCategory${index}`,
+                name: `newProject${index}`,
+                description: `newDescription${index}`,
+                featuresDescription: `newFeatureDescription${index}`,
+                role: `newRole${index}`,
+                tasks: [`newTasks${index}`],
+                teamSize: "1",
+                teamRoles: [`newRoles${index}`],
+                cloudServices: [`newCloudServices${index}`],
+                tools: [`newTools${index}`],
+                duration: "1 month",
+                startDate: "Jan 2024",
+                endDate: "Dec 2024",
+                notes: `newNotes${index}`,
+                link: "http://my-url",
+                linkType: "YouTube",
+                mediaLink: "http://link"
+            }
+            state.entities.push(newItem)
+            state.mode.push('newItem')
+        },
+        projectsDelete: (state, action) => {
+            const { index } = action.payload
+            if (index >= 0 && index < state.entities.length) {
+                state.entities.splice(index, 1)
+            }
+            if (index >= 0 && index < state.mode.length) {
+                state.mode.splice(index, 1)
+            }
+        },
+        projectsModeChange: (state, action) => {
+            const { index, mode } = action.payload
+            state.mode[index] = mode
+        },
+        projectsValueChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    sortValue: value,
+                    name: value
+                };
+            }
+        },
+        projectsDescriptionChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    description: value,
+                };
+            }
+        },
+        projectsRoleChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    role: value,
+                };
+            }
+        },
+        // projectsTasksChange
+        projectsTeamSizeChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    teamSize: value,
+                };
+            }
+        },
+        // projectsTeamRoles
+        projectsDurationChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    teamSize: value,
+                };
+            }
+        },
+        // projectsStartDate
+        // projectsEndDate
+        projectsNotesChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    teamSize: value,
+                };
+            }
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -49,7 +194,17 @@ export const ProjectsSlice = createSlice({
             })
             .addCase(getProjects.fulfilled, (state, action) => {
                 state.status = 'succeeded'
+                // sort in descending order (latest to oldest)
+                action.payload.sort((a: Project, b: Project) => {
+                    const dateA = new Date(a.endDate + " 01").getTime();
+                    const dateB = new Date(b.endDate + " 01").getTime();
+                    return dateB - dateA; 
+                })
                 state.entities = action.payload
+                state.mode.length = state.entities.length
+                for (let i = 0; i < state.entities.length; i++) {
+                    state.mode[i] = 'view'
+                }
             })
             .addCase(getProjects.rejected, (state, action) => {
                 state.status = 'failed'
@@ -58,11 +213,18 @@ export const ProjectsSlice = createSlice({
     }
 })
 
+export const getProjectsMode = (state: { projects: ProjectsState }) => state.projects.mode;
 
 export const selectAllProjects = (state: { projects: ProjectsState }) => state.projects.entities;
 export const getProjectsStatus = (state: { projects: ProjectsState }) => state.projects.status;
 export const getProjectsError = (state: { projects: ProjectsState }) => state.projects.error;
 
-export const { projectsAdded } = ProjectsSlice.actions
+export const { projectsAdded, projectsModeChange,
+    projectsAdd, projectsDelete,
+    projectsValueChange, projectsDescriptionChange, 
+    projectsRoleChange,
+    projectsTeamSizeChange,
+    projectsDurationChange,
+    projectsNotesChange, } = ProjectsSlice.actions
 
 export default ProjectsSlice.reducer

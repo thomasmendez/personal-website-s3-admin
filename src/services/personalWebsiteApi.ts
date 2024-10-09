@@ -90,12 +90,12 @@ export async function axiosPostProject(newProject: Project) {
 }
 
 export async function axiosPutProject(updateProject: Project) {
-    return axiosInstance.put(`${baseUrl}/api/v1/project`, updateProject, await getHeaders())
+    return axiosInstance.put(`${baseUrl}/api/v1/projects`, updateProject, await getHeaders())
 }
 
 export async function axiosDeleteProject(deleteProject: Project) {
     const sessionToken = await fetchSessionToken()
-    return axiosInstance.delete(`${baseUrl}/api/v1/project`, {
+    return axiosInstance.delete(`${baseUrl}/api/v1/projects`, {
         headers: {
             "Authorization": `Bearer ${sessionToken}`,
             "Access-Control-Allow-Origin": "*",

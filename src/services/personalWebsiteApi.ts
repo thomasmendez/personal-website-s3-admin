@@ -6,7 +6,7 @@ import { Project } from './../types/projectTypes';
 import config from '../auth/config.ts'
 import axios from 'axios'
 
-export const baseUrl = import.meta.env.VITE_PERSONAL_WEBSITE_SERVICE
+export const baseUrl = import.meta.env.VITE_API_GATEWAY_ENDPOINT
 
 const axiosInstance = axios.create()
 

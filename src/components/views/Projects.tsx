@@ -311,7 +311,7 @@ const ProjectsView = () => {
                             )}
                         </div>
                         <div className="sm:col-span-7 md:col-span-6 col-span-12">
-                            <div className="card bg-base-100 shadow-x1 dark:bg-neutral-800">
+                            <div className="card bg-gray-300 shadow-x1 dark:bg-neutral-800">
                               {project?.mediaLink && (<CardMedia projectName={project.name} mediaLink={project.mediaLink} />)}
                               <div className="card-body">
                                 <p className="card-title">{project.name} Features</p>

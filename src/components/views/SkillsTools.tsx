@@ -98,7 +98,7 @@ const SkillsToolsView = () => {
                                         name={`skills-tools-${index}`}
                                         id={`skills-tools-${index}`}
                                         defaultValue={skillsToolsValue.sortValue}
-                                        className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillsToolsValue.sortValue.length + 1}ch`}}
                                         onChange={handleSkillsToolsValueChange(index)}
                                     />:
@@ -147,7 +147,7 @@ const SkillsToolsView = () => {
                                                 name={`skills-tools-category-${categoryIndex}`}
                                                 id={`skills-tools-category-${categoryIndex}`}
                                                 value={categories.category}
-                                                className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${categories.category.length + 1}ch`}}
                                                 onChange={handleSkillsToolsCategoryChange(index, categoryIndex)}
                                             />:
@@ -166,7 +166,7 @@ const SkillsToolsView = () => {
                                                             name={`${skillsToolsValue.sortValue}-${categories.category}-${listIndex}`}
                                                             id={`${skillsToolsValue.sortValue}-${categories.category}-${listIndex}`}
                                                             value={item}
-                                                            className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                             style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
                                                             onChange={handleSkillsToolsCategoryListChange(index, categoryIndex, listIndex)}
                                                           />

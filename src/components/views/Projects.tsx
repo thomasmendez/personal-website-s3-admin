@@ -61,7 +61,7 @@ const TopicList: FC<TopicList> = ({ isEditMode, topic, list }) => {
                                 name={`${inputName}-${listIndex}`}
                                 id={`${inputName}-${listIndex}`}
                                 defaultValue={item}
-                                className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
                             />
                         ) : (
@@ -92,7 +92,7 @@ const TopicInline: FC<TopicInline> = ({ isEditMode, topic, description, onChange
                     name={inputName}
                     id={inputName}
                     defaultValue={description}
-                    className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${description.length + 1}ch`}}
                     onChange={onChange}
                 />
@@ -202,7 +202,7 @@ const ProjectsView = () => {
                                         id={`project-name-${index}`}
                                         placeholder="Project Name"
                                         defaultValue={project.sortValue}
-                                        className="block font-bold rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block font-bold rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1.125rem", lineHeight: "1.75rem"}}
                                         onChange={handleProjectsValueChange(index)}
                                     />
@@ -217,7 +217,7 @@ const ProjectsView = () => {
                                         name={`project-description-${index}`}
                                         id={`project-description-${index}`}
                                         defaultValue={project.description}
-                                        className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                         onChange={handleProjectsDescriptionChange(index)}
                                     />
@@ -238,7 +238,7 @@ const ProjectsView = () => {
                                         name={`my-role-${index}`}
                                         id={`my-role-${index}`}
                                         defaultValue={project.role}
-                                        className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.role.length + 1}ch`}}
                                         onChange={handleProjectsRoleChange(index)}
                                     />
@@ -265,7 +265,7 @@ const ProjectsView = () => {
                                             name={`team-size-${index}`}
                                             id={`team-size-${index}`}
                                             defaultValue={project.teamSize}
-                                            className="block w-auto rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.teamSize.length + 1}ch`}}
                                             onChange={handleProjectsTeamSizeChange(index)}
                                         />
@@ -300,7 +300,7 @@ const ProjectsView = () => {
                                     name={`project-notes-${index}`}
                                     id={`project-notes-${index}`}
                                     defaultValue={project.notes!}
-                                    className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                     onChange={handleProjectsNotesChange(index)}
                                 />
@@ -320,7 +320,7 @@ const ProjectsView = () => {
                                         name={`features-description-${index}`}
                                         id={`features-description-${index}`}
                                         defaultValue={project.featuresDescription}
-                                        className="pt-2 pb-6 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="pt-2 pb-6 block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                     />
                                 ) : (
@@ -333,14 +333,14 @@ const ProjectsView = () => {
                                                 name={`link-type-${index}`}
                                                 id={`link-type-${index}`}
                                                 defaultValue={project.linkType!}
-                                                className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                             />
                                             <input
                                                 name={`link-${index}`}
                                                 id={`link-${index}`}
                                                 defaultValue={project.link!}
-                                                className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                             />
                                         </div>

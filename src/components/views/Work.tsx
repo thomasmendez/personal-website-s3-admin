@@ -36,7 +36,7 @@ const WorkView = () => {
                                         name={`${employment.jobTitle}-${index}`}
                                         id={`${employment.jobTitle}-${index}`}
                                         defaultValue={employment.jobTitle}
-                                        className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 font-bold shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.jobTitle.length + 1}ch`}}
                                     />
                                 ) : (
@@ -49,7 +49,7 @@ const WorkView = () => {
                                         name={`${employment.company}-${index}`}
                                         id={`${employment.company}-${index}`}
                                         defaultValue={employment.company}
-                                        className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.company.length + 1}ch`}}
                                     />
                                 ) : (
@@ -61,7 +61,7 @@ const WorkView = () => {
                                         name={`${employment.location.city}-${index}`}
                                         id={`${employment.location.city}-${index}`}
                                         defaultValue={employment.location.city}
-                                        className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.location.city.length + 1}ch`}}
                                     />
                                 ) : (
@@ -73,7 +73,7 @@ const WorkView = () => {
                                         name={`${employment.location.state}-${index}`}
                                         id={`${employment.location.state}-${index}`}
                                         defaultValue={employment.location.state}
-                                        className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.location.state.length + 1}ch`}}
                                     />
                                 ) : (
@@ -88,7 +88,7 @@ const WorkView = () => {
                                     name={`${employment.startDate}-${index}`}
                                     id={`${employment.startDate}-${index}`}
                                     defaultValue={employment.startDate}
-                                    className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.startDate).length + 1}ch`}}
                                 />
                             ) : (
@@ -100,7 +100,7 @@ const WorkView = () => {
                                     name={`${employment.endDate}-${index}`}
                                     id={`${employment.endDate}-${index}`}
                                     defaultValue={employment.endDate}
-                                    className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.endDate).length + 1}ch`}}
                                 />
                             ) : (
@@ -121,7 +121,7 @@ const WorkView = () => {
                                     name={`${employment.jobRole}-${index}`}
                                     id={`${employment.jobRole}-${index}`}
                                     defaultValue={employment.jobRole}
-                                    className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.jobRole).length + 1}ch`}}
                                 />
                             ) : (
@@ -138,7 +138,7 @@ const WorkView = () => {
                                                 name={`${task}-${jobDescriptionIndex}`}
                                                 id={`${task}-${jobDescriptionIndex}`}
                                                 defaultValue={task}
-                                                className="block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${task.length + 1}ch`}}
                                             />
                                         ) : (

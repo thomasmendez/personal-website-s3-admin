@@ -1,7 +1,13 @@
 import About from "../About/About"
 import ProfilePic from "../../../src/assets/pic.jpeg";
+import { FC } from "react";
 
-const HomeView = () => {
+export interface Home {
+  name: string,
+  jobTitle: string
+}
+
+const HomeView: FC<Home> = ({name, jobTitle}) => {
   return (
     <main className="flex min-h-80vh text-center flex-col bg-neutral-100 dark:bg-neutral-900">
       <section className="bg-neutral-200 dark:bg-neutral-800">
@@ -9,8 +15,8 @@ const HomeView = () => {
           <img className="rounded-full w-48 h-48" src={ProfilePic} alt="profile picture" />
         </section>
         <section className="pt-6 pb-6">
-          <h1 className="text-2xl font-semibold text-zinc-400 dark:text-white">Thomas A. Mendez</h1>
-          <h1 className="text-xl font-semibold text-zinc-500 dark:text-white">Software Engineer and Game Developer</h1>
+          <h1 className="text-2xl font-semibold text-zinc-400 dark:text-white">{name}</h1>
+          <h1 className="text-xl font-semibold text-zinc-500 dark:text-white">{jobTitle}</h1>
         </section>
       </section>
       <section className="flex justify-center">

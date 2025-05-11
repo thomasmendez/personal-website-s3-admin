@@ -6,7 +6,9 @@ import type { UserConfig as VitestUserConfigInterface } from 'vitest/config';
 const vitestConfig: VitestUserConfigInterface = {
   test: {
     globals: true,
-    environment: 'jsdom'
+    environment: 'jsdom',
+    setupFiles: ['./src/tests/setup.ts'],
+    // include: ['src/**/*.{test}.{ts,tsx}'],
   }
 };
 

@@ -15,11 +15,11 @@ const HomeView = () => {
       </section>
       <section className="flex justify-center">
         <About
-          aboutMeDetails="details"
-          educationDetails="details"
-          educationStartDate="start date"
-          educationEndDate="end date"
-          degreeMinors="minor"
+          aboutMeDetails="I am a passionate software engineer who loves to solve real world problems using new unexplored technologies. I enjoy developing good user experiences, wether it be for desktop, mobile, or video games. Always looking forward to working on the next big project."
+          educationDetails="Bachelor of Science in Arts and Entertainment Technologies, at The University of Texas at Austin"
+          educationStartDate="August 2016"
+          educationEndDate="May 2019"
+          degreeMinors={["Elements of Computing Certificate"]}
         />
       </section>
     </main>

@@ -1,6 +1,6 @@
 import { Work } from "../../types/workTypes"
 
-export const workGetMock: Work[] = [
+const WorkMock: Work[] = [
   {
     personalWebsiteType: 'Jobs',
     sortValue: '2020-08-22',
@@ -78,3 +78,5 @@ export const workGetMock: Work[] = [
     ],
   },    
 ]
+
+export default WorkMock

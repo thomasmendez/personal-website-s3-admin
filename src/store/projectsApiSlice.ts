@@ -156,16 +156,7 @@ export const ProjectsSlice = createSlice({
             }
         },
         projectsTasksListChange: (state, action) => {
-            // const { index, value } = action.payload;
-            // console.log(index, value)
-            // // if (index >= 0 && index < state.entities.length) {
-            // //     state.entities[index] = {
-            // //         ...state.entities[index],
-            // //         tasks: value,
-            // //     };
-            // // }
             const { index, listIndex, value } = action.payload;
-            console.log(index, listIndex, value)
             if (index >= 0 && index < state.entities.length) {
                 const list = state.entities[index].tasks;
                 if (listIndex >= 0 && listIndex < list.length) {
@@ -182,7 +173,33 @@ export const ProjectsSlice = createSlice({
                 };
             }
         },
-        // projectsTeamRoles
+        projectsTeamRolesListChange: (state, action) => {
+            const { index, listIndex, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                const list = state.entities[index].teamRoles ?? [];
+                if (listIndex >= 0 && listIndex < list.length) {
+                    list[listIndex] = value;
+                }
+            }
+        },
+        projectsCloudServicesListChange: (state, action) => {
+            const { index, listIndex, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                const list = state.entities[index].cloudServices ?? [];
+                if (listIndex >= 0 && listIndex < list.length) {
+                    list[listIndex] = value;
+                }
+            }
+        },
+        projectsToolsListChange: (state, action) => {
+            const { index, listIndex, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                const list = state.entities[index].tools;
+                if (listIndex >= 0 && listIndex < list.length) {
+                    list[listIndex] = value;
+                }
+            }
+        },
         projectsDurationChange: (state, action) => {
             const { index, value } = action.payload;
             if (index >= 0 && index < state.entities.length) {
@@ -193,13 +210,30 @@ export const ProjectsSlice = createSlice({
             }
         },
         // projectsStartDate
-        // projectsEndDate
+        projectsStartDateChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    startDate: value,
+                };
+            }
+        },
+        projectsEndDateChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    endDate: value,
+                };
+            }
+        },
         projectsNotesChange: (state, action) => {
             const { index, value } = action.payload;
             if (index >= 0 && index < state.entities.length) {
                 state.entities[index] = {
                     ...state.entities[index],
-                    teamSize: value,
+                    notes: value,
                 };
             }
         }
@@ -242,7 +276,12 @@ export const { projectsAdded, projectsModeChange,
     projectsRoleChange,
     projectsTasksListChange,
     projectsTeamSizeChange,
+    projectsTeamRolesListChange,
+    projectsCloudServicesListChange,
+    projectsToolsListChange,
     projectsDurationChange,
+    projectsStartDateChange,
+    projectsEndDateChange,
     projectsNotesChange, } = ProjectsSlice.actions
 
 export default ProjectsSlice.reducer

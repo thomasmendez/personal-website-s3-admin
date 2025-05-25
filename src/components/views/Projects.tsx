@@ -7,7 +7,12 @@ import { getProjectsError, getProjectsStatus, selectAllProjects,
     projectsRoleChange,
     projectsTasksListChange,
     projectsTeamSizeChange,
+    projectsTeamRolesListChange,
+    projectsCloudServicesListChange,
+    projectsToolsListChange,
     projectsDurationChange,
+    projectsStartDateChange,
+    projectsEndDateChange,
     projectsNotesChange,
 } from "../../store/projectsApiSlice"
 import React, { ChangeEvent, FC, useEffect } from "react"
@@ -53,6 +58,7 @@ interface TopicList {
 
 const TopicList: FC<TopicList> = ({ isEditMode, topic, list, onChange }) => {
     const inputName = topic.toLowerCase().replace(/ /g, '-')
+    // TODO: If lenght is big enough switch to use text box or use two at least 
     return(
         <div className="space-x-5">
             <p className="underline">{topic}:</p>
@@ -141,14 +147,14 @@ const ProjectsView = () => {
       dispatch(projectsRoleChange({index, value: newValue}))
     }
 
-    // const handleProjectsTeamSizeChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
-    //   const newValue = event.target.value
-    //   dispatch(projectsTeamSizeChange({index, value: newValue}))
-    // }
-
     const handleProjectsTeamSizeChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
       dispatch(projectsTeamSizeChange({index, value: newValue}))
+    }
+
+    const handleProjectsTeamRolesListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsTeamRolesListChange({index, listIndex, value: newValue}))
     }
 
     const handleProjectsTasksListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -156,20 +162,30 @@ const ProjectsView = () => {
       dispatch(projectsTasksListChange({index, listIndex, value: newValue}))
     }
 
+    const handleProjectsCloudServicesListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsCloudServicesListChange({index, listIndex, value: newValue}))
+    }
+
+    const handleProjectsToolsListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value
+        dispatch(projectsToolsListChange({index, listIndex, value: newValue}))
+      }
+
     const handleProjectsDurationChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
       dispatch(projectsDurationChange({index, value: newValue}))
     }
 
-    // const handleProjectsStartDateChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
-    //   const newValue = event.target.value
-    //   dispatch(projectsStartDateChange({index, value: newValue}))
-    // }
+    const handleProjectsStartDateChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsStartDateChange({index, value: newValue}))
+    }
 
-    // const handleProjectsEndDateChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
-    //   const newValue = event.target.value
-    //   dispatch(projectsEndDateChange({index, value: newValue}))
-    // }
+    const handleProjectsEndDateChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsEndDateChange({index, value: newValue}))
+    }
 
     const handleProjectsNotesChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
@@ -310,10 +326,80 @@ const ProjectsView = () => {
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="Team Roles" list={project.teamRoles}
                             />)} */}
+                            {project?.teamRoles && (
+                                <div className="space-x-5">
+                                    <p className="underline">Team Roles:</p>
+                                    <ul className="list-disc">
+                                        {project.teamRoles.map((item: string, listIndex: number) => (
+                                            <li key={listIndex}>
+                                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                                    <input
+                                                        type="text"
+                                                        name={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
+                                                        id={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
+                                                        defaultValue={item}
+                                                        className="block w-full max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
+                                                        onChange={handleProjectsTeamRolesListChange(index, listIndex)}
+                                                    />
+                                                ) : (
+                                                    item
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                             {/* {project?.cloudServices && (<TopicList
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="Cloud Services" list={project.cloudServices}
                             />)} */}
+                            {project?.cloudServices && (
+                                <div className="space-x-5">
+                                    <p className="underline">Cloud Services:</p>
+                                    <ul className="list-disc">
+                                        {project.cloudServices.map((item: string, listIndex: number) => (
+                                            <li key={listIndex}>
+                                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                                    <input
+                                                        type="text"
+                                                        name={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
+                                                        id={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
+                                                        defaultValue={item}
+                                                        className="block w-full max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
+                                                        onChange={handleProjectsCloudServicesListChange(index, listIndex)}
+                                                    />
+                                                ) : (
+                                                    item
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                            <div className="space-x-5">
+                                <p className="underline">Tools:</p>
+                                <ul className="list-disc">
+                                    {project.tools.map((item: string, listIndex: number) => (
+                                        <li key={listIndex}>
+                                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                                <input
+                                                    type="text"
+                                                    name={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
+                                                    id={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
+                                                    defaultValue={item}
+                                                    className="block w-full max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
+                                                    onChange={handleProjectsToolsListChange(index, listIndex)}
+                                                />
+                                            ) : (
+                                                item
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                             {/* <TopicList
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="Tools" list={project.tools}
@@ -323,10 +409,34 @@ const ProjectsView = () => {
                                 topic="Project Duration" description={project.duration}
                                 onChange={handleProjectsDurationChange(index)}
                             />
-                            {/* <TopicInline
-                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
-                                topic="Project Date" description={`${project.startDate} - ${project.endDate}`}
-                            /> */}
+                            <div className="flex space-x-1">
+                                <p className="underline">Project Date:</p>
+                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                    <section className="flex space-x-1">
+                                        <input
+                                            type="text"
+                                            name={`startDate-${index}`}
+                                            id={`startDate-${index}`}
+                                            defaultValue={project.startDate}
+                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.startDate.length + 1}ch`}}
+                                            onChange={handleProjectsStartDateChange(index)}
+                                        />
+                                        <p>-</p>
+                                        <input
+                                            type="text"
+                                            name={`endDate-${index}`}
+                                            id={`endDate-${index}`}
+                                            defaultValue={project.endDate}
+                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.endDate.length + 1}ch`}}
+                                            onChange={handleProjectsEndDateChange(index)}
+                                        />
+                                    </section>
+                                ) : (
+                                    <p>{project.startDate} - {project.endDate}</p>
+                                )}
+                            </div>
                             {mode[index] === 'edit' || mode[index] === 'newItem' ? (
                                 <input
                                     name={`project-notes-${index}`}

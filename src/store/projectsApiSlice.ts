@@ -155,13 +155,30 @@ export const ProjectsSlice = createSlice({
                 };
             }
         },
-        // projectsTasksChange
+        projectsTasksListChange: (state, action) => {
+            // const { index, value } = action.payload;
+            // console.log(index, value)
+            // // if (index >= 0 && index < state.entities.length) {
+            // //     state.entities[index] = {
+            // //         ...state.entities[index],
+            // //         tasks: value,
+            // //     };
+            // // }
+            const { index, listIndex, value } = action.payload;
+            console.log(index, listIndex, value)
+            if (index >= 0 && index < state.entities.length) {
+                const list = state.entities[index].tasks;
+                if (listIndex >= 0 && listIndex < list.length) {
+                    list[listIndex] = value;
+                }
+            }
+        },
         projectsTeamSizeChange: (state, action) => {
             const { index, value } = action.payload;
             if (index >= 0 && index < state.entities.length) {
                 state.entities[index] = {
                     ...state.entities[index],
-                    teamSize: value,
+                    teamSize: value.toString(), // Ensure value is a primitive string
                 };
             }
         },
@@ -223,6 +240,7 @@ export const { projectsAdded, projectsModeChange,
     projectsAdd, projectsDelete,
     projectsValueChange, projectsDescriptionChange, 
     projectsRoleChange,
+    projectsTasksListChange,
     projectsTeamSizeChange,
     projectsDurationChange,
     projectsNotesChange, } = ProjectsSlice.actions

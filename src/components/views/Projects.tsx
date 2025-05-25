@@ -5,6 +5,7 @@ import { getProjectsError, getProjectsStatus, selectAllProjects,
     projectsAdd, projectsDelete,
     projectsValueChange, projectsDescriptionChange,
     projectsRoleChange,
+    projectsTasksListChange,
     projectsTeamSizeChange,
     projectsDurationChange,
     projectsNotesChange,
@@ -47,9 +48,10 @@ interface TopicList {
     isEditMode: boolean,
     topic: string,
     list: string[],
+    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TopicList: FC<TopicList> = ({ isEditMode, topic, list }) => {
+const TopicList: FC<TopicList> = ({ isEditMode, topic, list, onChange }) => {
     const inputName = topic.toLowerCase().replace(/ /g, '-')
     return(
         <div className="space-x-5">
@@ -63,8 +65,9 @@ const TopicList: FC<TopicList> = ({ isEditMode, topic, list }) => {
                                 name={`${inputName}-${listIndex}`}
                                 id={`${inputName}-${listIndex}`}
                                 defaultValue={item}
-                                className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className="block w-full max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
+                                onChange={onChange}
                             />
                         ) : (
                             item
@@ -146,6 +149,11 @@ const ProjectsView = () => {
     const handleProjectsTeamSizeChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
       dispatch(projectsTeamSizeChange({index, value: newValue}))
+    }
+
+    const handleProjectsTasksListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsTasksListChange({index, listIndex, value: newValue}))
     }
 
     const handleProjectsDurationChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -251,8 +259,30 @@ const ProjectsView = () => {
                             {/* <TopicList
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="My Tasks" list={project.tasks}
-                                onChange={handleProjectsTasksChange(index)}
+                                onChange={handleProjectsTasksListChange(index)}
                             /> */}
+                            <div className="space-x-5">
+                                <p className="underline">My Tasks:</p>
+                                <ul className="list-disc">
+                                    {project.tasks.map((item: string, listIndex: number) => (
+                                        <li key={listIndex}>
+                                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                                <input
+                                                    type="text"
+                                                    name={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
+                                                    id={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
+                                                    defaultValue={item}
+                                                    className="block w-full max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
+                                                    onChange={handleProjectsTasksListChange(index, listIndex)}
+                                                />
+                                            ) : (
+                                                item
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                             {/* {project.teamSize !== null && (<TopicInline
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="Team Size" description={project.teamSize}

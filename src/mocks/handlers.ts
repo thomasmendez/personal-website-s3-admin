@@ -1,7 +1,8 @@
 // src/mocks/handlers.js
 import { http, HttpResponse } from 'msw'
 import WorkMock from './__fixtures__/work'
-
+import SkillsToolsMock from './__fixtures__/skillsTools'
+import ProjectsMock from './__fixtures__/projects'
 export const baseUrl = import.meta.env.VITE_API_GATEWAY_ENDPOINT
  
 export const handlers = [
@@ -17,5 +18,13 @@ export const handlers = [
 
   http.get(`${baseUrl}/api/v1/work`, () => {
     return HttpResponse.json(WorkMock)
-  })
+  }),
+
+  http.get(`${baseUrl}/api/v1/skillsTools`, () => {
+    return HttpResponse.json(SkillsToolsMock)
+  }),
+
+  http.get(`${baseUrl}/api/v1/projects`, () => {
+    return HttpResponse.json(ProjectsMock)
+  })  
 ]

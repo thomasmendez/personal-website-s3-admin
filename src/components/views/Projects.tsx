@@ -34,7 +34,9 @@ const CardMedia: FC<CardMediaProps> = ({ projectName, mediaLink }) => {
                 <img src={mediaLink} alt={`${projectName} Image`} />
             )
         default:
-            console.log("Media has an invalid extension")
+            console.groupCollapsed(`%c Media for "${projectName}" has an invalid extension`, 'font-weight: bold; color: yellow');
+            console.warn(new Error().stack);
+            console.groupEnd();
             return(
                 <React.Fragment />
             )
@@ -270,7 +272,7 @@ const ProjectsView = () => {
                                             onChange={handleProjectsTeamSizeChange(index)}
                                         />
                                     ) : (
-                                        <p>{project.role}</p>
+                                        <p>{project.teamSize}</p>
                                     )}
                                 </div>
                             )}

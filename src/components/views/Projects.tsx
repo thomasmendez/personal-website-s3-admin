@@ -19,6 +19,8 @@ import React, { ChangeEvent, FC, useEffect } from "react"
 import { AppDispatch } from "../../store/store"
 import { Project } from "../../types/projectTypes"
 import Loading from "../Loading/Loading"
+import AddButton from "../Buttons/AddButton"
+import DeleteButton from "../Buttons/DeleteButton"
 
 interface CardMediaProps {
     projectName: string,
@@ -123,11 +125,11 @@ const ProjectsView = () => {
 
     const mode = useSelector(getProjectsMode)
 
-    const handleProjectsAdd = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
+    const handleProjectsAdd = (index: number) => () => {
       dispatch(projectsAdd({index}))
     }
 
-    const handleProjectsDelete = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
+    const handleProjectsDelete = (index: number) => () => {
       dispatch(projectsDelete({index}))
       dispatch(deleteProjects(projects[index]))
     }
@@ -393,18 +395,8 @@ const ProjectsView = () => {
                                 }}></button>
                             )}
                             {/* https://emojipedia.org/ */}
-                            <button
-                                className="bg-blue-200 hover:bg-blue-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1"
-                                onClick={() => dispatch(handleProjectsAdd(index+1))}
-                            >
-                              +
-                            </button>
-                            <button
-                                className="bg-red-400 hover:bg-red-300 dark:bg-red-500 dark-hover:bg-red-700 px-1"
-                                onClick={() => dispatch(handleProjectsDelete(index))}
-                            >
-                              -
-                            </button>
+                            <AddButton onClick={() => dispatch(handleProjectsAdd(index+1))} />
+                            <DeleteButton onClick={() => dispatch(handleProjectsDelete(index))} />
                         </div>
                     </section>
                 ))}

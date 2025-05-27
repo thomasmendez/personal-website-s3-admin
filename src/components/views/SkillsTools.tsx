@@ -14,6 +14,8 @@ import { getSkillsTools, putSkillsTools } from "../../store/skillsToolsApiSlice"
 import { AppDispatch } from "../../store/store"
 import { Categories, SkillsTools } from "../../types/skillsToolsTypes"
 import Loading from "../Loading/Loading"
+import AddButton from "../Buttons/AddButton"
+import DeleteButton from "../Buttons/DeleteButton"
 
 const SkillsToolsView = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -38,29 +40,29 @@ const SkillsToolsView = () => {
       dispatch(skillsToolsListChange({index, categoryIndex, listIndex, value: newValue}))
     }
 
-    const handleSkillsToolsCategoryListAdd = (index: number, categoryIndex: number, newItem: string) => (event: MouseEvent<HTMLButtonElement>) => {
+    const handleSkillsToolsCategoryListAdd = (index: number, categoryIndex: number, newItem: string) => () => {
       dispatch(skillsToolsCategoryListAdd({index, categoryIndex, newItem}))
     }
 
-    const handleSkillsToolsCategoryListRemove = (index: number, categoryIndex: number, listIndex: number) => (event: MouseEvent<HTMLButtonElement>) => {
+    const handleSkillsToolsCategoryListRemove = (index: number, categoryIndex: number, listIndex: number) => () => {
         dispatch(skillsToolsCategoryListRemove({index, categoryIndex, listIndex}))
     }
 
-    const handleSkillsToolsAddCategory = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
+    const handleSkillsToolsAddCategory = (index: number) => () => {
       dispatch(skillsToolsAddCategory({index}))
     }
 
-    const handleSkillsToolsDeleteCategory = (index: number, categoryIndex: number) => (event: MouseEvent<HTMLButtonElement>) => {
+    const handleSkillsToolsDeleteCategory = (index: number, categoryIndex: number) => () => {
       dispatch(skillsToolsDeleteCategory({index, categoryIndex}))
     }
   
-    const handleSkillsToolsAdd = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
+    const handleSkillsToolsAdd = (index: number) => () => {
       dispatch(skillsToolsAdd({index}))
     }
 
-    const handleSkillsToolsDelete = (index: number) => (event: MouseEvent<HTMLButtonElement>) => {
-      dispatch(skillsToolsDelete({index}))
-      dispatch(deleteSkillsTools(skillsTools[index]))
+    const handleSkillsToolsDelete = (index: number) => () => {
+      dispatch(skillsToolsDelete({index})) // TODO: Only delete when delete api call returns 200, this line modifies the state
+      dispatch(deleteSkillsTools(skillsTools[index])) // TODO: Only delete when delete api call returns 200
     }
 
     useEffect(() => {
@@ -124,18 +126,8 @@ const SkillsToolsView = () => {
                                 }}></button>
                             )}
                             {/* https://emojipedia.org/ */}
-                            <button
-                                className="bg-blue-200 hover:bg-blue-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1"
-                                onClick={() => dispatch(handleSkillsToolsAdd(index+1))}
-                            >
-                              +
-                            </button>
-                            <button
-                                className="bg-red-400 hover:bg-red-300 dark:bg-red-500 dark-hover:bg-red-700 px-1"
-                                onClick={() => dispatch(handleSkillsToolsDelete(index))}
-                            >
-                              -
-                            </button>
+                            <AddButton onClick={() => dispatch(handleSkillsToolsAdd(index+1))} />
+                            <DeleteButton onClick={() => dispatch(handleSkillsToolsDelete(index))} />
                         </div>
                         {skillsToolsValue.categories?.map((categories: Categories, categoryIndex) => (
                             <div key={`${skillsToolsValue.sortValue}-${categoryIndex}`} className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
@@ -178,20 +170,10 @@ const SkillsToolsView = () => {
                                                           </span>
                                                         </div>
                                                         {(listIndex === categories.list.length - 1) && (
-                                                            <button
-                                                                className="bg-neutral-200 hover:bg-neutral-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1 rounded-full"
-                                                                onClick={handleSkillsToolsCategoryListAdd(index, categoryIndex, '')}
-                                                            >
-                                                              +
-                                                            </button>
+                                                            <AddButton onClick={() => dispatch(handleSkillsToolsCategoryListAdd(index, categoryIndex, ''))} />
                                                         )}
                                                         {(listIndex === categories.list.length - 1) && (
-                                                            <button
-                                                                className="bg-red-400 hover:bg-red-300 dark:bg-red-500 dark-hover:bg-red-700 px-1 rounded-full"
-                                                                onClick={handleSkillsToolsDeleteCategory(index, categoryIndex)}
-                                                            >
-                                                              -
-                                                            </button>
+                                                            <DeleteButton onClick={() => dispatch(handleSkillsToolsDeleteCategory(index, categoryIndex))} />
                                                         )}
                                                     </React.Fragment>
                                                 ) : (
@@ -202,12 +184,7 @@ const SkillsToolsView = () => {
                                     </ul>
                                 </div> 
                                 {(mode[index] === 'edit' || mode[index] === 'newItem') && (categoryIndex === skillsToolsValue.categories.length - 1) && (
-                                    <button
-                                        className="bg-blue-200 hover:bg-blue-300 dark:bg-gray-500 dark-hover:bg-gray-700 px-1"
-                                        onClick={() => dispatch(handleSkillsToolsAddCategory(index))}
-                                    >
-                                      +
-                                    </button>
+                                    <AddButton onClick={() => dispatch(handleSkillsToolsAddCategory(index))} />
                                 )}
                             </div>
                         ))}

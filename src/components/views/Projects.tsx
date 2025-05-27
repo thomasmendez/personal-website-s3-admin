@@ -256,76 +256,16 @@ const ProjectsView = () => {
                                 topic="My Role" description={project.role}
                                 onChange={handleProjectsRoleChange(index)}
                             />
-                            {/* <div className="flex space-x-1">
-                                <p className="underline">My Role:</p>
-                                {(mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                    <input
-                                        type="text"
-                                        name={`my-role-${index}`}
-                                        id={`my-role-${index}`}
-                                        defaultValue={project.role}
-                                        className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.role.length + 1}ch`}}
-                                        onChange={handleProjectsRoleChange(index)}
-                                    />
-                                ) : (
-                                    <p>{project.role}</p>
-                                )}
-                            </div> */}
                             <TopicList
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="My Tasks" list={project.tasks}
                                 onChange={(listIndex) => (e) => handleProjectsTasksListChange(index, listIndex)(e)}
                             />
-                            {/* <div className="space-x-5">
-                                <p className="underline">My Tasks:</p>
-                                <ul className="list-disc">
-                                    {project.tasks.map((item: string, listIndex: number) => (
-                                        <li key={listIndex}>
-                                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
-                                                <input
-                                                    type="text"
-                                                    name={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
-                                                    id={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
-                                                    defaultValue={item}
-                                                    className="block w-full max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                    style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
-                                                    onChange={handleProjectsTasksListChange(index, listIndex)}
-                                                />
-                                            ) : (
-                                                item
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div> */}
                             {project.teamSize !== null && (<TopicInline
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="Team Size" description={project.teamSize}
                                 onChange={handleProjectsTeamSizeChange(index)}
                             />)}
-                            {/* {project.teamSize !== null && (
-                                <div className="flex space-x-1">
-                                    <p className="underline">Team Size:</p>
-                                    {(mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                        <input
-                                            type="text"
-                                            name={`team-size-${index}`}
-                                            id={`team-size-${index}`}
-                                            defaultValue={project.teamSize}
-                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.teamSize.length + 1}ch`}}
-                                            onChange={handleProjectsTeamSizeChange(index)}
-                                        />
-                                    ) : (
-                                        <p>{project.teamSize}</p>
-                                    )}
-                                </div>
-                            )} */}
-                            {/* {project?.teamRoles && (<TopicList
-                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
-                                topic="Team Roles" list={project.teamRoles}
-                            />)} */}
                             {project?.teamRoles && project.teamRoles.length > 0 && (
                                 <TopicList
                                     isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
@@ -333,34 +273,6 @@ const ProjectsView = () => {
                                     onChange={(listIndex) => (e) => handleProjectsTeamRolesListChange(index, listIndex)(e)}
                                 />
                             )}
-                            {/* {project?.teamRoles && (
-                                <div className="space-x-5">
-                                    <p className="underline">Team Roles:</p>
-                                    <ul className="list-disc">
-                                        {project.teamRoles.map((item: string, listIndex: number) => (
-                                            <li key={listIndex}>
-                                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
-                                                    <input
-                                                        type="text"
-                                                        name={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
-                                                        id={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
-                                                        defaultValue={item}
-                                                        className="block w-full max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
-                                                        onChange={handleProjectsTeamRolesListChange(index, listIndex)}
-                                                    />
-                                                ) : (
-                                                    item
-                                                )}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )} */}
-                            {/* {project?.cloudServices && (<TopicList
-                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
-                                topic="Cloud Services" list={project.cloudServices}
-                            />)} */}
                             {project?.cloudServices && project.cloudServices.length > 0 && (
                                 <TopicList
                                     isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
@@ -368,52 +280,6 @@ const ProjectsView = () => {
                                     onChange={(listIndex) => (e) => handleProjectsCloudServicesListChange(index, listIndex)(e)}
                                 />
                             )}
-                            {/* {project?.cloudServices && (
-                                <div className="space-x-5">
-                                    <p className="underline">Cloud Services:</p>
-                                    <ul className="list-disc">
-                                        {project.cloudServices.map((item: string, listIndex: number) => (
-                                            <li key={listIndex}>
-                                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
-                                                    <input
-                                                        type="text"
-                                                        name={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
-                                                        id={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
-                                                        defaultValue={item}
-                                                        className="block w-full max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
-                                                        onChange={handleProjectsCloudServicesListChange(index, listIndex)}
-                                                    />
-                                                ) : (
-                                                    item
-                                                )}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )} */}
-                            {/* <div className="space-x-5">
-                                <p className="underline">Tools:</p>
-                                <ul className="list-disc">
-                                    {project.tools.map((item: string, listIndex: number) => (
-                                        <li key={listIndex}>
-                                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
-                                                <input
-                                                    type="text"
-                                                    name={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
-                                                    id={`${project.name.toLowerCase().replace(/ /g, '-')}-${listIndex}`}
-                                                    defaultValue={item}
-                                                    className="block w-full max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                    style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
-                                                    onChange={handleProjectsToolsListChange(index, listIndex)}
-                                                />
-                                            ) : (
-                                                item
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div> */}
                             {project?.tools && project.tools.length > 0 && (
                                 <TopicList
                                     isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
@@ -421,10 +287,6 @@ const ProjectsView = () => {
                                     onChange={(listIndex) => (e) => handleProjectsToolsListChange(index, listIndex)(e)}
                                 />
                             )}
-                            {/* <TopicList
-                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
-                                topic="Tools" list={project.tools}
-                            /> */}
                             <TopicInline
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="Project Duration" description={project.duration}

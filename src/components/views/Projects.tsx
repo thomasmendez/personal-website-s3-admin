@@ -53,7 +53,7 @@ interface TopicList {
     isEditMode: boolean,
     topic: string,
     list: string[],
-    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    onChange: (listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const TopicList: FC<TopicList> = ({ isEditMode, topic, list, onChange }) => {
@@ -73,7 +73,7 @@ const TopicList: FC<TopicList> = ({ isEditMode, topic, list, onChange }) => {
                                 defaultValue={item}
                                 className="block w-full max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
-                                onChange={onChange}
+                                onChange={onChange(listIndex)}
                             />
                         ) : (
                             item
@@ -251,12 +251,12 @@ const ProjectsView = () => {
                                     <p>{project.description}</p>
                                 )}
                             </div>
-                            {/* <TopicInline
+                            <TopicInline
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="My Role" description={project.role}
                                 onChange={handleProjectsRoleChange(index)}
-                            /> */}
-                            <div className="flex space-x-1">
+                            />
+                            {/* <div className="flex space-x-1">
                                 <p className="underline">My Role:</p>
                                 {(mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
@@ -271,13 +271,13 @@ const ProjectsView = () => {
                                 ) : (
                                     <p>{project.role}</p>
                                 )}
-                            </div>
-                            {/* <TopicList
+                            </div> */}
+                            <TopicList
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="My Tasks" list={project.tasks}
-                                onChange={handleProjectsTasksListChange(index)}
-                            /> */}
-                            <div className="space-x-5">
+                                onChange={(listIndex) => (e) => handleProjectsTasksListChange(index, listIndex)(e)}
+                            />
+                            {/* <div className="space-x-5">
                                 <p className="underline">My Tasks:</p>
                                 <ul className="list-disc">
                                     {project.tasks.map((item: string, listIndex: number) => (
@@ -298,13 +298,13 @@ const ProjectsView = () => {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
-                            {/* {project.teamSize !== null && (<TopicInline
+                            </div> */}
+                            {project.teamSize !== null && (<TopicInline
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="Team Size" description={project.teamSize}
                                 onChange={handleProjectsTeamSizeChange(index)}
-                            />)} */}
-                            {project.teamSize !== null && (
+                            />)}
+                            {/* {project.teamSize !== null && (
                                 <div className="flex space-x-1">
                                     <p className="underline">Team Size:</p>
                                     {(mode[index] === 'edit' || mode[index] === 'newItem') ? (
@@ -321,12 +321,19 @@ const ProjectsView = () => {
                                         <p>{project.teamSize}</p>
                                     )}
                                 </div>
-                            )}
+                            )} */}
                             {/* {project?.teamRoles && (<TopicList
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="Team Roles" list={project.teamRoles}
                             />)} */}
-                            {project?.teamRoles && (
+                            {project?.teamRoles && project.teamRoles.length > 0 && (
+                                <TopicList
+                                    isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                    topic="Team Roles" list={project.teamRoles}
+                                    onChange={(listIndex) => (e) => handleProjectsTeamRolesListChange(index, listIndex)(e)}
+                                />
+                            )}
+                            {/* {project?.teamRoles && (
                                 <div className="space-x-5">
                                     <p className="underline">Team Roles:</p>
                                     <ul className="list-disc">
@@ -349,12 +356,19 @@ const ProjectsView = () => {
                                         ))}
                                     </ul>
                                 </div>
-                            )}
+                            )} */}
                             {/* {project?.cloudServices && (<TopicList
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="Cloud Services" list={project.cloudServices}
                             />)} */}
-                            {project?.cloudServices && (
+                            {project?.cloudServices && project.cloudServices.length > 0 && (
+                                <TopicList
+                                    isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                    topic="Cloud Services" list={project.cloudServices}
+                                    onChange={(listIndex) => (e) => handleProjectsCloudServicesListChange(index, listIndex)(e)}
+                                />
+                            )}
+                            {/* {project?.cloudServices && (
                                 <div className="space-x-5">
                                     <p className="underline">Cloud Services:</p>
                                     <ul className="list-disc">
@@ -377,8 +391,8 @@ const ProjectsView = () => {
                                         ))}
                                     </ul>
                                 </div>
-                            )}
-                            <div className="space-x-5">
+                            )} */}
+                            {/* <div className="space-x-5">
                                 <p className="underline">Tools:</p>
                                 <ul className="list-disc">
                                     {project.tools.map((item: string, listIndex: number) => (
@@ -399,7 +413,14 @@ const ProjectsView = () => {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            </div> */}
+                            {project?.tools && project.tools.length > 0 && (
+                                <TopicList
+                                    isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                    topic="Tools" list={project.tools}
+                                    onChange={(listIndex) => (e) => handleProjectsToolsListChange(index, listIndex)(e)}
+                                />
+                            )}
                             {/* <TopicList
                                 isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
                                 topic="Tools" list={project.tools}

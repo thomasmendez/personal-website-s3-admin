@@ -350,6 +350,20 @@ const ProjectsView = () => {
                             )}
                         </div>
                         <div className="sm:col-span-7 md:col-span-6 col-span-12">
+                            <div
+                              className={`flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
+                            >
+                              <p className="text-gray-600">Drag and drop a file here or click below</p>
+                              <label className="mt-4 cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                Browse
+                                <input
+                                  type="file"
+                                  className="hidden"
+                                />
+                              </label>
+                          
+                            </div>
+
                             <div className="card bg-gray-300 shadow-x1 dark:bg-neutral-800">
                               {project?.mediaLink && (<CardMedia projectName={project.name} mediaLink={project.mediaLink} />)}
                               <div className="card-body">

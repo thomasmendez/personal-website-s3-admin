@@ -229,7 +229,7 @@ const ProjectsView = () => {
     if (projectsStatus === 'pending') {
         content = <Loading />;
     } else if (projectsStatus === 'succeeded') {
-        if (projects && projects.length > 0) {
+        if (Array.isArray(projects) && projects.length > 0) {
             content = <React.Fragment>
                 {projects.map((project: Project, index: number) => (
                     <section key={index} className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">

@@ -88,7 +88,7 @@ const SkillsToolsView = () => {
     if (skillsToolsStatus === 'pending') {
         content = <Loading />;
     } else if (skillsToolsStatus === 'succeeded') {
-        if (skillsTools && skillsTools.length > 0) {
+        if (Array.isArray(skillsTools) && skillsTools.length > 0) {
             content = <React.Fragment>
                 {skillsTools.map((skillsToolsValue: SkillsTools, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">

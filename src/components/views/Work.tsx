@@ -24,7 +24,7 @@ const WorkView = () => {
     if (workStatus === 'pending') {
         content = <Loading />;
     } else if (workStatus === 'succeeded') {
-        if (work && work.length > 0) {
+        if (Array.isArray(work) && work.length > 0) {
             content = <React.Fragment>
                 {work.map((employment: Work, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">

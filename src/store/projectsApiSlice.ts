@@ -246,11 +246,13 @@ export const ProjectsSlice = createSlice({
             .addCase(getProjects.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 // sort in descending order (latest to oldest)
-                action.payload.sort((a: Project, b: Project) => {
-                    const dateA = new Date(a.endDate + " 01").getTime();
-                    const dateB = new Date(b.endDate + " 01").getTime();
-                    return dateB - dateA; 
-                })
+                if (Array.isArray(action.payload)) {
+                    action.payload.sort((a: Project, b: Project) => {
+                        const dateA = new Date(a.endDate + " 01").getTime();
+                        const dateB = new Date(b.endDate + " 01").getTime();
+                        return dateB - dateA; 
+                    });
+                }
                 state.entities = action.payload
                 state.mode.length = state.entities.length
                 for (let i = 0; i < state.entities.length; i++) {

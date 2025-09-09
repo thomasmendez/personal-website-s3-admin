@@ -18,8 +18,8 @@ Note: For local deployment, can set `VITE_AUTH_ENABLED=false`
 
 ## Run Dev
 
-`yarn run dev`
+`npm run dev`
 
 ## Build
 
-`yarn run build`
+`npm run build`

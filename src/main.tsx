@@ -6,10 +6,10 @@ import './index.css'
 import { store } from './store/store.ts'
 import { Provider } from 'react-redux'
 
-const authEnabled = import.meta.env.VITE_AUTH_ENABLED === 'true';
+const authEnabled = import.meta.env.VITE_AUTH_ENABLED
 
 async function enableMocking() {
-  if (authEnabled) {
+  if (authEnabled === 'true') {
     return
   }
  

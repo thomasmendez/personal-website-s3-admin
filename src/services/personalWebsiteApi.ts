@@ -2,9 +2,10 @@ import { Amplify } from 'aws-amplify'
 import { fetchAuthSession } from 'aws-amplify/auth';
 import { Work } from './../types/workTypes';
 import { SkillsTools } from './../types/skillsToolsTypes';
-import { Project } from './../types/projectTypes';
+import { Project, projectToFormData } from './../types/projectTypes';
 import config from '../auth/config.ts'
 import axios from 'axios'
+import { ProjectComponent } from '../store/projectsApiSlice.ts';
 
 export const baseUrl = import.meta.env.VITE_API_GATEWAY_ENDPOINT
 
@@ -85,11 +86,19 @@ export async function axiosGetProjects() {
     return axiosInstance.get(`${baseUrl}/api/v1/projects`, await getHeaders())
 }
 
-export async function axiosPostProject(newProject: Project) {
+export async function axiosPostProject(newProject: ProjectComponent) {
+    if (newProject.image !== null) {
+        const formData = projectToFormData(newProject)
+        return axiosInstance.post(`${baseUrl}/api/v1/projects`, formData, await getHeaders())
+    }
     return axiosInstance.post(`${baseUrl}/api/v1/projects`, newProject, await getHeaders())
 }
 
-export async function axiosPutProject(updateProject: Project) {
+export async function axiosPutProject(updateProject: ProjectComponent) {
+    if (updateProject.image !== null) {
+        const formData = projectToFormData(updateProject)
+        return axiosInstance.post(`${baseUrl}/api/v1/projects`, formData, await getHeaders())
+    }
     return axiosInstance.put(`${baseUrl}/api/v1/projects`, updateProject, await getHeaders())
 }
 

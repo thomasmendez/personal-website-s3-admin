@@ -258,14 +258,14 @@ const ProjectsView = () => {
         const reader = new FileReader();
         reader.onload = () => {
             const base64String = reader.result as string;
-            dispatch(projectsMediaChange({index, mediaLink: base64String, mediaPreview: reader.result as string}))
+            dispatch(projectsMediaChange({index, mediaLink: null, mediaPreview: base64String, image: file}))
         };
         reader.readAsDataURL(file);
       }
     }
 
     const handleProjectsMediaRemoval = (index: number) => () => {
-      dispatch(projectsMediaChange({index, mediaLink: null, mediaPreview: null}))
+      dispatch(projectsMediaChange({index, mediaLink: null, mediaPreview: null, image: null}))
     }
 
     useEffect(() => {
@@ -516,6 +516,34 @@ const ProjectsView = () => {
                     </section>
                 ))}
             </React.Fragment>
+        } else if (Array.isArray(projects) && projects.length === 0) {
+            content = <React.Fragment>
+                <section className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
+                    <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
+                        No projects found
+                    </div>
+                    <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
+                        {mode[0] === 'edit' || mode[0] === 'newItem' ? (
+                                <button className="after:content-['\01F441']" onClick={() => {
+                                    if (mode[0] === 'newItem') {
+                                        dispatch(projectsModeChange({index: 0, mode: 'newItemDone'}))
+                                    } else if (mode[0] === 'edit') {
+                                        dispatch(projectsModeChange({index: 0, mode: 'editDone'}))
+                                    } else {
+                                        dispatch(projectsModeChange({index: 0, mode: "view"}))
+                                    }
+                                }}></button>
+                            ) : (
+                                <button className="after:content-['\0270F']" onClick={() => {
+                                    dispatch(projectsModeChange({index: 0, mode: 'edit'}))
+                                }}></button>
+                            )}
+                        {/* https://emojipedia.org/ */}
+                        <AddButton onClick={() => dispatch(handleProjectsAdd(0+1))} />
+                        <DeleteButton onClick={() => dispatch(handleProjectsDelete(0))} />
+                    </div>
+                </section>
+            </React.Fragment>;
         }
     } else if (projectsStatus === 'failed') {
         content = <p>{projectsError}</p>;

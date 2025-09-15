@@ -71,6 +71,7 @@ interface ProjectsState {
 
 export interface ProjectComponent extends Project {
     mediaPreview: string | null
+    image: File | null
 }
 
 interface StateError {
@@ -114,7 +115,8 @@ export const ProjectsSlice = createSlice({
                 link: "http://my-url",
                 linkType: "YouTube",
                 mediaLink: "http://link",
-                mediaPreview: null
+                mediaPreview: null,
+                image: null,
             }
             state.entities.push(newItem)
             state.mode.push('newItem')
@@ -243,12 +245,13 @@ export const ProjectsSlice = createSlice({
             }
         },
         projectsMediaChange: (state, action) => {
-            const { index, mediaLink, mediaPreview } = action.payload;
+            const { index, mediaLink, mediaPreview, image } = action.payload;
             if (index >= 0 && index < state.entities.length) {
                 state.entities[index] = {
                     ...state.entities[index],
                     mediaLink: mediaLink,
                     mediaPreview: mediaPreview,
+                    image: image,
                 };
             }
         }

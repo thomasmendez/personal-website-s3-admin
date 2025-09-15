@@ -19,46 +19,76 @@ import { getProjectsError, getProjectsStatus, selectAllProjects,
 } from "../../store/projectsApiSlice"
 import React, { ChangeEvent, FC, useEffect } from "react"
 import { AppDispatch } from "../../store/store"
-// import { Project } from "../../types/projectTypes"
+import { getMimeTypeFromBase64 } from "../../utils/mime"
 import Loading from "../Loading/Loading"
 import AddButton from "../Buttons/AddButton"
 import DeleteButton from "../Buttons/DeleteButton"
 
 interface CardMediaProps {
     projectName: string,
-    mediaLink: string | null
+    media: string | null
 }
 
-const CardMedia: FC<CardMediaProps> = ({ projectName, mediaLink }) => {
-    if (!mediaLink) return null;
-    if (import.meta.env.VITE_ENV === 'development') {
-        console.log("mediaLink", mediaLink)
-        return(
-            <div className={`relative flex flex-col border-2 border-blue-500 dark:border-gray-300 rounded-md transition-colors duration-200`}>
-                <img src={`data:${'image/png'};base64,${mediaLink}`} alt={`${projectName} Image`} />
-            </div>
-        )
-    }
-    const mediaType = mediaLink.split('.').pop()
-    switch(mediaType) {
-        case 'mp4':
-            return(
-                <video controls>
-                    <source src={mediaLink} type="video/mp4"/>
-                    Your browser does not support the video tag
-                </video>
-            )
-        case 'png' || 'jpeg':
-            return(
-                <img src={mediaLink} alt={`${projectName} Image`} />
-            )
-        default:
-            console.groupCollapsed(`%c Media for "${projectName}" has an invalid extension`, 'font-weight: bold; color: yellow');
+const CardMedia: FC<CardMediaProps> = ({ projectName, media }) => {
+    if (!media) return null;
+    if (media.startsWith('https://')) {
+        console.log("getting media resource through url: ", media)
+        const mediaType = media.split('.').pop()
+        switch(mediaType) {
+            case 'mp4':
+                return(
+                    <video controls>
+                        <source src={media} type="video/mp4"/>
+                        Your browser does not support the video tag
+                    </video>
+                )
+            case 'png' || 'jpeg' || 'jpg' || 'gif' || 'webp' || 'bmp':
+                return(
+                    <img src={media} alt={`${projectName} Image`} />
+                )
+            default:
+                console.groupCollapsed(`%c Media for "${projectName}" has an invalid extension`, 'font-weight: bold; color: yellow');
+                console.warn(new Error().stack);
+                console.groupEnd();
+                return(
+                    <React.Fragment />
+                )
+        }
+    } else {
+        // see if media is of type base64
+        const cleanBase64 = media.replace(/^data:.*?;base64,/, '');
+    
+        const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+        if (!base64Regex.test(cleanBase64) || cleanBase64.length % 4 !== 0) {
+            console.groupCollapsed(`%c Media for "${projectName}" has an invalid value`, 'font-weight: bold; color: yellow');
             console.warn(new Error().stack);
             console.groupEnd();
             return(
-                <React.Fragment />
+                <div
+                  className={`flex flex-col items-center justify-center dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
+                >
+                  <p className="text-gray-600">Media file is invalid</p>
+                </div>
             )
+        }
+
+        const mimeType = getMimeTypeFromBase64(media);
+        if (!mimeType) {
+            console.error('Invalid base64 string - cannot decode');
+            return(
+                <div
+                  className={`flex flex-col items-center justify-center dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
+                >
+                  <p className="text-gray-600">Media file is invalid</p>
+                </div>
+            )
+        }
+        console.log(`Media for "${projectName}" has been decoded as ${mimeType}`);
+        return(
+            <div className={`relative flex flex-col border-2 border-blue-500 dark:border-gray-300 rounded-md transition-colors duration-200`}>
+                <img src={`data:${mimeType};base64,${cleanBase64}`} alt={`${projectName} Image`} />
+            </div>
+        )
     }
 }
 
@@ -225,8 +255,7 @@ const ProjectsView = () => {
         const reader = new FileReader();
         reader.onload = () => {
             const base64String = reader.result as string;
-            const base64Data = base64String.split(',')[1]; // Remove data:image/jpeg;base64, prefix
-            dispatch(projectsMediaChange({index, mediaLink: base64Data, mediaPreview: reader.result as string}))
+            dispatch(projectsMediaChange({index, mediaLink: base64String, mediaPreview: reader.result as string}))
         };
         reader.readAsDataURL(file);
       }
@@ -263,7 +292,7 @@ const ProjectsView = () => {
             content = <React.Fragment>
                 {projects.map((project: ProjectComponent, index: number) => (
                     <section key={index} className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
-                        <div className="sm:col-start-2 sm:col-span-3 md:col-start-3 md:col-span-3 col-span-12 space-y-3">
+                        <div className="sm:col-start-2 sm:col-span-3 md:col-start-3 md:col-span-3 col-span-12 space-y-3 pr-3">
                             <div className="col-start-3 col-span-7">
                                 {mode[index] === 'edit' || mode[index] === 'newItem' ? (
                                     <input
@@ -419,10 +448,10 @@ const ProjectsView = () => {
                                   )}
                                 </div>
                             ) : (
-                                <CardMedia projectName={project.name} mediaLink={project.mediaLink} />
+                                <CardMedia projectName={project.name} media={project.mediaLink} />
                             )}
 
-                            <div className="card bg-gray-300 shadow-x1 dark:bg-neutral-800">
+                            <div className="card bg-gray-300 shadow-x1 dark:bg-neutral-800 mt-3">
                               <div className="card-body">
                                 <p className="card-title">{project.name} Features</p>
                                 {mode[index] === 'edit' || mode[index] === 'newItem' ? (

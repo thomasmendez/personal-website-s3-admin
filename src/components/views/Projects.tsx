@@ -31,7 +31,12 @@ interface CardMediaProps {
 
 const CardMedia: FC<CardMediaProps> = ({ projectName, media }) => {
     if (!media) return null;
-    if (media.startsWith('https://')) {
+    if (media.startsWith('https://') || media.startsWith('http://')) {
+        if (media.startsWith("http://")) {
+            console.groupCollapsed(`%c Media for "${projectName}" is unsecured`, 'font-weight: bold; color: yellow');
+            console.warn(new Error().stack);
+            console.groupEnd();
+        }
         console.log("getting media resource through url: ", media)
         const mediaType = media.split('.').pop()
         switch(mediaType) {
@@ -60,14 +65,12 @@ const CardMedia: FC<CardMediaProps> = ({ projectName, media }) => {
     
         const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
         if (!base64Regex.test(cleanBase64) || cleanBase64.length % 4 !== 0) {
-            console.groupCollapsed(`%c Media for "${projectName}" has an invalid value`, 'font-weight: bold; color: yellow');
-            console.warn(new Error().stack);
-            console.groupEnd();
+            console.error(`%c Media for "${projectName}" has an invalid value`, 'font-weight: bold; color: yellow');
             return(
                 <div
-                  className={`flex flex-col items-center justify-center dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
+                  className={`flex flex-col items-center justify-center border-2 border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
                 >
-                  <p className="text-gray-600">Media file is invalid</p>
+                  <p className="text-red-500">Media file is invalid</p>
                 </div>
             )
         }
@@ -77,9 +80,9 @@ const CardMedia: FC<CardMediaProps> = ({ projectName, media }) => {
             console.error('Invalid base64 string - cannot decode');
             return(
                 <div
-                  className={`flex flex-col items-center justify-center dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
+                  className={`flex flex-col items-center justify-center border-2 border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
                 >
-                  <p className="text-gray-600">Media file is invalid</p>
+                  <p className="text-red-500">Media file is invalid</p>
                 </div>
             )
         }

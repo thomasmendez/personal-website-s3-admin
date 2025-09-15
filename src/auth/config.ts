@@ -1,6 +1,6 @@
 import { ResourcesConfig } from '@aws-amplify/core';
 
-const authEnabled = import.meta.env.VITE_AUTH_ENABLED === 'true';
+const authEnabled = import.meta.env.VITE_AUTH_ENABLED
 
 const authConfig: ResourcesConfig = {
   ...(authEnabled && {

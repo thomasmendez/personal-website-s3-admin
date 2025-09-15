@@ -14,7 +14,7 @@ You can obtain the `VITE_USER_POOL_ID` and `VITE_USER_POOL_CLIENT_ID` from the p
 
 You can obtain `VITE_API_GATEWAY_ENDPOINT` from the provisioned AWS API Gateway resource from the AWS SAM template
 
-Note: For local deployment, can set `VITE_AUTH_ENABLED=false`
+Note: For local deployment, can set `VITE_AUTH_ENABLED=false` and `VITE_MOCKS_ENABLED=true`
 
 ## Run Dev
 

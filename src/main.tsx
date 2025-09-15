@@ -6,11 +6,11 @@ import './index.css'
 import { store } from './store/store.ts'
 import { Provider } from 'react-redux'
 
-const authEnabled = import.meta.env.VITE_AUTH_ENABLED
-const env = import.meta.env.VITE_ENV
+const mocksEnabled = import.meta.env.VITE_MOCKS_ENABLED
 
 async function enableMocking() {
-  if (authEnabled === 'true' || env === 'production') {
+  console.log('Enabling mocking', mocksEnabled)
+  if (mocksEnabled === 'false') {
     return
   }
  

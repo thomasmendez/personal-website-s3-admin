@@ -4,7 +4,7 @@ import { axiosPostProject, axiosGetProjects, axiosPutProject, axiosDeleteProject
 
 export const postProjects = createAsyncThunk(
     'post/projects',
-    async (postProjects: Project, thunkApi) => {
+    async (postProjects: ProjectComponent, thunkApi) => {
         try {
             const response = await axiosPostProject(postProjects)
             console.log(`Response POST: ${JSON.stringify(response.data)}`)
@@ -34,7 +34,7 @@ export const getProjects = createAsyncThunk(
 
 export const putProjects = createAsyncThunk(
     'put/projects',
-    async (updateProjects: Project, thunkApi) => {
+    async (updateProjects: ProjectComponent, thunkApi) => {
         try {
             const response = await axiosPutProject(updateProjects)
             console.log(`Response PUT: ${JSON.stringify(response.data)}`)
@@ -49,7 +49,7 @@ export const putProjects = createAsyncThunk(
 
 export const deleteProjects = createAsyncThunk(
     'delete/projects',
-    async (deleteProjects: Project, thunkApi) => {
+    async (deleteProjects: ProjectComponent, thunkApi) => {
         try {
             const response = await axiosDeleteProject(deleteProjects)
             console.log(`Response DELETE: ${JSON.stringify(response.data)}`)
@@ -63,10 +63,14 @@ export const deleteProjects = createAsyncThunk(
 )
 
 interface ProjectsState {
-    entities: Project[]
+    entities: ProjectComponent[]
     status: 'idle' | 'pending' | 'succeeded' | 'failed'
     error: StateError | null | unknown;
     mode: string[]
+}
+
+export interface ProjectComponent extends Project {
+    mediaPreview: string | null
 }
 
 interface StateError {
@@ -90,7 +94,7 @@ export const ProjectsSlice = createSlice({
         },
         projectsAdd: (state, action) => {
             const { index } = action.payload
-            const newItem: Project = {
+            const newItem: ProjectComponent = {
                 personalWebsiteType: `Projects`,
                 sortValue: `newProject${index}`,
                 category: `newCategory${index}`,
@@ -109,7 +113,8 @@ export const ProjectsSlice = createSlice({
                 notes: `newNotes${index}`,
                 link: "http://my-url",
                 linkType: "YouTube",
-                mediaLink: "http://link"
+                mediaLink: "http://link",
+                mediaPreview: null
             }
             state.entities.push(newItem)
             state.mode.push('newItem')
@@ -236,6 +241,16 @@ export const ProjectsSlice = createSlice({
                     notes: value,
                 };
             }
+        },
+        projectsMediaChange: (state, action) => {
+            const { index, mediaLink, mediaPreview } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    mediaLink: mediaLink,
+                    mediaPreview: mediaPreview,
+                };
+            }
         }
     },
     extraReducers: (builder) => {
@@ -284,6 +299,7 @@ export const { projectsAdded, projectsModeChange,
     projectsDurationChange,
     projectsStartDateChange,
     projectsEndDateChange,
-    projectsNotesChange, } = ProjectsSlice.actions
+    projectsNotesChange, 
+    projectsMediaChange } = ProjectsSlice.actions
 
 export default ProjectsSlice.reducer

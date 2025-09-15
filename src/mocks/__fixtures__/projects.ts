@@ -1,4 +1,6 @@
-const ProjectsMock = [
+import { Project } from "../../types/projectTypes"
+
+const ProjectsMock: Project[] = [
   {
     personalWebsiteType: "Projects",
     sortValue: "Open-LMS-Blended",
@@ -12,6 +14,7 @@ const ProjectsMock = [
       "Experienced the entire development lifecycle, deployed, and documented the entire application for both Digital Ocean and AWS",
     ],
     teamSize: "1",
+    teamRoles: null,
     cloudServices: [
       "AWS",
       "Digital Ocean"

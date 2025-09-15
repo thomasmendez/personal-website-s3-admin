@@ -14,20 +14,31 @@ import { getProjectsError, getProjectsStatus, selectAllProjects,
     projectsStartDateChange,
     projectsEndDateChange,
     projectsNotesChange,
+    projectsMediaChange,
+    ProjectComponent,
 } from "../../store/projectsApiSlice"
 import React, { ChangeEvent, FC, useEffect } from "react"
 import { AppDispatch } from "../../store/store"
-import { Project } from "../../types/projectTypes"
+// import { Project } from "../../types/projectTypes"
 import Loading from "../Loading/Loading"
 import AddButton from "../Buttons/AddButton"
 import DeleteButton from "../Buttons/DeleteButton"
 
 interface CardMediaProps {
     projectName: string,
-    mediaLink: string
+    mediaLink: string | null
 }
 
 const CardMedia: FC<CardMediaProps> = ({ projectName, mediaLink }) => {
+    if (!mediaLink) return null;
+    if (import.meta.env.VITE_ENV === 'development') {
+        console.log("mediaLink", mediaLink)
+        return(
+            <div className={`relative flex flex-col border-2 border-blue-500 dark:border-gray-300 rounded-md transition-colors duration-200`}>
+                <img src={`data:${'image/png'};base64,${mediaLink}`} alt={`${projectName} Image`} />
+            </div>
+        )
+    }
     const mediaType = mediaLink.split('.').pop()
     switch(mediaType) {
         case 'mp4':
@@ -206,6 +217,25 @@ const ProjectsView = () => {
       dispatch(projectsNotesChange({index, value: newValue}))
     }
 
+    const handleProjectsMediaChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0]
+      console.log("file", file)
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64String = reader.result as string;
+            const base64Data = base64String.split(',')[1]; // Remove data:image/jpeg;base64, prefix
+            dispatch(projectsMediaChange({index, mediaLink: base64Data, mediaPreview: reader.result as string}))
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    const handleProjectsMediaRemoval = (index: number) => () => {
+      dispatch(projectsMediaChange({index, mediaLink: null, mediaPreview: null}))
+    }
+
     useEffect(() => {
         for (let i = 0; i < mode.length; i++) {
             if (mode[i] === 'editDone') {
@@ -231,7 +261,7 @@ const ProjectsView = () => {
     } else if (projectsStatus === 'succeeded') {
         if (Array.isArray(projects) && projects.length > 0) {
             content = <React.Fragment>
-                {projects.map((project: Project, index: number) => (
+                {projects.map((project: ProjectComponent, index: number) => (
                     <section key={index} className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="sm:col-start-2 sm:col-span-3 md:col-start-3 md:col-span-3 col-span-12 space-y-3">
                             <div className="col-start-3 col-span-7">
@@ -350,22 +380,49 @@ const ProjectsView = () => {
                             )}
                         </div>
                         <div className="sm:col-span-7 md:col-span-6 col-span-12">
-                            <div
-                              className={`flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
-                            >
-                              <p className="text-gray-600">Drag and drop a file here or click below</p>
-                              <label className="mt-4 cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                Browse
-                                <input
-                                  type="file"
-                                  className="hidden"
-                                />
-                              </label>
-                          
-                            </div>
+                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                <div
+                                className={project.mediaPreview ? 
+                                    `relative flex flex-col border-2 border-dashed border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200` : 
+                                    `flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`
+                                  }
+                                >
+                                  {project.mediaPreview ? (
+                                    <div className="relative inline-block">
+                                      <img 
+                                        src={project.mediaPreview} 
+                                        alt="Preview" 
+                                        className="w-full h-full object-cover rounded-lg"
+                                      />
+                                      <button
+                                        onClick={handleProjectsMediaRemoval(index)}
+                                        className="absolute top-2 right-2 w-6 h-6 bg-black bg-opacity-40 hover:bg-opacity-60 text-white rounded flex items-center justify-center text-sm font-bold transition-all duration-200 z-10"
+                                        type="button"
+                                      >
+                                        ×
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      className={`flex flex-col items-center justify-center dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
+                                    >
+                                      <p className="text-gray-600">Drag and drop a file here or click below</p>
+                                      <label className="mt-4 cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                        Browse
+                                        <input
+                                          type="file"
+                                          className="hidden"
+                                          onChange={handleProjectsMediaChange(index)}
+                                        />
+                                      </label>
+                                    </div>
+                                  )}
+                                </div>
+                            ) : (
+                                <CardMedia projectName={project.name} mediaLink={project.mediaLink} />
+                            )}
 
                             <div className="card bg-gray-300 shadow-x1 dark:bg-neutral-800">
-                              {project?.mediaLink && (<CardMedia projectName={project.name} mediaLink={project.mediaLink} />)}
                               <div className="card-body">
                                 <p className="card-title">{project.name} Features</p>
                                 {mode[index] === 'edit' || mode[index] === 'newItem' ? (

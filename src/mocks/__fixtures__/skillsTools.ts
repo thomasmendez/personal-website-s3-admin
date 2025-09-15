@@ -1,4 +1,5 @@
-const SkillsToolsMock = [
+import { SkillsTools } from "../../types/skillsToolsTypes"
+const SkillsToolsMock: SkillsTools[] = [
   {
     personalWebsiteType: "SkillsTools",
     sortValue: "Skills",

@@ -38,7 +38,10 @@ const CardMedia: FC<CardMediaProps> = ({ projectName, media }) => {
             console.groupEnd();
         }
         console.log("getting media resource through url: ", media)
-        const mediaType = media.split('.').pop()
+        const urlObj = new URL(media);
+        const filename = urlObj.pathname.split('/').pop();
+        const mediaType = filename?.split('.').pop()
+        console.log("media type: ", mediaType)
         switch(mediaType) {
             case 'mp4':
                 return(
@@ -47,12 +50,19 @@ const CardMedia: FC<CardMediaProps> = ({ projectName, media }) => {
                         Your browser does not support the video tag
                     </video>
                 )
-            case 'png' || 'jpeg' || 'jpg' || 'gif' || 'webp' || 'bmp':
+            case 'png':
+            case 'jpeg':
+            case 'jpg':
+            case 'gif':
+            case 'webp':
+            case 'bmp':
                 return(
-                    <img src={media} alt={`${projectName} Image`} />
+                    <div className={`relative flex flex-col border-2 border-blue-500 dark:border-gray-300 rounded-md transition-colors duration-200`}>
+                        <img src={media} alt={`${projectName} Image`} />
+                    </div>
                 )
             default:
-                console.groupCollapsed(`%c Media for "${projectName}" has an invalid extension`, 'font-weight: bold; color: yellow');
+                console.groupCollapsed(`%c Media for "${projectName}" has an invalid extension: ${mediaType}`, 'font-weight: bold; color: yellow');
                 console.warn(new Error().stack);
                 console.groupEnd();
                 return(
@@ -273,10 +283,12 @@ const ProjectsView = () => {
             if (mode[i] === 'editDone') {
                 dispatch(putProjects(projects[i]))
                 dispatch(projectsModeChange({index: i, mode: 'updated'}))
+                // need to handle wait for response 
             }
             if (mode[i] === 'newItemDone') {
                 dispatch(postProjects(projects[i]))
                 dispatch(projectsModeChange({index: i, mode: 'created'}))
+                // need to handle wait for response 
             }
         }
     }, [mode, projects, dispatch])

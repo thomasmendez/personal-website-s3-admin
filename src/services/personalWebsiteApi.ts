@@ -32,6 +32,20 @@ async function getHeaders() {
     return options    
 }
 
+async function getHeadersFormData() {
+    const sessionToken = await fetchSessionToken()
+    const options = {
+        headers: {
+            "Authorization": `Bearer ${sessionToken}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+            "Content-Type": "multipart/form-data",
+        }
+    }
+    return options    
+}
+
 export async function axiosGetWork() {
     return axiosInstance.get(`${baseUrl}/api/v1/work`, await getHeaders())
 }
@@ -89,7 +103,7 @@ export async function axiosGetProjects() {
 export async function axiosPostProject(newProject: ProjectComponent) {
     if (newProject.image !== null) {
         const formData = projectToFormData(newProject)
-        return axiosInstance.post(`${baseUrl}/api/v1/projects`, formData, await getHeaders())
+        return axiosInstance.post(`${baseUrl}/api/v1/projects`, formData, await getHeadersFormData())
     }
     return axiosInstance.post(`${baseUrl}/api/v1/projects`, newProject, await getHeaders())
 }
@@ -97,7 +111,7 @@ export async function axiosPostProject(newProject: ProjectComponent) {
 export async function axiosPutProject(updateProject: ProjectComponent) {
     if (updateProject.image !== null) {
         const formData = projectToFormData(updateProject)
-        return axiosInstance.post(`${baseUrl}/api/v1/projects`, formData, await getHeaders())
+        return axiosInstance.post(`${baseUrl}/api/v1/projects`, formData, await getHeadersFormData())
     }
     return axiosInstance.put(`${baseUrl}/api/v1/projects`, updateProject, await getHeaders())
 }

@@ -291,13 +291,13 @@ const ProjectsView = () => {
                 // need to handle wait for response 
             }
         }
-    }, [mode, projects, dispatch])
+    }, [mode, projects])
     
     useEffect(() => {
         if (projectsStatus === 'idle') {
             dispatch(getProjects())
         }
-    }, [projectsStatus, dispatch])
+    }, [projectsStatus])
 
     let content;
     if (projectsStatus === 'pending') {

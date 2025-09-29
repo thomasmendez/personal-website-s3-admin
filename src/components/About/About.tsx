@@ -6,7 +6,7 @@ interface AboutProps {
   educationDetails: string,
   educationStartDate: string,
   educationEndDate: string,
-  degreeMinors: string,
+  degreeMinors: string[],
 }
 
 const About: FC<AboutProps> = ({ aboutMeDetails, educationDetails, educationStartDate, educationEndDate, degreeMinors }) => {
@@ -15,21 +15,23 @@ const About: FC<AboutProps> = ({ aboutMeDetails, educationDetails, educationStar
       <section className="sm:col-start-3 sm:col-span-7 col-span-12">
         <section className="p-4 col-span-12 space-y-2">
           <p className="text-left text-xl font-semibold">About Me</p>
-          <p className="text-left">I am a passionate software engineer who loves to solve real world problems using new unexplored technologies. I enjoy developing good user experiences, wether it be for desktop, mobile, or video games. Always looking forward to working on the next big project.</p>
+          <p className="text-left">{aboutMeDetails}</p>
         </section>
         <section className="p-4 text-left col-span-12 space-y-2">
           <p className="text-left col-span-12 text-xl grid-cols-12 font-semibold">Education</p>
           <div className="col-span-12">
             <p className="text-left">
-              Bachelor of Science in Arts and Entertainment Technologies, at The University of Texas at Austin
+              {educationDetails}
             </p>
             <p className="text-left">
-              August 2016 - May 2019
+              {educationStartDate} - {educationEndDate}
             </p>
             <ul className="text-left list-disc list-inside">
-              <li>
-                Elements of Computing Certificate
-              </li>
+              {degreeMinors.map((minor, index) => (
+                <li key={index}>
+                  {minor}
+                </li>
+              ))}
             </ul>
           </div>
         </section>

@@ -1,7 +1,10 @@
 export interface SkillsTools {
     personalWebsiteType: string  
 	sortValue: string  
-	category: string  
-	type: string  
+	categories: Categories[]
+}
+
+export interface Categories {
+	category: string
 	list: string[]
 }

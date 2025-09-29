@@ -6,10 +6,31 @@ import './index.css'
 import { store } from './store/store.ts'
 import { Provider } from 'react-redux'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const mocksEnabled = import.meta.env.VITE_MOCKS_ENABLED
+
+async function enableMocking() {
+  console.log('Enabling mocking', mocksEnabled)
+  if (mocksEnabled === 'false') {
+    return
+  }
+ 
+  const { worker } = await import('./mocks/browser.js')
+ 
+  // `worker.start()` returns a Promise that resolves
+  // once the Service Worker is up and ready to intercept requests.
+  return worker.start({
+    serviceWorker: {
+      url: '/mockServiceWorker.js',
+    },
+  })  
+}
+
+enableMocking().then(() => {
+  ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
   </React.StrictMode>,
-)
+  )
+})

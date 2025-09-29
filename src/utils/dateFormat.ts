@@ -1,4 +1,8 @@
 export function formatDateToMonthYear(dateString: string): string {
+    const isDateFormat = dateString.match(/^\d{4}-\d{2}-\d{2}$/); // YYYY-MM-DD
+    if (isDateFormat === null) {
+        return dateString;
+    }
     const [year, month] = dateString.split('-'); // Split the date string by '-'
     const monthNames: string[] = [
         'January', 'February', 'March', 'April', 'May', 'June',

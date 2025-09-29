@@ -53,8 +53,8 @@ const AppPage: FC<AppPage> = ({ pageComponent, title }) => {
 
 const AppRoutes = () => {
   const routes = useRoutes([
-    { path: '/', element: <AppPage pageComponent={<Home />} />},
-    { path: '/about', element: <AppPage pageComponent={<Home />} />},
+    { path: '/', element: <AppPage pageComponent={<Home name="Thomas A. Mendez" jobTitle="Software Engineer and Game Developer" />} />},
+    { path: '/about', element: <AppPage pageComponent={<Home name="Thomas A. Mendez" jobTitle="Software Engineer and Game Developer" />} />},
     { path: '/work', element: <AppPage title='Where I Worked' pageComponent={<Work />} /> },
     { path: '/skills-tools', element: <AppPage title='Skills & Tools' pageComponent={<SkillsTools />} /> },
     { path: '/vr-ar', element: <AppPage title='Virtual Reality (VR) / Augmented Reality (AR) Projects' pageComponent={<Projects />} /> },

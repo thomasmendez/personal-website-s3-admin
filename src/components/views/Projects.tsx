@@ -1,125 +1,404 @@
 import { useSelector, useDispatch } from "react-redux"
-import { getProjectsError, getProjectsStatus, selectAllProjects } from "../../store/projectsApiSlice"
-import React, { FC, useEffect } from "react"
-import { getProjects } from "../../store/projectsApiSlice"
+import { getProjectsError, getProjectsStatus, selectAllProjects,
+    getProjectsMode, projectsModeChange,
+    getProjects, postProjects, putProjects, deleteProjects,
+    projectsAdd, projectsDelete,
+    projectsValueChange, projectsDescriptionChange,
+    projectsRoleChange,
+    projectsTasksListChange,
+    projectsTeamSizeChange,
+    projectsTeamRolesListChange,
+    projectsCloudServicesListChange,
+    projectsToolsListChange,
+    projectsDurationChange,
+    projectsStartDateChange,
+    projectsEndDateChange,
+    projectsNotesChange,
+    projectsMediaChange,
+    ProjectComponent,
+} from "../../store/projectsApiSlice"
+import React, { ChangeEvent, useEffect } from "react"
 import { AppDispatch } from "../../store/store"
-import { Project } from "../../types/projectTypes"
 import Loading from "../Loading/Loading"
-
-interface CardMediaProps {
-    projectName: string,
-    mediaLink: string
-}
-
-const CardMedia: FC<CardMediaProps> = ({ projectName, mediaLink }) => {
-    const mediaType = mediaLink.split('.').pop()
-    switch(mediaType) {
-        case 'mp4':
-            return(
-                <video controls>
-                    <source src={mediaLink} type="video/mp4"/>
-                    Your browser does not support the video tag
-                </video>
-            )
-        case 'png' || 'jpeg':
-            return(
-                <img src={mediaLink} alt={`${projectName} Image`} />
-            )
-        default:
-            console.error("Media has an invalid extension")
-            return(
-                <React.Fragment />
-            )
-    }
-}
-
-interface TopicList {
-    topic: string,
-    list: string[],
-}
-
-const TopicList: FC<TopicList> = ({ topic, list }) => {
-    return(
-        <div className="space-x-5">
-            <p className="underline">{topic}:</p>
-            <ul className="list-disc list-inside">
-                {list.map((item: string, listIndex: number) => (
-                    <li key={listIndex}>{item}</li>
-                ))}
-            </ul>
-        </div>
-    )
-}
-
-interface TopicInline {
-    topic: string,
-    description: string,
-}
-
-const TopicInline: FC<TopicInline> = ({ topic, description }) => {
-    return(
-        <div className="flex space-x-1">
-            <p className="underline">{topic}:</p>
-            <p>{description}</p>
-        </div>
-    )
-}
+import AddButton from "../Buttons/AddButton"
+import DeleteButton from "../Buttons/DeleteButton"
+import CardMedia from "../CardMedia/CardMedia"
+import TopicList from "../TopicList/TopicList"
+import TopicInline from "../TopicInline/TopicInline"
 
 const ProjectsView = () => {
     const dispatch = useDispatch<AppDispatch>()
     const projects = useSelector(selectAllProjects)
     const projectsStatus = useSelector(getProjectsStatus)
     const projectsError = useSelector(getProjectsError)
+
+    const mode = useSelector(getProjectsMode)
+
+    const handleProjectsAdd = (index: number) => () => {
+      dispatch(projectsAdd({index}))
+    }
+
+    const handleProjectsDelete = (index: number) => () => {
+      dispatch(projectsDelete({index}))
+      dispatch(deleteProjects(projects[index]))
+    }
+
+    const handleProjectsValueChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsValueChange({index, value: newValue}))
+    }
+
+    const handleProjectsDescriptionChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsDescriptionChange({index, value: newValue}))
+    }
+
+    const handleProjectsRoleChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsRoleChange({index, value: newValue}))
+    }
+
+    const handleProjectsTeamSizeChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsTeamSizeChange({index, value: newValue}))
+    }
+
+    const handleProjectsTeamRolesListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsTeamRolesListChange({index, listIndex, value: newValue}))
+    }
+
+    const handleProjectsTasksListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsTasksListChange({index, listIndex, value: newValue}))
+    }
+
+    const handleProjectsCloudServicesListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsCloudServicesListChange({index, listIndex, value: newValue}))
+    }
+
+    const handleProjectsToolsListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value
+        dispatch(projectsToolsListChange({index, listIndex, value: newValue}))
+      }
+
+    const handleProjectsDurationChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsDurationChange({index, value: newValue}))
+    }
+
+    const handleProjectsStartDateChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsStartDateChange({index, value: newValue}))
+    }
+
+    const handleProjectsEndDateChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsEndDateChange({index, value: newValue}))
+    }
+
+    const handleProjectsNotesChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsNotesChange({index, value: newValue}))
+    }
+
+    const handleProjectsMediaChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0]
+      console.log("file", file)
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64String = reader.result as string;
+            dispatch(projectsMediaChange({index, mediaLink: null, mediaPreview: base64String, image: file}))
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    const handleProjectsMediaRemoval = (index: number) => () => {
+      dispatch(projectsMediaChange({index, mediaLink: null, mediaPreview: null, image: null}))
+    }
+
+    useEffect(() => {
+        for (let i = 0; i < mode.length; i++) {
+            if (mode[i] === 'editDone') {
+                dispatch(putProjects(projects[i]))
+                dispatch(projectsModeChange({index: i, mode: 'updated'}))
+                // need to handle wait for response 
+            }
+            if (mode[i] === 'newItemDone') {
+                dispatch(postProjects(projects[i]))
+                dispatch(projectsModeChange({index: i, mode: 'created'}))
+                // need to handle wait for response 
+            }
+        }
+    }, [mode, projects])
     
     useEffect(() => {
         if (projectsStatus === 'idle') {
             dispatch(getProjects())
         }
-    }, [projectsStatus, dispatch])
+    }, [projectsStatus])
 
     let content;
     if (projectsStatus === 'pending') {
         content = <Loading />;
     } else if (projectsStatus === 'succeeded') {
-        if (projects && projects.length > 0) {
+        if (Array.isArray(projects) && projects.length > 0) {
             content = <React.Fragment>
-                {projects.map((project: Project, index: number) => (
+                {projects.map((project: ProjectComponent, index: number) => (
                     <section key={index} className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
-                        <div className="sm:col-start-2 sm:col-span-3 md:col-start-3 md:col-span-3 col-span-12 space-y-3">
+                        <div className="sm:col-start-2 sm:col-span-3 md:col-start-3 md:col-span-3 col-span-12 space-y-3 pr-3">
                             <div className="col-start-3 col-span-7">
-                                <p className="text-xl font-bold">{project.name}</p>
+                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                    <input
+                                        type="text"
+                                        name={`project-name-${index}`}
+                                        id={`project-name-${index}`}
+                                        placeholder="Project Name"
+                                        defaultValue={project.sortValue}
+                                        className="block font-bold rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        style={{ fontSize: "1.125rem", lineHeight: "1.75rem"}}
+                                        onChange={handleProjectsValueChange(index)}
+                                    />
+                                ) : (
+                                    <p className="text-xl font-bold">{project.name}</p>
+                                )}
                             </div>
                             <div>
                                 <p className="underline">Project Description:</p>
-                                <p>{project.description}</p>
+                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                    <input
+                                        name={`project-description-${index}`}
+                                        id={`project-description-${index}`}
+                                        defaultValue={project.description}
+                                        className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                        onChange={handleProjectsDescriptionChange(index)}
+                                    />
+                                ) : (
+                                    <p>{project.description}</p>
+                                )}
                             </div>
-                            <TopicInline topic="My Role" description={project.role} />
-                            <TopicList topic="My Tasks" list={project.tasks} />
-                            {project.teamSize !== null && (<TopicInline topic="Team Size" description={project.teamSize} />)}
-                            {project?.teamRoles && (<TopicList topic="Team Roles" list={project.teamRoles} />)}
-                            {project?.cloudServices && (<TopicList topic="Cloud Services" list={project.cloudServices} />)}
-                            <TopicList topic="Tools" list={project.tools} />
-                            <TopicInline topic="Project Duration" description={project.duration} />
-                            <TopicInline topic="Project Date" description={`${project.startDate} - ${project.endDate}`} />
-                            <div className="space-x-1">
-                                <p className="italic">*{project.notes}*</p>
+                            <TopicInline
+                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                topic="My Role" description={project.role}
+                                onChange={handleProjectsRoleChange(index)}
+                            />
+                            <TopicList
+                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                topic="My Tasks" list={project.tasks}
+                                onChange={(listIndex) => (e) => handleProjectsTasksListChange(index, listIndex)(e)}
+                            />
+                            {project.teamSize !== null && (<TopicInline
+                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                topic="Team Size" description={project.teamSize}
+                                onChange={handleProjectsTeamSizeChange(index)}
+                            />)}
+                            {project?.teamRoles && project.teamRoles.length > 0 && (
+                                <TopicList
+                                    isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                    topic="Team Roles" list={project.teamRoles}
+                                    onChange={(listIndex) => (e) => handleProjectsTeamRolesListChange(index, listIndex)(e)}
+                                />
+                            )}
+                            {project?.cloudServices && project.cloudServices.length > 0 && (
+                                <TopicList
+                                    isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                    topic="Cloud Services" list={project.cloudServices}
+                                    onChange={(listIndex) => (e) => handleProjectsCloudServicesListChange(index, listIndex)(e)}
+                                />
+                            )}
+                            {project?.tools && project.tools.length > 0 && (
+                                <TopicList
+                                    isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                    topic="Tools" list={project.tools}
+                                    onChange={(listIndex) => (e) => handleProjectsToolsListChange(index, listIndex)(e)}
+                                />
+                            )}
+                            <TopicInline
+                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                topic="Project Duration" description={project.duration}
+                                onChange={handleProjectsDurationChange(index)}
+                            />
+                            <div className="flex space-x-1">
+                                <p className="underline">Project Date:</p>
+                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                    <section className="flex space-x-1">
+                                        <input
+                                            type="text"
+                                            name={`startDate-${index}`}
+                                            id={`startDate-${index}`}
+                                            defaultValue={project.startDate}
+                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.startDate.length + 1}ch`}}
+                                            onChange={handleProjectsStartDateChange(index)}
+                                        />
+                                        <p>-</p>
+                                        <input
+                                            type="text"
+                                            name={`endDate-${index}`}
+                                            id={`endDate-${index}`}
+                                            defaultValue={project.endDate}
+                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.endDate.length + 1}ch`}}
+                                            onChange={handleProjectsEndDateChange(index)}
+                                        />
+                                    </section>
+                                ) : (
+                                    <p>{project.startDate} - {project.endDate}</p>
+                                )}
                             </div>
+                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                <input
+                                    name={`project-notes-${index}`}
+                                    id={`project-notes-${index}`}
+                                    defaultValue={project.notes!}
+                                    className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                    onChange={handleProjectsNotesChange(index)}
+                                />
+                            ) : (
+                                <div className="space-x-1">
+                                    <p className="italic">*{project.notes}*</p>
+                                </div>
+                            )}
                         </div>
                         <div className="sm:col-span-7 md:col-span-6 col-span-12">
-                            <div className="card bg-base-100 shadow-x1 dark:bg-neutral-800">
-                              { project?.mediaLink && (<CardMedia projectName={project.name} mediaLink={project.mediaLink} />)}
+                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                <div
+                                className={project.mediaPreview ? 
+                                    `relative flex flex-col border-2 border-dashed border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200` : 
+                                    `flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`
+                                  }
+                                >
+                                  {project.mediaPreview ? (
+                                    <div className="relative inline-block">
+                                      <img 
+                                        src={project.mediaPreview} 
+                                        alt="Preview" 
+                                        className="w-full h-full object-cover rounded-lg"
+                                      />
+                                      <button
+                                        onClick={handleProjectsMediaRemoval(index)}
+                                        className="absolute top-2 right-2 w-6 h-6 bg-black bg-opacity-40 hover:bg-opacity-60 text-white rounded flex items-center justify-center text-sm font-bold transition-all duration-200 z-10"
+                                        type="button"
+                                      >
+                                        ×
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      className={`flex flex-col items-center justify-center dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
+                                    >
+                                      <p className="text-gray-600">Drag and drop a file here or click below</p>
+                                      <label className="mt-4 cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                        Browse
+                                        <input
+                                          type="file"
+                                          className="hidden"
+                                          onChange={handleProjectsMediaChange(index)}
+                                        />
+                                      </label>
+                                    </div>
+                                  )}
+                                </div>
+                            ) : (
+                                <CardMedia projectName={project.name} media={project.mediaLink} />
+                            )}
+
+                            <div className="card bg-gray-300 shadow-x1 dark:bg-neutral-800 mt-3">
                               <div className="card-body">
                                 <p className="card-title">{project.name} Features</p>
-                                <p className="pt-2 pb-6">{project.featuresDescription}</p>
+                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                    <input
+                                        name={`features-description-${index}`}
+                                        id={`features-description-${index}`}
+                                        defaultValue={project.featuresDescription}
+                                        className="pt-2 pb-6 block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                    />
+                                ) : (
+                                    <p className="pt-2 pb-6">{project.featuresDescription}</p>
+                                )}
                                 <div className="card-actions">
-                                  {project.link && (<a href="https://youtube.com"><button className="btn btn-neutral dark:bg-neutral-700">{project?.linkType}</button></a>)}
+                                    {project.link && (mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                        <div className="flex">
+                                            <input
+                                                name={`link-type-${index}`}
+                                                id={`link-type-${index}`}
+                                                defaultValue={project.linkType!}
+                                                className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                            />
+                                            <input
+                                                name={`link-${index}`}
+                                                id={`link-${index}`}
+                                                defaultValue={project.link!}
+                                                className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <a href={project.link}><button className="btn btn-neutral dark:bg-neutral-700">{project?.linkType}</button></a>
+                                    ))}
                                 </div>
                               </div>
                             </div>
                         </div>
+                        <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
+                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                <button className="after:content-['\01F441']" onClick={() => {
+                                    if (mode[index] === 'newItem') {
+                                        dispatch(projectsModeChange({index, mode: 'newItemDone'}))
+                                    } else if (mode[index] === 'edit') {
+                                        dispatch(projectsModeChange({index, mode: 'editDone'}))
+                                    } else {
+                                        dispatch(projectsModeChange({index, mode: "view"}))
+                                    }
+                                }}></button>
+                            ) : (
+                                <button className="after:content-['\0270F']" onClick={() => {
+                                    dispatch(projectsModeChange({index, mode: 'edit'}))
+                                }}></button>
+                            )}
+                            {/* https://emojipedia.org/ */}
+                            <AddButton onClick={() => dispatch(handleProjectsAdd(index+1))} />
+                            <DeleteButton onClick={() => dispatch(handleProjectsDelete(index))} />
+                        </div>
                     </section>
                 ))}
             </React.Fragment>
+        } else if (Array.isArray(projects) && projects.length === 0) {
+            content = <React.Fragment>
+                <section className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
+                    <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
+                        No projects found
+                    </div>
+                    <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
+                        {mode[0] === 'edit' || mode[0] === 'newItem' ? (
+                                <button className="after:content-['\01F441']" onClick={() => {
+                                    if (mode[0] === 'newItem') {
+                                        dispatch(projectsModeChange({index: 0, mode: 'newItemDone'}))
+                                    } else if (mode[0] === 'edit') {
+                                        dispatch(projectsModeChange({index: 0, mode: 'editDone'}))
+                                    } else {
+                                        dispatch(projectsModeChange({index: 0, mode: "view"}))
+                                    }
+                                }}></button>
+                            ) : (
+                                <button className="after:content-['\0270F']" onClick={() => {
+                                    dispatch(projectsModeChange({index: 0, mode: 'edit'}))
+                                }}></button>
+                            )}
+                        {/* https://emojipedia.org/ */}
+                        <AddButton onClick={() => dispatch(handleProjectsAdd(0+1))} />
+                        <DeleteButton onClick={() => dispatch(handleProjectsDelete(0))} />
+                    </div>
+                </section>
+            </React.Fragment>;
         }
     } else if (projectsStatus === 'failed') {
         content = <p>{projectsError}</p>;

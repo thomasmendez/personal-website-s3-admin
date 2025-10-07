@@ -61,8 +61,19 @@ const SkillsToolsView = () => {
     }
 
     const handleSkillsToolsDelete = (index: number) => () => {
-      dispatch(skillsToolsDelete({index})) // TODO: Only delete when delete api call returns 200, this line modifies the state
-      dispatch(deleteSkillsTools(skillsTools[index])) // TODO: Only delete when delete api call returns 200
+      if (mode[index] === 'newItem') {
+        dispatch(skillsToolsDelete({index}))
+        console.log("deleted newItem")
+        return
+      } else if (mode[index] !== 'pending') {
+        dispatch(skillsToolsModeChange({index: index, mode: 'pending'}))
+        dispatch(deleteSkillsTools(skillsTools[index])).unwrap().then(() => {
+          console.log("deleted")
+          dispatch(skillsToolsDelete({index}))
+        }).catch((error) => {
+          console.log("error", error)
+        })
+      }
     }
 
     useEffect(() => {
@@ -110,11 +121,13 @@ const SkillsToolsView = () => {
                             )}
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
-                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
-                                <button className="after:content-['\01F441']" onClick={() => {
-                                    if (mode[index] === 'newItem') {
-                                        dispatch(skillsToolsModeChange({index, mode: 'newItemDone'}))
-                                    } else if (mode[index] === 'edit') {
+                            {mode[index] === 'pending' ? (
+                                <span>💾</span>
+                            ) : mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                    <button className="after:content-['\01F441']" onClick={() => {
+                                        if (mode[index] === 'newItem') {
+                                            dispatch(skillsToolsModeChange({index, mode: 'newItemDone'}))
+                                        } else if (mode[index] === 'edit') {
                                         dispatch(skillsToolsModeChange({index, mode: 'editDone'}))
                                     } else {
                                         dispatch(skillsToolsModeChange({index, mode: "view"}))
@@ -190,6 +203,34 @@ const SkillsToolsView = () => {
                         ))}
                     </section>
                 ))}
+            </React.Fragment>
+        } else if (Array.isArray(skillsTools) && skillsTools.length === 0) {
+            content = <React.Fragment>
+                <section className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
+                    <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
+                        No skills tools found
+                    </div>
+                    <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
+                        {mode[0] === 'edit' || mode[0] === 'newItem' ? (
+                                <button className="after:content-['\01F441']" onClick={() => {
+                                    if (mode[0] === 'newItem') {
+                                        dispatch(skillsToolsModeChange({index: 0, mode: 'newItemDone'}))
+                                    } else if (mode[0] === 'edit') {
+                                        dispatch(skillsToolsModeChange({index: 0, mode: 'editDone'}))
+                                    } else {
+                                        dispatch(skillsToolsModeChange({index: 0, mode: "view"}))
+                                    }
+                                }}></button>
+                            ) : (
+                                <button className="after:content-['\0270F']" onClick={() => {
+                                    dispatch(skillsToolsModeChange({index: 0, mode: 'edit'}))
+                                }}></button>
+                            )}
+                        {/* https://emojipedia.org/ */}
+                        <AddButton onClick={() => dispatch(handleSkillsToolsAdd(0+1))} />
+                        <DeleteButton onClick={() => dispatch(handleSkillsToolsDelete(0))} />
+                    </div>
+                </section>
             </React.Fragment>
         }
     } else if (skillsToolsStatus === 'failed') {

@@ -76,7 +76,7 @@ export async function axiosGetSkillsTools() {
 }
 
 export async function axiosPostSkillsTools(newSkillsTools: SkillsTools) {
-    return axiosInstance.post(`${baseUrl}/api/v1/skillsTools}`, newSkillsTools, await getHeaders())
+    return axiosInstance.post(`${baseUrl}/api/v1/skillsTools`, newSkillsTools, await getHeaders())
 }
 
 export async function axiosPutSkillsTools(newSkillsTools: SkillsTools) {

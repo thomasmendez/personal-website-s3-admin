@@ -114,7 +114,7 @@ export const ProjectsSlice = createSlice({
                 notes: `newNotes${index}`,
                 link: "http://my-url",
                 linkType: "YouTube",
-                mediaLink: "http://link",
+                mediaLink: null,
                 mediaPreview: null,
                 image: null,
             }

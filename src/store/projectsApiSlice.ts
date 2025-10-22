@@ -281,6 +281,39 @@ export const ProjectsSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.payload
             })
+            // POST requests
+            .addCase(postProjects.pending, (state) => {
+                state.status = 'pending'
+            })
+            .addCase(postProjects.fulfilled, (state) => {
+                state.status = 'succeeded'
+            })
+            .addCase(postProjects.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.payload
+            })
+            // PUT requests
+            .addCase(putProjects.pending, (state) => {
+                state.status = 'pending'
+            })
+            .addCase(putProjects.fulfilled, (state) => {
+                state.status = 'succeeded'
+            })
+            .addCase(putProjects.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.payload
+            })
+            // DELETE requests
+            .addCase(deleteProjects.pending, (state) => {
+                state.status = 'pending'
+            })
+            .addCase(deleteProjects.fulfilled, (state) => {
+                state.status = 'succeeded'
+            })
+            .addCase(deleteProjects.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.payload
+            })
     }
 })
 

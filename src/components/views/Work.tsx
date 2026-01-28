@@ -1,18 +1,106 @@
 import { useSelector, useDispatch } from "react-redux"
-import { getWorkError, getWorkStatus, selectAllWork } from "../../store/workApiSlice"
-import React, { useEffect, useState } from "react"
-import { getWork } from "../../store/workApiSlice"
+import React, { ChangeEvent, useEffect } from "react"
+import { getWorkError, getWorkStatus, selectAllWork,
+    getWorkMode, workModeChange,
+    getWork, postWork, putWork, deleteWork,
+    workAdd, workDelete,
+    workChange,
+    workCompanyChange,
+    workLocationCityChange,
+    workLocationStateChange,
+    workStartDateChange,
+    workEndDateChange,
+    workJobRoleChange,
+    workJobDescriptionListChange,
+    workJobDescriptionListAdd,
+    workJobDescriptionListRemove,
+} from "../../store/workApiSlice"
 import { AppDispatch } from "../../store/store"
 import { Work } from "../../types/workTypes"
 import { formatDateToMonthYear } from "../../utils/dateFormat"
 import Loading from "../Loading/Loading"
+import AddButton from "../Buttons/AddButton"
+import DeleteButton from "../Buttons/DeleteButton"
 
 const WorkView = () => {
-    const [isEditMode, setIsEditMode] = useState(false)
     const dispatch = useDispatch<AppDispatch>()
     const work = useSelector(selectAllWork)
     const workStatus = useSelector(getWorkStatus)
     const workError = useSelector(getWorkError)
+
+    const mode = useSelector(getWorkMode)
+
+    const handleWorkAdd = (index: number) => () => {
+      dispatch(workAdd({index}))
+    }
+    
+    const handleWorkDelete = (index: number) => () => {
+      dispatch(workDelete({index}))
+      dispatch(deleteWork(work[index]))
+    }
+
+    const handleWorkValueChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(workChange({index, value: newValue}))
+    }
+
+    const handleWorkCompanyChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(workCompanyChange({index, value: newValue}))
+    }
+
+    const handleWorkLocationCityChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(workLocationCityChange({index, value: newValue}))
+    }
+
+    const handleWorkLocationStateChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(workLocationStateChange({index, value: newValue}))
+    }
+
+    const handleWorkStartDateChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(workStartDateChange({index, value: newValue}))
+    }
+
+    const handleWorkEndDateChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(workEndDateChange({index, value: newValue}))
+    }
+
+    const handleWorkJobRoleChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(workJobRoleChange({index, value: newValue}))
+    }
+
+    const handleWorkJobDescriptionListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(workJobDescriptionListChange({index, listIndex, value: newValue}))
+    }
+
+    const handleWorkJobDescriptionListAdd = (index: number, listIndex: number, newItem: string) => () => {
+      dispatch(workJobDescriptionListAdd({index, listIndex, newItem}))
+    }
+
+    const handleWorkJobDescriptionListRemove = (index: number, listIndex: number) => () => {
+        dispatch(workJobDescriptionListRemove({index, listIndex}))
+    }
+
+    useEffect(() => {
+        for (let i = 0; i < mode.length; i++) {
+            if (mode[i] === 'editDone') {
+                dispatch(putWork(work[i]))
+                dispatch(workModeChange({index: i, mode: 'updated'}))
+                // need to handle wait for response 
+            }
+            if (mode[i] === 'newItemDone') {
+                dispatch(postWork(work[i]))
+                dispatch(workModeChange({index: i, mode: 'created'}))
+                // need to handle wait for response 
+            }
+        }
+    }, [mode, work])
     
     useEffect(() => {
         if (workStatus === 'idle') {
@@ -30,7 +118,7 @@ const WorkView = () => {
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="flex sm:col-start-3 sm:col-span-7 col-start-3 col-span-9 justify-between">
                             <div className="flex space-x-1 text-black dark:text-white">
-                                {isEditMode ? (
+                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
                                     <input
                                         type="text"
                                         name={`${employment.jobTitle}-${index}`}
@@ -38,12 +126,13 @@ const WorkView = () => {
                                         defaultValue={employment.jobTitle}
                                         className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 font-bold shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.jobTitle.length + 1}ch`}}
+                                        onChange={handleWorkValueChange(index)}
                                     />
                                 ) : (
                                     <span className="font-bold">{employment.jobTitle}</span>
                                 )}
                                 <span>at</span>
-                                {isEditMode ? (
+                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
                                     <input
                                         type="text"
                                         name={`${employment.company}-${index}`}
@@ -51,11 +140,12 @@ const WorkView = () => {
                                         defaultValue={employment.company}
                                         className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.company.length + 1}ch`}}
+                                        onChange={handleWorkCompanyChange(index)}
                                     />
                                 ) : (
                                     <span className="italic">{employment.company}</span>
                                 )}
-                                {isEditMode ? (
+                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
                                     <input
                                         type="text"
                                         name={`${employment.location.city}-${index}`}
@@ -63,11 +153,12 @@ const WorkView = () => {
                                         defaultValue={employment.location.city}
                                         className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.location.city.length + 1}ch`}}
+                                        onChange={handleWorkLocationCityChange(index)}
                                     />
                                 ) : (
                                     <span>{employment.location.city},</span>
                                 )}
-                                {isEditMode ? (
+                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
                                     <input
                                         type="text"
                                         name={`${employment.location.state}-${index}`}
@@ -75,6 +166,7 @@ const WorkView = () => {
                                         defaultValue={employment.location.state}
                                         className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.location.state.length + 1}ch`}}
+                                        onChange={handleWorkLocationStateChange(index)}
                                     />
                                 ) : (
                                     <span>{employment.location.state}</span>
@@ -82,7 +174,7 @@ const WorkView = () => {
                             </div>
                         </div>
                         <div className="flex sm:col-span-2 col-start-3 col-span-9 font-bold">
-                            {isEditMode ? (
+                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
                                 <input
                                     type="text"
                                     name={`${employment.startDate}-${index}`}
@@ -90,11 +182,12 @@ const WorkView = () => {
                                     defaultValue={employment.startDate}
                                     className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.startDate).length + 1}ch`}}
+                                    onChange={handleWorkStartDateChange(index)}
                                 />
                             ) : (
                                 <p>{formatDateToMonthYear(employment.startDate)}-</p>
                             )}
-                            {isEditMode ? (
+                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
                                 <input
                                     type="text"
                                     name={`${employment.endDate}-${index}`}
@@ -102,20 +195,34 @@ const WorkView = () => {
                                     defaultValue={employment.endDate}
                                     className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.endDate).length + 1}ch`}}
+                                    onChange={handleWorkEndDateChange(index)}
                                 />
                             ) : (
                                 <p>{formatDateToMonthYear(employment.endDate)}</p>
                             )}
                         </div>
-                        <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12">
-                            {isEditMode ? (
-                                <button className="after:content-['\01F441']" onClick={() => {setIsEditMode(false)}}></button>
+                        <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
+                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                <button className="after:content-['\01F441']" onClick={() => {
+                                    if (mode[index] === 'newItem') {
+                                        dispatch(workModeChange({index, mode: 'newItemDone'}))
+                                    } else if (mode[index] === 'edit') {
+                                        dispatch(workModeChange({index, mode: 'editDone'}))
+                                    } else {
+                                        dispatch(workModeChange({index, mode: "view"}))
+                                    }
+                                }}></button>
                             ) : (
-                                <button className="after:content-['\0270F']" onClick={() => {setIsEditMode(true)}}></button>
+                                <button className="after:content-['\0270F']" onClick={() => {
+                                    dispatch(workModeChange({index, mode: 'edit'}))
+                                }}></button>
                             )}
+                            {/* https://emojipedia.org/ */}
+                            <AddButton onClick={() => dispatch(handleWorkAdd(index+1))} />
+                            <DeleteButton onClick={() => dispatch(handleWorkDelete(index))} />
                         </div>
                         <div className="sm:col-start-3 sm:col-span-9 col-start-3 col-span-9">
-                            {isEditMode ? (
+                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
                                 <input
                                     type="text"
                                     name={`${employment.jobRole}-${index}`}
@@ -123,24 +230,36 @@ const WorkView = () => {
                                     defaultValue={employment.jobRole}
                                     className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.jobRole).length + 1}ch`}}
+                                    onChange={handleWorkJobRoleChange(index)}
                                 />
                             ) : (
                                 <p className="italic">{employment.jobRole}</p>
                             )}
                         </div>
                         <div className="sm:col-start-3 sm:col-span-9 col-start-3 col-span-9">
-                            <ul className={isEditMode ? "list-disc" : "list-disc list-inside"}>
+                            <ul className={mode[index] === 'edit' || mode[index] === 'newItem' ? "list-disc" : "list-disc list-inside"}>
                                 {employment.jobDescription.map((task: string, jobDescriptionIndex: number) => (
                                     <li key={jobDescriptionIndex}>
-                                        {isEditMode ? (
-                                            <input
-                                                type="text"
-                                                name={`${task}-${jobDescriptionIndex}`}
-                                                id={`${task}-${jobDescriptionIndex}`}
-                                                defaultValue={task}
-                                                className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${task.length + 1}ch`}}
-                                            />
+                                        {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                            <React.Fragment>
+                                                <div className="flex rounded-lg shadow-sm">
+                                                    <input
+                                                        type="text"
+                                                        name={`${task}-${jobDescriptionIndex}`}
+                                                        id={`${task}-${jobDescriptionIndex}`}
+                                                        defaultValue={task}
+                                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${task.length + 1}ch`}}
+                                                        onChange={handleWorkJobDescriptionListChange(index, jobDescriptionIndex)}
+                                                    />
+                                                    {(jobDescriptionIndex === employment.jobDescription.length - 1) && (
+                                                        <AddButton onClick={() => dispatch(handleWorkJobDescriptionListAdd(index, jobDescriptionIndex, 'Describe Task'))} />
+                                                    )}
+                                                    {(jobDescriptionIndex === employment.jobDescription.length - 1) && (
+                                                        <DeleteButton onClick={() => dispatch(handleWorkJobDescriptionListRemove(index, jobDescriptionIndex))} />
+                                                    )}
+                                                </div>
+                                            </React.Fragment>
                                         ) : (
                                             `${task}`
                                         )}
@@ -151,6 +270,34 @@ const WorkView = () => {
                     </section>
                 ))}
             </React.Fragment>
+        } else if (Array.isArray(work) && work.length === 0) {
+            content = <React.Fragment>
+                <section className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
+                    <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
+                        No work found
+                    </div>
+                    <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
+                        {mode[0] === 'edit' || mode[0] === 'newItem' ? (
+                                <button className="after:content-['\01F441']" onClick={() => {
+                                    if (mode[0] === 'newItem') {
+                                        dispatch(workModeChange({index: 0, mode: 'newItemDone'}))
+                                    } else if (mode[0] === 'edit') {
+                                        dispatch(workModeChange({index: 0, mode: 'editDone'}))
+                                    } else {
+                                        dispatch(workModeChange({index: 0, mode: "view"}))
+                                    }
+                                }}></button>
+                            ) : (
+                                <button className="after:content-['\0270F']" onClick={() => {
+                                    dispatch(workModeChange({index: 0, mode: 'edit'}))
+                                }}></button>
+                            )}
+                        {/* https://emojipedia.org/ */}
+                        <AddButton onClick={() => dispatch(handleWorkAdd(0+1))} />
+                        <DeleteButton onClick={() => dispatch(handleWorkDelete(0))} />
+                    </div>
+                </section>
+            </React.Fragment>;
         }
     } else if (workStatus === 'failed') {
         content = <p>{workError}</p>;

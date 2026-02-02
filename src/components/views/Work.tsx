@@ -79,8 +79,8 @@ const WorkView = () => {
       dispatch(workJobDescriptionListChange({index, listIndex, value: newValue}))
     }
 
-    const handleWorkJobDescriptionListAdd = (index: number, listIndex: number, newItem: string) => () => {
-      dispatch(workJobDescriptionListAdd({index, listIndex, newItem}))
+    const handleWorkJobDescriptionListAdd = (index: number, newItemIndex: number, newItem: string) => () => {
+      dispatch(workJobDescriptionListAdd({index, newItemIndex, newItem}))
     }
 
     const handleWorkJobDescriptionListRemove = (index: number, listIndex: number) => () => {
@@ -247,17 +247,13 @@ const WorkView = () => {
                                                         type="text"
                                                         name={`${task}-${jobDescriptionIndex}`}
                                                         id={`${task}-${jobDescriptionIndex}`}
-                                                        defaultValue={task}
+                                                        value={task}
                                                         className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${task.length + 1}ch`}}
                                                         onChange={handleWorkJobDescriptionListChange(index, jobDescriptionIndex)}
                                                     />
-                                                    {(jobDescriptionIndex === employment.jobDescription.length - 1) && (
-                                                        <AddButton onClick={() => dispatch(handleWorkJobDescriptionListAdd(index, jobDescriptionIndex, 'Describe Task'))} />
-                                                    )}
-                                                    {(jobDescriptionIndex === employment.jobDescription.length - 1) && (
-                                                        <DeleteButton onClick={() => dispatch(handleWorkJobDescriptionListRemove(index, jobDescriptionIndex))} />
-                                                    )}
+                                                    <AddButton onClick={() => dispatch(handleWorkJobDescriptionListAdd(index, jobDescriptionIndex, 'Describe Task'))} />
+                                                    <DeleteButton onClick={() => dispatch(handleWorkJobDescriptionListRemove(index, jobDescriptionIndex))} />
                                                 </div>
                                             </React.Fragment>
                                         ) : (

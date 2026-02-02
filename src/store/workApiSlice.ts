@@ -201,9 +201,10 @@ export const workSlice = createSlice({
             }
         },
         workJobDescriptionListAdd: (state, action) => {
-            const { index, newItem } = action.payload;
+            const { index, newItemIndex, newItem } = action.payload;
             if (index >= 0 && index < state.entities.length) {
-                state.entities[index].jobDescription.push(newItem);
+                state.entities[index].jobDescription.splice(newItemIndex, 0, newItem);
+                
             }
         },
         workJobDescriptionListRemove: (state, action) => {

@@ -51,7 +51,7 @@ export async function axiosGetWork() {
 }
 
 export async function axiosPostWork(newWork: Work) {
-    return axiosInstance.post(`${baseUrl}/api/v1/work}`, newWork, await getHeaders())
+    return axiosInstance.post(`${baseUrl}/api/v1/work`, newWork, await getHeaders())
 }
 
 export async function axiosPutWork(updateWork: Work) {

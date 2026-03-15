@@ -117,7 +117,7 @@ const SkillsToolsView = () => {
                                     />:
                                 </div>
                             ) : (
-                                <p className="text-xl underline">{skillsToolsValue.sortValue}</p>
+                                <p className="text-xl underline" data-testid={`skills-tools-${index}-sort-value-read`}>{skillsToolsValue.sortValue}</p>
                             )}
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
@@ -158,11 +158,11 @@ const SkillsToolsView = () => {
                                             />:
                                         </div>
                                     ) : (
-                                        <p className="font-bold">{categories.category}:</p>
+                                        <p className="font-bold" data-testid={`skills-tools-${index}-category-${categoryIndex}-read`}>{categories.category}:</p>
                                     )}
                                     <ul className="flex space-x-1">
                                         {categories.list.map((item: string, listIndex) => (
-                                            <li key={`${skillsToolsValue.sortValue}-${categories.category}-${categoryIndex}-list-${listIndex}`} className='flex space-x-1'>
+                                            <li key={`${skillsToolsValue.sortValue}-${categories.category}-${categoryIndex}-list-${listIndex}`} className='flex space-x-1' data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-read`}>
                                                 {mode[index] === 'edit' || mode[index] === 'newItem' ? (
                                                     <React.Fragment>
                                                         <div className="flex rounded-lg shadow-sm">

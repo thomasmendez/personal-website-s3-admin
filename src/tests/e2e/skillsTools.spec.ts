@@ -1,21 +1,26 @@
-// TEST: Skill Tool View
-// TODO: Go to skills tool page
-// Ensure data from mock
+import { test, expect } from '@playwright/test'
+import SkillsToolsMock from '../../mocks/__fixtures__/skillsTools'
 
-// TEST: Modify Skill Tool 
-// TODO: Go to skills tools page
-// Modify every field, save
-// Check that the fields were modified in the return statement
+test.beforeEach('Open start URL', async ({ page }) => {
+  console.log(`Running ${test.info().title}`);
 
-// TEST: Add Skill Tool
-// go to skills tools page
-// modify newly added one
-// post request
-// check
-// verify in right order on screen
+  await page.goto('http://localhost:5173/skills-tools')
+});
 
-// TEST: Remove skill tool
-// go to skills tool page
-// remove a existing skill tool
-// check
-// verify in right order on screen 
+test('skills tools page', async ( { page }) => {
+
+  await page.locator('h1')
+
+  const title = page.locator('h1')
+  expect(title).toContainText('Skills & Tools')
+
+  for (const [index, item] of SkillsToolsMock.entries()) {
+    await expect(page.getByTestId(`skills-tools-${index}-sort-value-read`)).toContainText(item.sortValue)
+    for (const [categoryIndex, category] of item.categories.entries()) {
+      await expect(page.getByTestId(`skills-tools-${index}-category-${categoryIndex}-read`)).toContainText(category.category)
+      for (const [listIndex, listValue] of category.list.entries()) {
+        await expect(page.getByTestId(`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-read`)).toContainText(listValue)
+      }
+    }
+  }
+})

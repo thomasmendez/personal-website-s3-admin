@@ -136,7 +136,7 @@ const WorkView = () => {
                                         onChange={handleWorkValueChange(index)}
                                     />
                                 ) : (
-                                    <span className="font-bold">{employment.jobTitle}</span>
+                                    <span className="font-bold" data-testid={`work-${index}-job-title-read`}>{employment.jobTitle}</span>
                                 )}
                                 <span>at</span>
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
@@ -150,7 +150,7 @@ const WorkView = () => {
                                         onChange={handleWorkCompanyChange(index)}
                                     />
                                 ) : (
-                                    <span className="italic">{employment.company}</span>
+                                    <span className="italic" data-testid={`work-${index}-company-read`}>{employment.company}</span>
                                 )}
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
@@ -163,7 +163,7 @@ const WorkView = () => {
                                         onChange={handleWorkLocationCityChange(index)}
                                     />
                                 ) : (
-                                    <span>{employment.location.city},</span>
+                                    <span data-testid={`work-${index}-city-read`}>{employment.location.city},</span>
                                 )}
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
@@ -176,7 +176,7 @@ const WorkView = () => {
                                         onChange={handleWorkLocationStateChange(index)}
                                     />
                                 ) : (
-                                    <span>{employment.location.state}</span>
+                                    <span data-testid={`work-${index}-state-read`}>{employment.location.state}</span>
                                 )}
                             </div>
                         </div>
@@ -192,7 +192,7 @@ const WorkView = () => {
                                     onChange={handleWorkStartDateChange(index)}
                                 />
                             ) : (
-                                <p>{formatDateToMonthYear(employment.startDate)}-</p>
+                                <p data-testid={`work-${index}-start-date-read`}>{formatDateToMonthYear(employment.startDate)}-</p>
                             )}
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <input
@@ -205,7 +205,7 @@ const WorkView = () => {
                                     onChange={handleWorkEndDateChange(index)}
                                 />
                             ) : (
-                                <p>{formatDateToMonthYear(employment.endDate)}</p>
+                                <p data-testid={`work-${index}-end-date-read`}>{formatDateToMonthYear(employment.endDate)}</p>
                             )}
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
@@ -240,13 +240,13 @@ const WorkView = () => {
                                     onChange={handleWorkJobRoleChange(index)}
                                 />
                             ) : (
-                                <p className="italic">{employment.jobRole}</p>
+                                <p className="italic" data-testid={`work-${index}-job-role-read`}>{employment.jobRole}</p>
                             )}
                         </div>
                         <div className="sm:col-start-3 sm:col-span-9 col-start-3 col-span-9">
                             <ul className={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? "list-disc" : "list-disc list-inside"}>
                                 {employment.jobDescription.map((task: string, jobDescriptionIndex: number) => (
-                                    <li key={jobDescriptionIndex}>
+                                    <li key={jobDescriptionIndex} data-testid={`work-${index}-job-description-${jobDescriptionIndex}-read`}>
                                         {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                             <React.Fragment>
                                                 <div className="flex rounded-lg shadow-sm">

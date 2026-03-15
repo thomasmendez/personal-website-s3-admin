@@ -15,6 +15,7 @@ import { getWorkError, getWorkStatus, selectAllWork,
     workJobDescriptionListAdd,
     workJobDescriptionListRemove,
 } from "../../store/workApiSlice"
+import { getCurrentUser, getUser, getUserStatus } from "../../store/userSlice"
 import { AppDispatch } from "../../store/store"
 import { Work } from "../../types/workTypes"
 import { formatDateToMonthYear } from "../../utils/dateFormat"
@@ -29,6 +30,9 @@ const WorkView = () => {
     const workError = useSelector(getWorkError)
 
     const mode = useSelector(getWorkMode)
+    const user = useSelector(getCurrentUser)
+    const userStatus = useSelector(getUserStatus)
+    const isAdmin = user.isAdmin
 
     const handleWorkAdd = (index: number) => () => {
       dispatch(workAdd({index}))
@@ -106,19 +110,22 @@ const WorkView = () => {
         if (workStatus === 'idle') {
             dispatch(getWork())
         }
-    }, [workStatus, dispatch])
+        if (userStatus === 'idle') {
+            dispatch(getUser())
+        }
+    }, [workStatus, userStatus, dispatch])
 
     let content;
-    if (workStatus === 'pending') {
+    if (workStatus === 'pending' || userStatus === 'pending') {
         content = <Loading />;
-    } else if (workStatus === 'succeeded') {
+    } else if (workStatus === 'succeeded' && userStatus === 'succeeded') {
         if (Array.isArray(work) && work.length > 0) {
             content = <React.Fragment>
                 {work.map((employment: Work, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="flex sm:col-start-3 sm:col-span-7 col-start-3 col-span-9 justify-between">
                             <div className="flex space-x-1 text-black dark:text-white">
-                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
                                         type="text"
                                         name={`${employment.jobTitle}-${index}`}
@@ -132,7 +139,7 @@ const WorkView = () => {
                                     <span className="font-bold">{employment.jobTitle}</span>
                                 )}
                                 <span>at</span>
-                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
                                         type="text"
                                         name={`${employment.company}-${index}`}
@@ -145,7 +152,7 @@ const WorkView = () => {
                                 ) : (
                                     <span className="italic">{employment.company}</span>
                                 )}
-                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
                                         type="text"
                                         name={`${employment.location.city}-${index}`}
@@ -158,7 +165,7 @@ const WorkView = () => {
                                 ) : (
                                     <span>{employment.location.city},</span>
                                 )}
-                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
                                         type="text"
                                         name={`${employment.location.state}-${index}`}
@@ -173,8 +180,8 @@ const WorkView = () => {
                                 )}
                             </div>
                         </div>
-                        <div className="flex sm:col-span-2 col-start-3 col-span-9 font-bold">
-                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                        <div className="flex sm:col-span-2 col-start-3 col-span-9 font-bold justify-end">
+                            {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <input
                                     type="text"
                                     name={`${employment.startDate}-${index}`}
@@ -187,7 +194,7 @@ const WorkView = () => {
                             ) : (
                                 <p>{formatDateToMonthYear(employment.startDate)}-</p>
                             )}
-                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                            {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <input
                                     type="text"
                                     name={`${employment.endDate}-${index}`}
@@ -202,7 +209,7 @@ const WorkView = () => {
                             )}
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
-                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                            {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <button className="after:content-['\01F441']" onClick={() => {
                                     if (mode[index] === 'newItem') {
                                         dispatch(workModeChange({index, mode: 'newItemDone'}))
@@ -212,17 +219,17 @@ const WorkView = () => {
                                         dispatch(workModeChange({index, mode: "view"}))
                                     }
                                 }}></button>
-                            ) : (
+                            ) : isAdmin && (
                                 <button className="after:content-['\0270F']" onClick={() => {
                                     dispatch(workModeChange({index, mode: 'edit'}))
                                 }}></button>
                             )}
                             {/* https://emojipedia.org/ */}
-                            <AddButton onClick={() => dispatch(handleWorkAdd(index+1))} />
-                            <DeleteButton onClick={() => dispatch(handleWorkDelete(index))} />
+                            {isAdmin && <AddButton onClick={() => dispatch(handleWorkAdd(index+1))} />}
+                            {isAdmin && <DeleteButton onClick={() => dispatch(handleWorkDelete(index))} />}
                         </div>
                         <div className="sm:col-start-3 sm:col-span-9 col-start-3 col-span-9">
-                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                            {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <input
                                     type="text"
                                     name={`${employment.jobRole}-${index}`}
@@ -237,10 +244,10 @@ const WorkView = () => {
                             )}
                         </div>
                         <div className="sm:col-start-3 sm:col-span-9 col-start-3 col-span-9">
-                            <ul className={mode[index] === 'edit' || mode[index] === 'newItem' ? "list-disc" : "list-disc list-inside"}>
+                            <ul className={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? "list-disc" : "list-disc list-inside"}>
                                 {employment.jobDescription.map((task: string, jobDescriptionIndex: number) => (
                                     <li key={jobDescriptionIndex}>
-                                        {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                        {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                             <React.Fragment>
                                                 <div className="flex rounded-lg shadow-sm">
                                                     <input
@@ -252,8 +259,8 @@ const WorkView = () => {
                                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${task.length + 1}ch`}}
                                                         onChange={handleWorkJobDescriptionListChange(index, jobDescriptionIndex)}
                                                     />
-                                                    <AddButton onClick={() => dispatch(handleWorkJobDescriptionListAdd(index, jobDescriptionIndex, 'Describe Task'))} />
-                                                    <DeleteButton onClick={() => dispatch(handleWorkJobDescriptionListRemove(index, jobDescriptionIndex))} />
+                                                    {isAdmin && <AddButton onClick={() => dispatch(handleWorkJobDescriptionListAdd(index, jobDescriptionIndex, 'Describe Task'))} />}
+                                                    {isAdmin && <DeleteButton onClick={() => dispatch(handleWorkJobDescriptionListRemove(index, jobDescriptionIndex))} />}
                                                 </div>
                                             </React.Fragment>
                                         ) : (
@@ -273,7 +280,7 @@ const WorkView = () => {
                         No work found
                     </div>
                     <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
-                        {mode[0] === 'edit' || mode[0] === 'newItem' ? (
+                        {isAdmin &&(mode[0] === 'edit' || mode[0] === 'newItem') ? (
                                 <button className="after:content-['\01F441']" onClick={() => {
                                     if (mode[0] === 'newItem') {
                                         dispatch(workModeChange({index: 0, mode: 'newItemDone'}))
@@ -283,14 +290,14 @@ const WorkView = () => {
                                         dispatch(workModeChange({index: 0, mode: "view"}))
                                     }
                                 }}></button>
-                            ) : (
+                            ) : isAdmin && (
                                 <button className="after:content-['\0270F']" onClick={() => {
                                     dispatch(workModeChange({index: 0, mode: 'edit'}))
                                 }}></button>
                             )}
                         {/* https://emojipedia.org/ */}
-                        <AddButton onClick={() => dispatch(handleWorkAdd(0+1))} />
-                        <DeleteButton onClick={() => dispatch(handleWorkDelete(0))} />
+                        {isAdmin && <AddButton onClick={() => dispatch(handleWorkAdd(0+1))} />}
+                        {isAdmin && <DeleteButton onClick={() => dispatch(handleWorkDelete(0))} />}
                     </div>
                 </section>
             </React.Fragment>;

@@ -1,10 +1,12 @@
 import { FC, ReactNode } from 'react';
-import { Authenticator } from '@aws-amplify/ui-react';
+import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
+import SignOut from './auth/SignOut';
 
 import {
   BrowserRouter as Router,
   useRoutes,
+  Navigate
 } from 'react-router-dom';
 import Home from './components/views/Home';
 import Work from './components/views/Work';
@@ -18,8 +20,6 @@ import components from './auth/components';
 import { useSelector } from 'react-redux';
 import { getDarkMode } from './store/darkModeSlice';
 import TitleHeader from './components/TitleHeader/TitleHeader';
-
-const isAuthEnabled = import.meta.env.VITE_AUTH_ENABLED
 
 interface AppPage {
   pageComponent: ReactNode
@@ -41,6 +41,7 @@ const AppPage: FC<AppPage> = ({ pageComponent, title }) => {
       icon: "vue",
     }
   ]
+
   return(
     <div className={`${darkMode && "dark"}`}>
       <Header/>
@@ -51,6 +52,17 @@ const AppPage: FC<AppPage> = ({ pageComponent, title }) => {
   )
 }
 
+const LoginPage = () => {
+  const { authStatus } = useAuthenticator(context => [context.authStatus]);
+
+  // Redirect if already authenticated
+  if (authStatus === 'authenticated') {
+    return <Navigate to="/" replace />;
+  }
+
+  return <Authenticator components={components} />;
+};
+
 const AppRoutes = () => {
   const routes = useRoutes([
     { path: '/', element: <AppPage pageComponent={<Home name="Thomas A. Mendez" jobTitle="Software Engineer and Game Developer" />} />},
@@ -58,7 +70,9 @@ const AppRoutes = () => {
     { path: '/work', element: <AppPage title='Where I Worked' pageComponent={<Work />} /> },
     { path: '/skills-tools', element: <AppPage title='Skills & Tools' pageComponent={<SkillsTools />} /> },
     { path: '/vr-ar', element: <AppPage title='Virtual Reality (VR) / Augmented Reality (AR) Projects' pageComponent={<Projects />} /> },
-    { path: '/software-engineering', element: <AppPage title='Software Engineering Projects' pageComponent={<Projects />} /> }
+    { path: '/software-engineering', element: <AppPage title='Software Engineering Projects' pageComponent={<Projects />} /> },
+    { path: '/login', element: <Authenticator components={components}><LoginPage /></Authenticator> },
+    { path: '/sign-out', element: <AppPage pageComponent={<SignOut />} /> },
   ]);
   return routes;
 }
@@ -66,17 +80,9 @@ const AppRoutes = () => {
 const App = () => {
   return (
     <>
-      {isAuthEnabled === "true" ? (
-        <Authenticator components={components}>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </Authenticator>
-      ) : (
-        <Router>
-          <AppRoutes />
-        </Router>
-      )}
+      <Router>
+        <AppRoutes />
+      </Router>
     </>
   );
 }

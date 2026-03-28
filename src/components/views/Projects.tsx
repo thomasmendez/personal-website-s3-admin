@@ -26,6 +26,7 @@ import EditButton from "../Buttons/EditButton"
 import CardMedia from "../CardMedia/CardMedia"
 import TopicList from "../TopicList/TopicList"
 import TopicInline from "../TopicInline/TopicInline"
+import { getCurrentUser, getUser, getUserStatus } from "../../store/userSlice"
 
 const ProjectsView = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -34,6 +35,9 @@ const ProjectsView = () => {
     const projectsError = useSelector(getProjectsError)
 
     const mode = useSelector(getProjectsMode)
+    const user = useSelector(getCurrentUser)
+    const userStatus = useSelector(getUserStatus)
+    const isAdmin = user.isAdmin
 
     const handleProjectsAdd = (index: number) => () => {
       dispatch(projectsAdd({index}))
@@ -141,7 +145,10 @@ const ProjectsView = () => {
         if (projectsStatus === 'idle') {
             dispatch(getProjects())
         }
-    }, [projectsStatus])
+        if (userStatus === 'idle') {
+            dispatch(getUser())
+        }
+    }, [projectsStatus, userStatus, dispatch])
 
     let content;
     if (projectsStatus === 'pending') {
@@ -153,7 +160,7 @@ const ProjectsView = () => {
                     <section key={index} className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="sm:col-start-2 sm:col-span-3 md:col-start-3 md:col-span-3 col-span-12 space-y-3 pr-3">
                             <div className="col-start-3 col-span-7">
-                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
                                         type="text"
                                         name={`project-name-${index}`}
@@ -165,12 +172,12 @@ const ProjectsView = () => {
                                         onChange={handleProjectsValueChange(index)}
                                     />
                                 ) : (
-                                    <p className="text-xl font-bold">{project.name}</p>
+                                    <p className="text-xl font-bold" data-testid={`projects-${index}-sort-value-read`}>{project.name}</p>
                                 )}
                             </div>
                             <div>
                                 <p className="underline">Project Description:</p>
-                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
                                         name={`project-description-${index}`}
                                         id={`project-description-${index}`}
@@ -180,53 +187,53 @@ const ProjectsView = () => {
                                         onChange={handleProjectsDescriptionChange(index)}
                                     />
                                 ) : (
-                                    <p>{project.description}</p>
+                                    <p data-testid={`projects-${index}-description-read`}>{project.description}</p>
                                 )}
                             </div>
                             <TopicInline
-                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                 topic="My Role" description={project.role}
                                 onChange={handleProjectsRoleChange(index)}
                             />
                             <TopicList
-                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                 topic="My Tasks" list={project.tasks}
                                 onChange={(listIndex) => (e) => handleProjectsTasksListChange(index, listIndex)(e)}
                             />
                             {project.teamSize !== null && (<TopicInline
-                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                 topic="Team Size" description={project.teamSize}
                                 onChange={handleProjectsTeamSizeChange(index)}
                             />)}
                             {project?.teamRoles && project.teamRoles.length > 0 && (
                                 <TopicList
-                                    isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                    isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                     topic="Team Roles" list={project.teamRoles}
                                     onChange={(listIndex) => (e) => handleProjectsTeamRolesListChange(index, listIndex)(e)}
                                 />
                             )}
                             {project?.cloudServices && project.cloudServices.length > 0 && (
                                 <TopicList
-                                    isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                    isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                     topic="Cloud Services" list={project.cloudServices}
                                     onChange={(listIndex) => (e) => handleProjectsCloudServicesListChange(index, listIndex)(e)}
                                 />
                             )}
                             {project?.tools && project.tools.length > 0 && (
                                 <TopicList
-                                    isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                    isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                     topic="Tools" list={project.tools}
                                     onChange={(listIndex) => (e) => handleProjectsToolsListChange(index, listIndex)(e)}
                                 />
                             )}
                             <TopicInline
-                                isEditMode={mode[index] === 'edit' || mode[index] === 'newItem'}
+                                isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                 topic="Project Duration" description={project.duration}
                                 onChange={handleProjectsDurationChange(index)}
                             />
                             <div className="flex space-x-1">
                                 <p className="underline">Project Date:</p>
-                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <section className="flex space-x-1">
                                         <input
                                             type="text"
@@ -249,10 +256,10 @@ const ProjectsView = () => {
                                         />
                                     </section>
                                 ) : (
-                                    <p>{project.startDate} - {project.endDate}</p>
+                                    <p data-testid={`projects-${index}-date-read`}>{project.startDate} - {project.endDate}</p>
                                 )}
                             </div>
-                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                            {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <input
                                     name={`project-notes-${index}`}
                                     id={`project-notes-${index}`}
@@ -268,7 +275,7 @@ const ProjectsView = () => {
                             )}
                         </div>
                         <div className="sm:col-span-7 md:col-span-6 col-span-12">
-                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                            {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <div
                                 className={project.mediaPreview ? 
                                     `relative flex flex-col border-2 border-dashed border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200` : 
@@ -313,7 +320,7 @@ const ProjectsView = () => {
                             <div className="card bg-gray-300 shadow-x1 dark:bg-neutral-800 mt-3">
                               <div className="card-body">
                                 <p className="card-title">{project.name} Features</p>
-                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
                                         name={`features-description-${index}`}
                                         id={`features-description-${index}`}
@@ -322,10 +329,10 @@ const ProjectsView = () => {
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                     />
                                 ) : (
-                                    <p className="pt-2 pb-6">{project.featuresDescription}</p>
+                                    <p className="pt-2 pb-6" data-testid={`projects-${index}-features-description-read`}>{project.featuresDescription}</p>
                                 )}
                                 <div className="card-actions">
-                                    {project.link && (mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                    {project.link && (isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                         <div className="flex">
                                             <input
                                                 name={`link-type-${index}`}
@@ -350,7 +357,7 @@ const ProjectsView = () => {
                             </div>
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
-                            {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                            {isAdmin && (isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')) ? (
                                 <EditButton data-testid={`projects-${index}-edit-button-${mode[index]}`} onClick={() => {
                                     if (mode[index] === 'newItem') {
                                         dispatch(projectsModeChange({index, mode: 'newItemDone'}))
@@ -360,13 +367,13 @@ const ProjectsView = () => {
                                         dispatch(projectsModeChange({index, mode: "view"}))
                                     }
                                 }} />
-                            ) : (
+                            ) : isAdmin && (
                                 <EditButton data-testid={`projects-${index}-edit-button-default`} onClick={() => {
                                     dispatch(projectsModeChange({index, mode: 'edit'}))
                                 }} />
                             )}
-                            <AddButton data-testid={`projects-${index}-add-button`} onClick={() => dispatch(handleProjectsAdd(index+1))} />
-                            <DeleteButton data-testid={`projects-${index}-delete-button`} onClick={() => dispatch(handleProjectsDelete(index))} />
+                            {isAdmin && <AddButton data-testid={`projects-${index}-add-button`} onClick={() => dispatch(handleProjectsAdd(index+1))} />}
+                            {isAdmin && <DeleteButton data-testid={`projects-${index}-delete-button`} onClick={() => dispatch(handleProjectsDelete(index))} />}
                         </div>
                     </section>
                 ))}
@@ -378,8 +385,8 @@ const ProjectsView = () => {
                         No projects found
                     </div>
                     <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
-                        {mode[0] === 'edit' || mode[0] === 'newItem' ? (
-                                <EditButton data-testid={`projects-0-edit-button-default`} onClick={() => {
+                        {isAdmin && (mode[0] === 'edit' || mode[0] === 'newItem' ? (
+                                <EditButton data-testid={`projects-0-edit-button-${mode[0]}`} onClick={() => {
                                     if (mode[0] === 'newItem') {
                                         dispatch(projectsModeChange({index: 0, mode: 'newItemDone'}))
                                     } else if (mode[0] === 'edit') {
@@ -388,13 +395,13 @@ const ProjectsView = () => {
                                         dispatch(projectsModeChange({index: 0, mode: "view"}))
                                     }
                                 }} />
-                            ) : (
-                                <EditButton data-testid={`projects-0-edit-button`} onClick={() => {
+                            ) : isAdmin && (
+                                <EditButton data-testid={`projects-0-edit-button-default`} onClick={() => {
                                     dispatch(projectsModeChange({index: 0, mode: 'edit'}))
                                 }} />
-                            )}
-                        <AddButton data-testid={`projects-0-add-button`} onClick={() => dispatch(handleProjectsAdd(0+1))} />
-                        <DeleteButton data-testid={`projects-0-delete-button`} onClick={() => dispatch(handleProjectsDelete(0))} />
+                            ))}
+                        {isAdmin && <AddButton data-testid={`projects-0-add-button`} onClick={() => dispatch(handleProjectsAdd(0+1))} />}
+                        {isAdmin && <DeleteButton data-testid={`projects-0-delete-button`} onClick={() => dispatch(handleProjectsDelete(0))} />}
                     </div>
                 </section>
             </React.Fragment>;

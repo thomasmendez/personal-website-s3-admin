@@ -259,8 +259,8 @@ const WorkView = () => {
                                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${task.length + 1}ch`}}
                                                         onChange={handleWorkJobDescriptionListChange(index, jobDescriptionIndex)}
                                                     />
-                                                    {isAdmin && <AddButton onClick={() => dispatch(handleWorkJobDescriptionListAdd(index, jobDescriptionIndex, 'Describe Task'))} />}
-                                                    {isAdmin && <DeleteButton onClick={() => dispatch(handleWorkJobDescriptionListRemove(index, jobDescriptionIndex))} />}
+                                                    {isAdmin && <AddButton data-testid={`work-${index}-job-description-${jobDescriptionIndex}-add-button`} onClick={() => dispatch(handleWorkJobDescriptionListAdd(index, jobDescriptionIndex, 'Describe Task'))} />}
+                                                    {isAdmin && <DeleteButton data-testid={`work-${index}-job-description-${jobDescriptionIndex}-delete-button`} onClick={() => dispatch(handleWorkJobDescriptionListRemove(index, jobDescriptionIndex))} />}
                                                 </div>
                                             </React.Fragment>
                                         ) : (

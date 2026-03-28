@@ -22,6 +22,7 @@ import { AppDispatch } from "../../store/store"
 import Loading from "../Loading/Loading"
 import AddButton from "../Buttons/AddButton"
 import DeleteButton from "../Buttons/DeleteButton"
+import EditButton from "../Buttons/EditButton"
 import CardMedia from "../CardMedia/CardMedia"
 import TopicList from "../TopicList/TopicList"
 import TopicInline from "../TopicInline/TopicInline"
@@ -350,7 +351,7 @@ const ProjectsView = () => {
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                             {mode[index] === 'edit' || mode[index] === 'newItem' ? (
-                                <button className="after:content-['\01F441']" onClick={() => {
+                                <EditButton onClick={() => {
                                     if (mode[index] === 'newItem') {
                                         dispatch(projectsModeChange({index, mode: 'newItemDone'}))
                                     } else if (mode[index] === 'edit') {
@@ -358,13 +359,12 @@ const ProjectsView = () => {
                                     } else {
                                         dispatch(projectsModeChange({index, mode: "view"}))
                                     }
-                                }}></button>
+                                }} />
                             ) : (
-                                <button className="after:content-['\0270F']" onClick={() => {
+                                <EditButton onClick={() => {
                                     dispatch(projectsModeChange({index, mode: 'edit'}))
-                                }}></button>
+                                }} />
                             )}
-                            {/* https://emojipedia.org/ */}
                             <AddButton onClick={() => dispatch(handleProjectsAdd(index+1))} />
                             <DeleteButton onClick={() => dispatch(handleProjectsDelete(index))} />
                         </div>
@@ -379,7 +379,7 @@ const ProjectsView = () => {
                     </div>
                     <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                         {mode[0] === 'edit' || mode[0] === 'newItem' ? (
-                                <button className="after:content-['\01F441']" onClick={() => {
+                                <EditButton onClick={() => {
                                     if (mode[0] === 'newItem') {
                                         dispatch(projectsModeChange({index: 0, mode: 'newItemDone'}))
                                     } else if (mode[0] === 'edit') {
@@ -387,13 +387,12 @@ const ProjectsView = () => {
                                     } else {
                                         dispatch(projectsModeChange({index: 0, mode: "view"}))
                                     }
-                                }}></button>
+                                }} />
                             ) : (
-                                <button className="after:content-['\0270F']" onClick={() => {
+                                <EditButton onClick={() => {
                                     dispatch(projectsModeChange({index: 0, mode: 'edit'}))
-                                }}></button>
+                                }} />
                             )}
-                        {/* https://emojipedia.org/ */}
                         <AddButton onClick={() => dispatch(handleProjectsAdd(0+1))} />
                         <DeleteButton onClick={() => dispatch(handleProjectsDelete(0))} />
                     </div>

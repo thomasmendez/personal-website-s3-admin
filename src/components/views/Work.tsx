@@ -22,6 +22,7 @@ import { formatDateToMonthYear } from "../../utils/dateFormat"
 import Loading from "../Loading/Loading"
 import AddButton from "../Buttons/AddButton"
 import DeleteButton from "../Buttons/DeleteButton"
+import EditButton from "../Buttons/EditButton"
 
 const WorkView = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -210,7 +211,7 @@ const WorkView = () => {
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                <button className="after:content-['\01F441']" onClick={() => {
+                                <EditButton onClick={() => {
                                     if (mode[index] === 'newItem') {
                                         dispatch(workModeChange({index, mode: 'newItemDone'}))
                                     } else if (mode[index] === 'edit') {
@@ -218,11 +219,11 @@ const WorkView = () => {
                                     } else {
                                         dispatch(workModeChange({index, mode: "view"}))
                                     }
-                                }}></button>
+                                }} />
                             ) : isAdmin && (
-                                <button className="after:content-['\0270F']" onClick={() => {
+                                <EditButton onClick={() => {
                                     dispatch(workModeChange({index, mode: 'edit'}))
-                                }}></button>
+                                }} />
                             )}
                             {/* https://emojipedia.org/ */}
                             {isAdmin && <AddButton onClick={() => dispatch(handleWorkAdd(index+1))} />}
@@ -281,7 +282,7 @@ const WorkView = () => {
                     </div>
                     <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                         {isAdmin &&(mode[0] === 'edit' || mode[0] === 'newItem') ? (
-                                <button className="after:content-['\01F441']" onClick={() => {
+                                <EditButton onClick={() => {
                                     if (mode[0] === 'newItem') {
                                         dispatch(workModeChange({index: 0, mode: 'newItemDone'}))
                                     } else if (mode[0] === 'edit') {
@@ -289,13 +290,8 @@ const WorkView = () => {
                                     } else {
                                         dispatch(workModeChange({index: 0, mode: "view"}))
                                     }
-                                }}></button>
-                            ) : isAdmin && (
-                                <button className="after:content-['\0270F']" onClick={() => {
-                                    dispatch(workModeChange({index: 0, mode: 'edit'}))
-                                }}></button>
-                            )}
-                        {/* https://emojipedia.org/ */}
+                                }} />
+                            ) : isAdmin && <EditButton onClick={() => dispatch(workModeChange({index: 0, mode: 'edit'}))} />}
                         {isAdmin && <AddButton onClick={() => dispatch(handleWorkAdd(0+1))} />}
                         {isAdmin && <DeleteButton onClick={() => dispatch(handleWorkDelete(0))} />}
                     </div>

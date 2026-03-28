@@ -16,6 +16,7 @@ import { Categories, SkillsTools } from "../../types/skillsToolsTypes"
 import Loading from "../Loading/Loading"
 import AddButton from "../Buttons/AddButton"
 import DeleteButton from "../Buttons/DeleteButton"
+import EditButton from "../Buttons/EditButton"
 
 const SkillsToolsView = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -130,21 +131,16 @@ const SkillsToolsView = () => {
                             {mode[index] === 'pending' ? (
                                 <span>💾</span>
                             ) : isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                    <button className="after:content-['\01F441']" onClick={() => {
+                                    <EditButton onClick={() => {
                                         if (mode[index] === 'newItem') {
                                             dispatch(skillsToolsModeChange({index, mode: 'newItemDone'}))
                                         } else if (mode[index] === 'edit') {
-                                        dispatch(skillsToolsModeChange({index, mode: 'editDone'}))
-                                    } else {
-                                        dispatch(skillsToolsModeChange({index, mode: "view"}))
-                                    }
-                                }}></button>
-                            ) : isAdmin &&(
-                                <button className="after:content-['\0270F']" onClick={() => {
-                                    dispatch(skillsToolsModeChange({index, mode: 'edit'}))
-                                }}></button>
-                            )}
-                            {/* https://emojipedia.org/ */}
+                                            dispatch(skillsToolsModeChange({index, mode: 'editDone'}))
+                                        } else {
+                                            dispatch(skillsToolsModeChange({index, mode: "view"}))
+                                        }
+                                    }} />
+                            ) : isAdmin && <EditButton onClick={() => dispatch(skillsToolsModeChange({index, mode: 'edit'}))} />}
                             {isAdmin && <AddButton onClick={() => dispatch(handleSkillsToolsAdd(index+1))} />}
                             {isAdmin && <DeleteButton onClick={() => dispatch(handleSkillsToolsDelete(index))} />}
                         </div>
@@ -218,7 +214,7 @@ const SkillsToolsView = () => {
                     </div>
                     <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                         {isAdmin && (mode[0] === 'edit' || mode[0] === 'newItem') ? (
-                                <button className="after:content-['\01F441']" onClick={() => {
+                                <EditButton onClick={() => {
                                     if (mode[0] === 'newItem') {
                                         dispatch(skillsToolsModeChange({index: 0, mode: 'newItemDone'}))
                                     } else if (mode[0] === 'edit') {
@@ -226,13 +222,8 @@ const SkillsToolsView = () => {
                                     } else {
                                         dispatch(skillsToolsModeChange({index: 0, mode: "view"}))
                                     }
-                                }}></button>
-                            ) : isAdmin &&(
-                                <button className="after:content-['\0270F']" onClick={() => {
-                                    dispatch(skillsToolsModeChange({index: 0, mode: 'edit'}))
-                                }}></button>
-                            )}
-                        {/* https://emojipedia.org/ */}
+                                }} />
+                            ) : isAdmin && <EditButton onClick={() => dispatch(skillsToolsModeChange({index: 0, mode: 'edit'}))} />}
                         {isAdmin && <AddButton onClick={() => dispatch(handleSkillsToolsAdd(0+1))} />}
                         {isAdmin && <DeleteButton onClick={() => dispatch(handleSkillsToolsDelete(0))} />}
                     </div>

@@ -1,7 +1,8 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, Page } from '@playwright/test'
 import SkillsToolsMock from '../../mocks/__fixtures__/skillsTools'
 import { mockAmplifySession } from '../helpers/mockAmplify';
 import { AdminUser } from '../../mocks/__fixtures__/users'
+import { SkillsTools } from '../../types/skillsToolsTypes';
 
 test.beforeEach('Open start URL', async () => {
   console.log(`Running ${test.info().title}`);
@@ -11,6 +12,8 @@ test.beforeEach('Open start URL', async () => {
 
 test('skills tools page', async ( { page }) => {
 
+  await mockAmplifySession(page, []);
+
   await page.goto('http://localhost:5173/skills-tools')
 
   await page.locator('h1')
@@ -19,13 +22,8 @@ test('skills tools page', async ( { page }) => {
   expect(title).toContainText('Skills & Tools')
 
   for (const [index, item] of SkillsToolsMock.entries()) {
-    await expect(page.getByTestId(`skills-tools-${index}-sort-value-read`)).toContainText(item.sortValue)
-    for (const [categoryIndex, category] of item.categories.entries()) {
-      await expect(page.getByTestId(`skills-tools-${index}-category-${categoryIndex}-read`)).toContainText(category.category)
-      for (const [listIndex, listValue] of category.list.entries()) {
-        await expect(page.getByTestId(`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-read`)).toContainText(listValue)
-      }
-    }
+    await validateSkillsToolsResponse(page, index, item)
+    await validateButtonsExist(page, index, false)
   }
 })
 
@@ -41,15 +39,29 @@ test('skills tools page admin', async ( { page }) => {
   expect(title).toContainText('Skills & Tools')
 
   for (const [index, item] of SkillsToolsMock.entries()) {
-    await expect(page.getByTestId(`skills-tools-${index}-sort-value-read`)).toContainText(item.sortValue)
-    for (const [categoryIndex, category] of item.categories.entries()) {
-      await expect(page.getByTestId(`skills-tools-${index}-category-${categoryIndex}-read`)).toContainText(category.category)
-      for (const [listIndex, listValue] of category.list.entries()) {
-        await expect(page.getByTestId(`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-read`)).toContainText(listValue)
-      }
+    await validateSkillsToolsResponse(page, index, item)
+    await validateButtonsExist(page, index, true)
+  }
+})
+
+async function validateSkillsToolsResponse(page: Page, index: number, item: SkillsTools) {
+  await expect(page.getByTestId(`skills-tools-${index}-sort-value-read`)).toContainText(item.sortValue)
+  for (const [categoryIndex, category] of item.categories.entries()) {
+    await expect(page.getByTestId(`skills-tools-${index}-category-${categoryIndex}-read`)).toContainText(category.category)
+    for (const [listIndex, listValue] of category.list.entries()) {
+      await expect(page.getByTestId(`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-read`)).toContainText(listValue)
     }
+  }
+}
+
+async function validateButtonsExist(page: Page, index: number, isVisible: boolean) {
+  if (isVisible) {
     await expect(page.getByTestId(`skills-tools-${index}-edit-button-default`)).toBeVisible()
     await expect(page.getByTestId(`skills-tools-${index}-add-button`)).toBeVisible()
     await expect(page.getByTestId(`skills-tools-${index}-delete-button`)).toBeVisible()
+  } else {
+    await expect(page.getByTestId(`skills-tools-${index}-edit-button-default`)).not.toBeVisible()
+    await expect(page.getByTestId(`skills-tools-${index}-add-button`)).not.toBeVisible()
+    await expect(page.getByTestId(`skills-tools-${index}-delete-button`)).not.toBeVisible()
   }
-})
+}

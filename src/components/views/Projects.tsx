@@ -165,6 +165,7 @@ const ProjectsView = () => {
                                         type="text"
                                         name={`project-name-${index}`}
                                         id={`project-name-${index}`}
+                                        data-testid={`projects-${index}-sort-value-input-field`}
                                         placeholder="Project Name"
                                         defaultValue={project.sortValue}
                                         className="block font-bold rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -181,6 +182,7 @@ const ProjectsView = () => {
                                     <input
                                         name={`project-description-${index}`}
                                         id={`project-description-${index}`}
+                                        data-testid={`projects-${index}-description-input-field`}
                                         defaultValue={project.description}
                                         className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
@@ -194,22 +196,26 @@ const ProjectsView = () => {
                                 isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                 topic="My Role" description={project.role}
                                 onChange={handleProjectsRoleChange(index)}
+                                data-testid={`projects-${index}-role`}
                             />
                             <TopicList
                                 isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                 topic="My Tasks" list={project.tasks}
                                 onChange={(listIndex) => (e) => handleProjectsTasksListChange(index, listIndex)(e)}
+                                data-testid={`projects-${index}-tasks`}
                             />
                             {project.teamSize !== null && (<TopicInline
                                 isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                 topic="Team Size" description={project.teamSize}
                                 onChange={handleProjectsTeamSizeChange(index)}
+                                data-testid={`projects-${index}-team-size`}
                             />)}
                             {project?.teamRoles && project.teamRoles.length > 0 && (
                                 <TopicList
                                     isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                     topic="Team Roles" list={project.teamRoles}
                                     onChange={(listIndex) => (e) => handleProjectsTeamRolesListChange(index, listIndex)(e)}
+                                    data-testid={`projects-${index}-team-roles`}
                                 />
                             )}
                             {project?.cloudServices && project.cloudServices.length > 0 && (
@@ -217,6 +223,7 @@ const ProjectsView = () => {
                                     isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                     topic="Cloud Services" list={project.cloudServices}
                                     onChange={(listIndex) => (e) => handleProjectsCloudServicesListChange(index, listIndex)(e)}
+                                    data-testid={`projects-${index}-cloud-services`}
                                 />
                             )}
                             {project?.tools && project.tools.length > 0 && (
@@ -224,12 +231,14 @@ const ProjectsView = () => {
                                     isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                     topic="Tools" list={project.tools}
                                     onChange={(listIndex) => (e) => handleProjectsToolsListChange(index, listIndex)(e)}
+                                    data-testid={`projects-${index}-tools`}
                                 />
                             )}
                             <TopicInline
                                 isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                 topic="Project Duration" description={project.duration}
                                 onChange={handleProjectsDurationChange(index)}
+                                data-testid={`projects-${index}-duration`}
                             />
                             <div className="flex space-x-1">
                                 <p className="underline">Project Date:</p>
@@ -239,6 +248,7 @@ const ProjectsView = () => {
                                             type="text"
                                             name={`startDate-${index}`}
                                             id={`startDate-${index}`}
+                                            data-testid={`projects-${index}-start-date-input-field`}
                                             defaultValue={project.startDate}
                                             className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.startDate.length + 1}ch`}}
@@ -249,6 +259,7 @@ const ProjectsView = () => {
                                             type="text"
                                             name={`endDate-${index}`}
                                             id={`endDate-${index}`}
+                                            data-testid={`projects-${index}-end-date-input-field`}
                                             defaultValue={project.endDate}
                                             className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.endDate.length + 1}ch`}}
@@ -263,6 +274,7 @@ const ProjectsView = () => {
                                 <input
                                     name={`project-notes-${index}`}
                                     id={`project-notes-${index}`}
+                                    data-testid={`projects-${index}-notes-input-field`}
                                     defaultValue={project.notes!}
                                     className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
@@ -270,7 +282,7 @@ const ProjectsView = () => {
                                 />
                             ) : (
                                 <div className="space-x-1">
-                                    <p className="italic">*{project.notes}*</p>
+                                    <p className="italic" data-testid={`projects-${index}-notes-read`}>*{project.notes}*</p>
                                 </div>
                             )}
                         </div>
@@ -324,6 +336,7 @@ const ProjectsView = () => {
                                     <input
                                         name={`features-description-${index}`}
                                         id={`features-description-${index}`}
+                                        data-testid={`projects-${index}-features-description-input-field`}
                                         defaultValue={project.featuresDescription}
                                         className="pt-2 pb-6 block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
@@ -337,6 +350,7 @@ const ProjectsView = () => {
                                             <input
                                                 name={`link-type-${index}`}
                                                 id={`link-type-${index}`}
+                                                data-testid={`projects-${index}-link-type-input-field`}
                                                 defaultValue={project.linkType!}
                                                 className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
@@ -344,13 +358,14 @@ const ProjectsView = () => {
                                             <input
                                                 name={`link-${index}`}
                                                 id={`link-${index}`}
+                                                data-testid={`projects-${index}-link-input-field`}
                                                 defaultValue={project.link!}
                                                 className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                             />
                                         </div>
                                     ) : (
-                                        <a href={project.link}><button className="btn btn-neutral dark:bg-neutral-700">{project?.linkType}</button></a>
+                                        <a href={project.link} data-testid={`projects-${index}-link-type-read`}><button className="btn btn-neutral dark:bg-neutral-700" data-testid={`projects-${index}-link-type-button`}>{project?.linkType}</button></a>
                                     ))}
                                 </div>
                               </div>

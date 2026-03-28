@@ -5,9 +5,10 @@ interface TopicList {
     topic: string,
     list: string[],
     onChange: (listIndex: number) => (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void;
+    'data-testid': string;
 }
 
-const TopicList: FC<TopicList> = ({ isEditMode, topic, list, onChange }) => {
+const TopicList: FC<TopicList> = ({ isEditMode, topic, list, onChange, 'data-testid': dataTestId }) => {
     const INPUT_THRESHOLD = 40
     const inputName = topic.toLowerCase().replace(/ /g, '-')
 
@@ -16,7 +17,7 @@ const TopicList: FC<TopicList> = ({ isEditMode, topic, list, onChange }) => {
             <p className="underline">{topic}:</p>
             <ul className="list-disc">
                 {list.map((item: string, listIndex: number) => (
-                    <li key={listIndex}>
+                    <li key={listIndex} data-testid={`${dataTestId}-${listIndex}-${isEditMode ? 'edit' : 'read'}`}>
                         {isEditMode ? (
                             item.length > INPUT_THRESHOLD ? (
                                 <textarea

@@ -5,13 +5,32 @@ import './index.css'
 
 import { store } from './store/store.ts'
 import { Provider } from 'react-redux'
+import { getUser } from './store/userSlice.ts'
 
 const mocksEnabled = import.meta.env.VITE_MOCKS_ENABLED
+const authMocksEnabled = import.meta.env.VITE_AUTH_ADMIN_MOCKS_ENABLED
 
 async function enableMocking() {
   console.log('Enabling mocking', mocksEnabled)
   if (mocksEnabled === 'false') {
     return
+  }
+
+  if (mocksEnabled === 'true' && authMocksEnabled === 'true') {
+    (window as any).__MOCK_SESSION__ = {
+      tokens: {
+        accessToken: {
+          payload: {
+            'cognito:groups': ['admin'], // change this to switch users locally
+          },
+        },
+      },
+    };
+    (window as any).__store__ = store;
+    (window as any).getUser = getUser;
+    console.log('Enabling auth mock as admin', authMocksEnabled)
+  } else if (mocksEnabled === 'true') {
+    console.log('No auth mock enabled, default is read only', authMocksEnabled)
   }
  
   const { worker } = await import('./mocks/browser.js')

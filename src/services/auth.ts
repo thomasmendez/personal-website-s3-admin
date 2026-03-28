@@ -3,10 +3,17 @@ import { fetchAuthSession } from 'aws-amplify/auth';
 
 async function getAmplifySession() {
   // Allow Playwright / test environment to inject a fake session
-  if (typeof window !== 'undefined' && (window as any).__MOCK_SESSION__) {
+  if ((window as any).__MOCK_SESSION__PLAYWRIGHT__) {
     console.log("In playwright testing environment") // interecpted through page.addInitScript, runs before app bundle
+    return (window as any).__MOCK_SESSION__PLAYWRIGHT__;
+  }
+
+  // Only use the mock if we're in mock mode
+  if ((window as any).__MOCK_SESSION__) {
+    console.log("Running local auth mock session")  // only runs if auth mocks are enabled
     return (window as any).__MOCK_SESSION__;
   }
+
   return fetchAuthSession();
 }
 

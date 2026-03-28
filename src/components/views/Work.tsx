@@ -131,6 +131,7 @@ const WorkView = () => {
                                         type="text"
                                         name={`${employment.jobTitle}-${index}`}
                                         id={`${employment.jobTitle}-${index}`}
+                                        data-testid={`work-${index}-job-title-input-field`}
                                         defaultValue={employment.jobTitle}
                                         className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 font-bold shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.jobTitle.length + 1}ch`}}

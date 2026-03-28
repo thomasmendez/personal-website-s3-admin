@@ -10,38 +10,40 @@ test.beforeEach('Open start URL', async () => {
   // await page.goto('http://localhost:5173/skills-tools')
 });
 
-test('skills tools page', async ( { page }) => {
+test.describe('skills tools page', () => {
+  test('read only', async ( { page }) => {
 
-  await mockAmplifySession(page, []);
-
-  await page.goto('http://localhost:5173/skills-tools')
-
-  await page.locator('h1')
-
-  const title = page.locator('h1')
-  expect(title).toContainText('Skills & Tools')
-
-  for (const [index, item] of SkillsToolsMock.entries()) {
-    await validateSkillsToolsResponse(page, index, item)
-    await validateButtonsExist(page, index, false)
-  }
-})
-
-test('skills tools page admin', async ( { page }) => {
-
-  await mockAmplifySession(page, AdminUser.groups);
-
-  await page.goto('http://localhost:5173/skills-tools')
-
-  await page.locator('h1')
-
-  const title = page.locator('h1')
-  expect(title).toContainText('Skills & Tools')
-
-  for (const [index, item] of SkillsToolsMock.entries()) {
-    await validateSkillsToolsResponse(page, index, item)
-    await validateButtonsExist(page, index, true)
-  }
+    await mockAmplifySession(page, []);
+  
+    await page.goto('http://localhost:5173/skills-tools')
+  
+    await page.locator('h1')
+  
+    const title = page.locator('h1')
+    expect(title).toContainText('Skills & Tools')
+  
+    for (const [index, item] of SkillsToolsMock.entries()) {
+      await validateSkillsToolsResponse(page, index, item)
+      await validateButtonsExist(page, index, false)
+    }
+  })
+  
+  test('admin default view', async ( { page }) => {
+  
+    await mockAmplifySession(page, AdminUser.groups);
+  
+    await page.goto('http://localhost:5173/skills-tools')
+  
+    await page.locator('h1')
+  
+    const title = page.locator('h1')
+    expect(title).toContainText('Skills & Tools')
+  
+    for (const [index, item] of SkillsToolsMock.entries()) {
+      await validateSkillsToolsResponse(page, index, item)
+      await validateButtonsExist(page, index, true)
+    }
+  })
 })
 
 async function validateSkillsToolsResponse(page: Page, index: number, item: SkillsTools) {

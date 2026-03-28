@@ -76,7 +76,7 @@ export default defineConfig({
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     env: {
-      VITE_ENV: 'dev',
+      VITE_ENV: 'development',
       VITE_MOCKS_ENABLED: 'true',
       VITE_AUTH_ENABLED: 'false',
     }

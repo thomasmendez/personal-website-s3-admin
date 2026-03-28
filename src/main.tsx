@@ -30,6 +30,17 @@ async function enableMocking() {
     (window as any).getUser = getUser;
     console.log('Enabling auth mock as admin', authMocksEnabled)
   } else if (mocksEnabled === 'true') {
+    (window as any).__MOCK_SESSION__ = {
+      tokens: {
+        accessToken: {
+          payload: {
+            'cognito:groups': [], // default to no groups
+          },
+        },
+      },
+    };
+    (window as any).__store__ = store;
+    (window as any).getUser = getUser;
     console.log('No auth mock enabled, default is read only', authMocksEnabled)
   }
  

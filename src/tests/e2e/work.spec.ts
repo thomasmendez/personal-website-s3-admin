@@ -30,6 +30,9 @@ test('work page', async ( { page }) => {
     for (const [listIndex, listValue] of item.jobDescription.entries()) {
       await expect(page.getByTestId(`work-${index}-job-description-${listIndex}-read`)).toContainText(listValue)
     }
+    await expect(page.getByTestId(`work-${index}-edit-button-default`)).not.toBeVisible()
+    await expect(page.getByTestId(`work-${index}-add-button`)).not.toBeVisible()
+    await expect(page.getByTestId(`work-${index}-delete-button`)).not.toBeVisible()
   }
 })
 
@@ -55,5 +58,8 @@ test('work page admin', async ( { page }) => {
     for (const [listIndex, listValue] of item.jobDescription.entries()) {
       await expect(page.getByTestId(`work-${index}-job-description-${listIndex}-read`)).toContainText(listValue)
     }
+    await expect(page.getByTestId(`work-${index}-edit-button-default`)).toBeVisible()
+    await expect(page.getByTestId(`work-${index}-add-button`)).toBeVisible()
+    await expect(page.getByTestId(`work-${index}-delete-button`)).toBeVisible()
   }
 })

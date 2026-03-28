@@ -211,7 +211,7 @@ const WorkView = () => {
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                <EditButton onClick={() => {
+                                <EditButton data-testid={`work-${index}-edit-button-${mode[index]}`} onClick={() => {
                                     if (mode[index] === 'newItem') {
                                         dispatch(workModeChange({index, mode: 'newItemDone'}))
                                     } else if (mode[index] === 'edit') {
@@ -221,13 +221,12 @@ const WorkView = () => {
                                     }
                                 }} />
                             ) : isAdmin && (
-                                <EditButton onClick={() => {
+                                <EditButton data-testid={`work-${index}-edit-button-default`} onClick={() => {
                                     dispatch(workModeChange({index, mode: 'edit'}))
                                 }} />
                             )}
-                            {/* https://emojipedia.org/ */}
-                            {isAdmin && <AddButton onClick={() => dispatch(handleWorkAdd(index+1))} />}
-                            {isAdmin && <DeleteButton onClick={() => dispatch(handleWorkDelete(index))} />}
+                            {isAdmin && <AddButton data-testid={`work-${index}-add-button`} onClick={() => dispatch(handleWorkAdd(index+1))} />}
+                            {isAdmin && <DeleteButton data-testid={`work-${index}-delete-button`} onClick={() => dispatch(handleWorkDelete(index))} />}
                         </div>
                         <div className="sm:col-start-3 sm:col-span-9 col-start-3 col-span-9">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
@@ -282,7 +281,7 @@ const WorkView = () => {
                     </div>
                     <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                         {isAdmin &&(mode[0] === 'edit' || mode[0] === 'newItem') ? (
-                                <EditButton onClick={() => {
+                                <EditButton data-testid={`work-${0}-edit-button-${mode[0]}`} onClick={() => {
                                     if (mode[0] === 'newItem') {
                                         dispatch(workModeChange({index: 0, mode: 'newItemDone'}))
                                     } else if (mode[0] === 'edit') {
@@ -291,9 +290,9 @@ const WorkView = () => {
                                         dispatch(workModeChange({index: 0, mode: "view"}))
                                     }
                                 }} />
-                            ) : isAdmin && <EditButton onClick={() => dispatch(workModeChange({index: 0, mode: 'edit'}))} />}
-                        {isAdmin && <AddButton onClick={() => dispatch(handleWorkAdd(0+1))} />}
-                        {isAdmin && <DeleteButton onClick={() => dispatch(handleWorkDelete(0))} />}
+                            ) : isAdmin && <EditButton data-testid={`work-${0}-edit-button-default`} onClick={() => dispatch(workModeChange({index: 0, mode: 'edit'}))} />}
+                        {isAdmin && <AddButton data-testid={`work-${0}-add-button`} onClick={() => dispatch(handleWorkAdd(0+1))} />}
+                        {isAdmin && <DeleteButton data-testid={`work-${0}-delete-button`} onClick={() => dispatch(handleWorkDelete(0))} />}
                     </div>
                 </section>
             </React.Fragment>;

@@ -351,7 +351,7 @@ const ProjectsView = () => {
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                             {mode[index] === 'edit' || mode[index] === 'newItem' ? (
-                                <EditButton onClick={() => {
+                                <EditButton data-testid={`projects-${index}-edit-button-${mode[index]}`} onClick={() => {
                                     if (mode[index] === 'newItem') {
                                         dispatch(projectsModeChange({index, mode: 'newItemDone'}))
                                     } else if (mode[index] === 'edit') {
@@ -361,12 +361,12 @@ const ProjectsView = () => {
                                     }
                                 }} />
                             ) : (
-                                <EditButton onClick={() => {
+                                <EditButton data-testid={`projects-${index}-edit-button-default`} onClick={() => {
                                     dispatch(projectsModeChange({index, mode: 'edit'}))
                                 }} />
                             )}
-                            <AddButton onClick={() => dispatch(handleProjectsAdd(index+1))} />
-                            <DeleteButton onClick={() => dispatch(handleProjectsDelete(index))} />
+                            <AddButton data-testid={`projects-${index}-add-button`} onClick={() => dispatch(handleProjectsAdd(index+1))} />
+                            <DeleteButton data-testid={`projects-${index}-delete-button`} onClick={() => dispatch(handleProjectsDelete(index))} />
                         </div>
                     </section>
                 ))}
@@ -379,7 +379,7 @@ const ProjectsView = () => {
                     </div>
                     <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                         {mode[0] === 'edit' || mode[0] === 'newItem' ? (
-                                <EditButton onClick={() => {
+                                <EditButton data-testid={`projects-0-edit-button-default`} onClick={() => {
                                     if (mode[0] === 'newItem') {
                                         dispatch(projectsModeChange({index: 0, mode: 'newItemDone'}))
                                     } else if (mode[0] === 'edit') {
@@ -389,12 +389,12 @@ const ProjectsView = () => {
                                     }
                                 }} />
                             ) : (
-                                <EditButton onClick={() => {
+                                <EditButton data-testid={`projects-0-edit-button`} onClick={() => {
                                     dispatch(projectsModeChange({index: 0, mode: 'edit'}))
                                 }} />
                             )}
-                        <AddButton onClick={() => dispatch(handleProjectsAdd(0+1))} />
-                        <DeleteButton onClick={() => dispatch(handleProjectsDelete(0))} />
+                        <AddButton data-testid={`projects-0-add-button`} onClick={() => dispatch(handleProjectsAdd(0+1))} />
+                        <DeleteButton data-testid={`projects-0-delete-button`} onClick={() => dispatch(handleProjectsDelete(0))} />
                     </div>
                 </section>
             </React.Fragment>;

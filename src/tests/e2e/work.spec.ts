@@ -47,7 +47,7 @@ test.describe('work page', () => {
     }
   })
 
-  test('admin edit', async ( { page }) => {
+  test('admin edit fields', async ( { page }) => {
 
     await mockAmplifySession(page, AdminUser.groups);
   
@@ -63,8 +63,16 @@ test.describe('work page', () => {
       await validateButtonsExist(page, index, true)
   
       await page.getByTestId(`work-${index}-edit-button-default`).click()
-      await expect(page.getByTestId(`work-${index}-job-title-input-field`)).toBeVisible()
-      await page.getByTestId(`work-${index}-job-title-input-field`).fill('New Job Title')
+      await page.getByTestId(`work-${index}-job-title-input-field`).fill(`New Job Title ${index}`)
+      await page.getByTestId(`work-${index}-company-input-field`).fill(`New Company ${index}`)
+      await page.getByTestId(`work-${index}-city-input-field`).fill(`New City ${index}`)
+      await page.getByTestId(`work-${index}-state-input-field`).fill(`New State ${index}`)
+      await page.getByTestId(`work-${index}-start-date-input-field`).fill(`2020-08-22`)
+      await page.getByTestId(`work-${index}-end-date-input-field`).fill(`2026-03-24`)
+      await page.getByTestId(`work-${index}-job-role-input-field`).fill(`New Job Role ${index}`)
+      for (const [listIndex, _] of item.jobDescription.entries()) {
+        await page.getByTestId(`work-${index}-job-description-${listIndex}-input-field`).fill(`New Job Description ${listIndex}`)
+      }
     }
   })
 })

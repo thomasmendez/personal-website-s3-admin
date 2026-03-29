@@ -44,6 +44,65 @@ test.describe('projects - software engineering', () => {
       await validateButtonsExist(page, index, true)
     }
   })
+
+  test('admin edit fields', async ( { page }) => {
+    await mockAmplifySession(page, AdminUser.groups);
+  
+    await page.goto('http://localhost:5173/software-engineering')
+  
+    await page.locator('h1')
+  
+    const title = page.locator('h1')
+    expect(title).toContainText('Software Engineering Projects')
+  
+    for (const [index, item] of mockProjects.entries()) {
+      await validateProjectResponse(page, index, item)
+      await validateButtonsExist(page, index, true)
+  
+      await page.getByTestId(`projects-${index}-edit-button-default`).click()
+      await page.getByTestId(`projects-${index}-sort-value-input-field`).fill(`New Sort Value ${index}`)
+      await page.getByTestId(`projects-${index}-description-input-field`).fill(`New Description ${index}`)
+      await page.getByTestId(`projects-${index}-features-description-input-field`).fill(`New Features Description ${index}`)
+      await page.getByTestId(`projects-${index}-role-input-field`).fill(`New Role ${index}`)
+      for (const [listIndex, _] of item.tasks.entries()) {
+        await page.getByTestId(`projects-${index}-tasks-${listIndex}-input-field`).fill(`New Task ${listIndex}`)
+      }
+      if (item.teamSize) {
+        await page.getByTestId(`projects-${index}-team-size-input-field`).fill(`New Team Size ${index}`)
+      }
+      if (item.teamRoles) {
+        for (const [listIndex, _] of item.teamRoles.entries()) {
+          await page.getByTestId(`projects-${index}-team-roles-${listIndex}-input-field`).fill(`New Team Role ${listIndex}`)
+        }
+      }
+      if (item.cloudServices) {
+        for (const [listIndex, _] of item.cloudServices.entries()) {
+          await page.getByTestId(`projects-${index}-cloud-services-${listIndex}-input-field`).fill(`New Cloud Service ${listIndex}`)
+        }
+      }
+      if (item.tools) {
+        for (const [listIndex, _] of item.tools.entries()) {
+          await page.getByTestId(`projects-${index}-tools-${listIndex}-input-field`).fill(`New Tool ${listIndex}`)
+        }
+      }
+      await page.getByTestId(`projects-${index}-duration-input-field`).fill(`New Duration ${index}`)
+      await page.getByTestId(`projects-${index}-start-date-input-field`).fill(`2020-08-22`)
+      await page.getByTestId(`projects-${index}-end-date-input-field`).fill(`2026-03-24`)
+      if (item.notes) {
+        await page.getByTestId(`projects-${index}-notes-input-field`).fill(`New Notes ${index}`)
+      }
+      if (item.link) {
+        await page.getByTestId(`projects-${index}-link-input-field`).fill(`New Link ${index}`)
+      }
+      if (item.linkType) {
+        await page.getByTestId(`projects-${index}-link-type-input-field`).fill(`New Link Type ${index}`)
+      }
+      // TODO: add media link test
+      // if (item.mediaLink) {
+      //   await page.getByTestId(`projects-${index}-media-link-input-field`).fill(item.mediaLink)
+      // }
+    }
+  })
 })
 
 async function validateProjectResponse(page: Page, index: number, item: Project) {

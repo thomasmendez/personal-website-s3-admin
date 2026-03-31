@@ -12,10 +12,17 @@ const vitestConfig: VitestUserConfigInterface = {
   }
 };
 
-export default defineConfig({
-  plugins: [react()],
-  test: vitestConfig.test,
-  server: {
-    port: 5173,
+export default defineConfig(( { mode }) => {
+  const isPrd = mode === 'prd';
+
+  return {
+    plugins: [react()],
+    test: vitestConfig.test,
+    esbuild: {
+      drop: isPrd ? ['console', 'debugger'] : [],
+    },
+    server: {
+      port: 5173,
+    }
   }
-});
+})

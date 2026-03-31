@@ -306,7 +306,7 @@ const WorkView = () => {
             </React.Fragment>;
         }
     } else if (workStatus === 'failed') {
-        content = <p>{workError}</p>;
+        content = <p>{workError as string}</p>;
     }
 
     return (

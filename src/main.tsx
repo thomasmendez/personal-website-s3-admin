@@ -43,16 +43,18 @@ async function enableMocking() {
     (window as any).getUser = getUser;
     console.log('No auth mock enabled, default is read only', authMocksEnabled)
   }
+
+  if (import.meta.env.VITE_MOCKS_ENABLED === 'true') {
+    const { worker } = await import('./mocks/browser.ts')
  
-  const { worker } = await import('./mocks/browser.js')
- 
-  // `worker.start()` returns a Promise that resolves
-  // once the Service Worker is up and ready to intercept requests.
-  return worker.start({
-    serviceWorker: {
-      url: '/mockServiceWorker.js',
-    },
-  })  
+    // `worker.start()` returns a Promise that resolves
+    // once the Service Worker is up and ready to intercept requests.
+    return worker.start({
+      serviceWorker: {
+        url: '/mockServiceWorker.js',
+      },
+    })  
+  }
 }
 
 enableMocking().then(() => {

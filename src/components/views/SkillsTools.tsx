@@ -234,7 +234,7 @@ const SkillsToolsView = () => {
             </React.Fragment>
         }
     } else if (skillsToolsStatus === 'failed') {
-        content = <p>{skillsToolsError}</p>;
+        content = <p>{skillsToolsError as string}</p>;
     }
 
     return (

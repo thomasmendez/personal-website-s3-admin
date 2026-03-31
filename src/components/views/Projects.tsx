@@ -68,22 +68,22 @@ const ProjectsView = () => {
       dispatch(projectsTeamSizeChange({index, value: newValue}))
     }
 
-    const handleProjectsTeamRolesListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+    const handleProjectsTeamRolesListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const newValue = event.target.value
       dispatch(projectsTeamRolesListChange({index, listIndex, value: newValue}))
     }
 
-    const handleProjectsTasksListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+    const handleProjectsTasksListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const newValue = event.target.value
       dispatch(projectsTasksListChange({index, listIndex, value: newValue}))
     }
 
-    const handleProjectsCloudServicesListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+    const handleProjectsCloudServicesListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const newValue = event.target.value
       dispatch(projectsCloudServicesListChange({index, listIndex, value: newValue}))
     }
 
-    const handleProjectsToolsListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement>) => {
+    const handleProjectsToolsListChange = (index: number, listIndex: number) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const newValue = event.target.value
         dispatch(projectsToolsListChange({index, listIndex, value: newValue}))
       }
@@ -422,7 +422,7 @@ const ProjectsView = () => {
             </React.Fragment>;
         }
     } else if (projectsStatus === 'failed') {
-        content = <p>{projectsError}</p>;
+        content = <p>{projectsError as string}</p>;
     }
 
     return (

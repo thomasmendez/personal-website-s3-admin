@@ -16,7 +16,7 @@ const SignOutPage = () => {
           <View
             backgroundColor={tokens.colors.background.primary}
             borderRadius={tokens.radii.medium}
-            boxShadow={tokens.shadows.medium}
+            boxShadow={tokens.shadows.medium as any}
             maxWidth="28rem"
             margin="0 auto"
             marginTop={tokens.space.xxxl}
@@ -44,7 +44,7 @@ const SignOutPage = () => {
             {/* Logout Button */}
             <Button
               onClick={() => {
-                signOut();
+                signOut?.();
                 navigate('/login');
               }}
               variation="primary"

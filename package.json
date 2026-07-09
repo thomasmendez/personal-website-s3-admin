@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:dev": "tsc && vite build --mode dev",
+    "build:stg": "tsc && vite build --mode stg",
+    "build:prd": "tsc && vite build --mode prd",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
@@ -26,7 +29,7 @@
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
-    "@playwright/test": "^1.52.0",
+    "@playwright/test": "^1.58.2",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.7",
     "@types/node": "^22.15.18",

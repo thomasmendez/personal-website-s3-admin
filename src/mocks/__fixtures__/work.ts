@@ -2,7 +2,7 @@ import { Work } from "../../types/workTypes"
 
 const WorkMock: Work[] = [
   {
-    personalWebsiteType: 'Jobs',
+    personalWebsiteType: 'Work',
     sortValue: '2020-08-22',
     jobTitle: 'Software Engineer',
     company: 'T-Mobile',
@@ -24,7 +24,7 @@ const WorkMock: Work[] = [
     ],
   },
   {
-    personalWebsiteType: 'Jobs',
+    personalWebsiteType: 'Work',
     sortValue: '2019-06-01',
     jobTitle: 'Software Engineer',
     company: 'Surfboard',
@@ -44,7 +44,7 @@ const WorkMock: Work[] = [
     ],
   },
   {
-    personalWebsiteType: 'Jobs',
+    personalWebsiteType: 'Work',
     sortValue: '2018-06-01',
     jobTitle: 'Support Analyst Intern',
     company: 'Accenture',
@@ -61,7 +61,7 @@ const WorkMock: Work[] = [
     ],
   },
   {
-    personalWebsiteType: 'Jobs',
+    personalWebsiteType: 'Work',
     sortValue: '2018-01-01',
     jobTitle: 'C# Unity Programmer',
     company: 'SAGA Lab',

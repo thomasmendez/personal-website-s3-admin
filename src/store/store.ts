@@ -3,13 +3,15 @@ import darkModeReducer from "./darkModeSlice"
 import workReducer from "./workApiSlice"
 import skillsToolsReducer from "./skillsToolsApiSlice"
 import projectsReducer from "./projectsApiSlice"
+import userReducer from "./userSlice"
 
 export const store = configureStore({
     reducer: {
         darkMode: darkModeReducer,
         work: workReducer,
         skillsTools: skillsToolsReducer,
-        projects: projectsReducer
+        projects: projectsReducer,
+        user: userReducer
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

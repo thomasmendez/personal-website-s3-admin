@@ -1,5 +1,5 @@
-import { ChangeEvent } from 'react';
 import { useSelector, useDispatch } from "react-redux"
+import React, { ChangeEvent, useEffect } from "react"
 import { getSkillsToolsError, getSkillsToolsStatus, selectAllSkillsTools,
     skillsToolsAdd, skillsToolsDelete,
     getSkillsToolsMode, skillsToolsModeChange,
@@ -9,13 +9,14 @@ import { getSkillsToolsError, getSkillsToolsStatus, selectAllSkillsTools,
     deleteSkillsTools,
     postSkillsTools,
  } from "../../store/skillsToolsApiSlice"
-import React, { useEffect } from "react"
+import { getCurrentUser, getUser, getUserStatus } from "../../store/userSlice"
 import { getSkillsTools, putSkillsTools } from "../../store/skillsToolsApiSlice"
 import { AppDispatch } from "../../store/store"
 import { Categories, SkillsTools } from "../../types/skillsToolsTypes"
 import Loading from "../Loading/Loading"
 import AddButton from "../Buttons/AddButton"
 import DeleteButton from "../Buttons/DeleteButton"
+import EditButton from "../Buttons/EditButton"
 
 const SkillsToolsView = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -24,6 +25,9 @@ const SkillsToolsView = () => {
     const skillsToolsError = useSelector(getSkillsToolsError)
 
     const mode = useSelector(getSkillsToolsMode)
+    const user = useSelector(getCurrentUser)
+    const userStatus = useSelector(getUserStatus)
+    const isAdmin = user.isAdmin
 
     const handleSkillsToolsValueChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
@@ -93,23 +97,27 @@ const SkillsToolsView = () => {
         if (skillsToolsStatus === 'idle') {
             dispatch(getSkillsTools())
         }
-    }, [skillsToolsStatus, dispatch])
+        if (userStatus === 'idle') {
+            dispatch(getUser())
+        }
+    }, [skillsToolsStatus, userStatus, dispatch])
 
     let content;
-    if (skillsToolsStatus === 'pending') {
+    if (skillsToolsStatus === 'pending' || userStatus === 'pending') {
         content = <Loading />;
-    } else if (skillsToolsStatus === 'succeeded') {
+    } else if (skillsToolsStatus === 'succeeded' && userStatus === 'succeeded') {
         if (Array.isArray(skillsTools) && skillsTools.length > 0) {
             content = <React.Fragment>
                 {skillsTools.map((skillsToolsValue: SkillsTools, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
                         <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
-                            {(mode[index] === 'edit' || mode[index] === 'newItem') ? (
+                            {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <div className="flex font-bold">
                                     <input
                                         type="text"
                                         name={`skills-tools-${index}`}
                                         id={`skills-tools-${index}`}
+                                        data-testid={`skills-tools-${index}-sort-value-input-field`}
                                         defaultValue={skillsToolsValue.sortValue}
                                         className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillsToolsValue.sortValue.length + 1}ch`}}
@@ -117,40 +125,36 @@ const SkillsToolsView = () => {
                                     />:
                                 </div>
                             ) : (
-                                <p className="text-xl underline">{skillsToolsValue.sortValue}</p>
+                                <p className="text-xl underline" data-testid={`skills-tools-${index}-sort-value-read`}>{skillsToolsValue.sortValue}</p>
                             )}
                         </div>
                         <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                             {mode[index] === 'pending' ? (
                                 <span>💾</span>
-                            ) : mode[index] === 'edit' || mode[index] === 'newItem' ? (
-                                    <button className="after:content-['\01F441']" onClick={() => {
+                            ) : isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
+                                    <EditButton data-testid={`skills-tools-${index}-edit-button-${mode[index]}`} onClick={() => {
                                         if (mode[index] === 'newItem') {
                                             dispatch(skillsToolsModeChange({index, mode: 'newItemDone'}))
                                         } else if (mode[index] === 'edit') {
-                                        dispatch(skillsToolsModeChange({index, mode: 'editDone'}))
-                                    } else {
-                                        dispatch(skillsToolsModeChange({index, mode: "view"}))
-                                    }
-                                }}></button>
-                            ) : (
-                                <button className="after:content-['\0270F']" onClick={() => {
-                                    dispatch(skillsToolsModeChange({index, mode: 'edit'}))
-                                }}></button>
-                            )}
-                            {/* https://emojipedia.org/ */}
-                            <AddButton onClick={() => dispatch(handleSkillsToolsAdd(index+1))} />
-                            <DeleteButton onClick={() => dispatch(handleSkillsToolsDelete(index))} />
+                                            dispatch(skillsToolsModeChange({index, mode: 'editDone'}))
+                                        } else {
+                                            dispatch(skillsToolsModeChange({index, mode: "view"}))
+                                        }
+                                    }} />
+                            ) : isAdmin && <EditButton data-testid={`skills-tools-${index}-edit-button-default`} onClick={() => dispatch(skillsToolsModeChange({index, mode: 'edit'}))} />}
+                            {isAdmin && <AddButton data-testid={`skills-tools-${index}-add-button`} onClick={() => dispatch(handleSkillsToolsAdd(index+1))} />}
+                            {isAdmin && <DeleteButton data-testid={`skills-tools-${index}-delete-button`} onClick={() => dispatch(handleSkillsToolsDelete(index))} />}
                         </div>
                         {skillsToolsValue.categories?.map((categories: Categories, categoryIndex) => (
                             <div key={`${skillsToolsValue.sortValue}-${categoryIndex}`} className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
                                 <div className="flex space-x-1">
-                                    {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                    {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                         <div className="flex font-bold">
                                             <input
                                                 type="text"
-                                                name={`skills-tools-category-${categoryIndex}`}
-                                                id={`skills-tools-category-${categoryIndex}`}
+                                                name={`skills-tools-${index}-category-${categoryIndex}`}
+                                                id={`skills-tools-${index}-category-${categoryIndex}`}
+                                                data-testid={`skills-tools-${index}-category-${categoryIndex}-input-field`}
                                                 value={categories.category}
                                                 className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${categories.category.length + 1}ch`}}
@@ -158,18 +162,19 @@ const SkillsToolsView = () => {
                                             />:
                                         </div>
                                     ) : (
-                                        <p className="font-bold">{categories.category}:</p>
+                                        <p className="font-bold" data-testid={`skills-tools-${index}-category-${categoryIndex}-read`}>{categories.category}:</p>
                                     )}
                                     <ul className="flex space-x-1">
                                         {categories.list.map((item: string, listIndex) => (
-                                            <li key={`${skillsToolsValue.sortValue}-${categories.category}-${categoryIndex}-list-${listIndex}`} className='flex space-x-1'>
-                                                {mode[index] === 'edit' || mode[index] === 'newItem' ? (
+                                            <li key={`${skillsToolsValue.sortValue}-${categories.category}-${categoryIndex}-list-${listIndex}`} className='flex space-x-1' data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-read`}>
+                                                {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                                     <React.Fragment>
                                                         <div className="flex rounded-lg shadow-sm">
                                                           <input
                                                             type="text"
                                                             name={`${skillsToolsValue.sortValue}-${categories.category}-${listIndex}`}
                                                             id={`${skillsToolsValue.sortValue}-${categories.category}-${listIndex}`}
+                                                            data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-input-field`}
                                                             value={item}
                                                             className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                             style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
@@ -183,10 +188,10 @@ const SkillsToolsView = () => {
                                                           </span>
                                                         </div>
                                                         {(listIndex === categories.list.length - 1) && (
-                                                            <AddButton onClick={() => dispatch(handleSkillsToolsCategoryListAdd(index, categoryIndex, ''))} />
+                                                            <AddButton data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-add-button`} onClick={() => dispatch(handleSkillsToolsCategoryListAdd(index, categoryIndex, ''))} />
                                                         )}
                                                         {(listIndex === categories.list.length - 1) && (
-                                                            <DeleteButton onClick={() => dispatch(handleSkillsToolsDeleteCategory(index, categoryIndex))} />
+                                                            <DeleteButton data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-delete-button`} onClick={() => dispatch(handleSkillsToolsDeleteCategory(index, categoryIndex))} />
                                                         )}
                                                     </React.Fragment>
                                                 ) : (
@@ -196,8 +201,8 @@ const SkillsToolsView = () => {
                                         ))}
                                     </ul>
                                 </div> 
-                                {(mode[index] === 'edit' || mode[index] === 'newItem') && (categoryIndex === skillsToolsValue.categories.length - 1) && (
-                                    <AddButton onClick={() => dispatch(handleSkillsToolsAddCategory(index))} />
+                                {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') && (categoryIndex === skillsToolsValue.categories.length - 1) && (
+                                    <AddButton data-testid={`skills-tools-${index}-add-button`} onClick={() => dispatch(handleSkillsToolsAddCategory(index))} />
                                 )}
                             </div>
                         ))}
@@ -211,8 +216,8 @@ const SkillsToolsView = () => {
                         No skills tools found
                     </div>
                     <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
-                        {mode[0] === 'edit' || mode[0] === 'newItem' ? (
-                                <button className="after:content-['\01F441']" onClick={() => {
+                        {isAdmin && (mode[0] === 'edit' || mode[0] === 'newItem') ? (
+                                <EditButton data-testid={`skills-tools-${0}-edit-button-default`} onClick={() => {
                                     if (mode[0] === 'newItem') {
                                         dispatch(skillsToolsModeChange({index: 0, mode: 'newItemDone'}))
                                     } else if (mode[0] === 'edit') {
@@ -220,21 +225,16 @@ const SkillsToolsView = () => {
                                     } else {
                                         dispatch(skillsToolsModeChange({index: 0, mode: "view"}))
                                     }
-                                }}></button>
-                            ) : (
-                                <button className="after:content-['\0270F']" onClick={() => {
-                                    dispatch(skillsToolsModeChange({index: 0, mode: 'edit'}))
-                                }}></button>
-                            )}
-                        {/* https://emojipedia.org/ */}
-                        <AddButton onClick={() => dispatch(handleSkillsToolsAdd(0+1))} />
-                        <DeleteButton onClick={() => dispatch(handleSkillsToolsDelete(0))} />
+                                }} />
+                            ) : isAdmin && <EditButton data-testid={`skills-tools-${0}-edit-button-default`} onClick={() => dispatch(skillsToolsModeChange({index: 0, mode: 'edit'}))} />}
+                        {isAdmin && <AddButton data-testid={`skills-tools-${0}-add-button`} onClick={() => dispatch(handleSkillsToolsAdd(0+1))} />}
+                        {isAdmin && <DeleteButton data-testid={`skills-tools-${0}-delete-button`} onClick={() => dispatch(handleSkillsToolsDelete(0))} />}
                     </div>
                 </section>
             </React.Fragment>
         }
     } else if (skillsToolsStatus === 'failed') {
-        content = <p>{skillsToolsError}</p>;
+        content = <p>{skillsToolsError as string}</p>;
     }
 
     return (

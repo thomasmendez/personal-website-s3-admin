@@ -4,9 +4,9 @@ export interface About {
   educationStartDate: string;
   educationEndDate: string;
   degreeMinors: string[];
-  workExperience: any[];
-  skills: any[];
-  projects: any[];
+  workExperience: unknown[];
+  skills: unknown[];
+  projects: unknown[];
   contactDetails: {
     email: string;
     phone: string;

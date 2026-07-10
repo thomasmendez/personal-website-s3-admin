@@ -16,7 +16,7 @@ const SignOutPage = () => {
           <View
             backgroundColor={tokens.colors.background.primary}
             borderRadius={tokens.radii.medium}
-            boxShadow={tokens.shadows.medium as any}
+            boxShadow={String(tokens.shadows.medium)}
             maxWidth="28rem"
             margin="0 auto"
             marginTop={tokens.space.xxxl}

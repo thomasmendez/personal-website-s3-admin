@@ -15,7 +15,6 @@ export async function mockCognitoUser(page: Page, { groups }: MockUserOptions) {
   // Amplify reads fetchAuthSession from its own internals —
   // we override it on the window before any app code runs
   await page.addInitScript((payload) => {
-    // @ts-ignore
     window.__MOCK_COGNITO_PAYLOAD__ = payload;
   }, fakePayload);
 }

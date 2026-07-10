@@ -17,7 +17,7 @@ async function enableMocking() {
   }
 
   if (mocksEnabled === 'true' && authMocksEnabled === 'true') {
-    (window as any).__MOCK_SESSION__ = {
+    window.__MOCK_SESSION__ = {
       tokens: {
         accessToken: {
           payload: {
@@ -26,11 +26,11 @@ async function enableMocking() {
         },
       },
     };
-    (window as any).__store__ = store;
-    (window as any).getUser = getUser;
+    window.__store__ = store;
+    window.getUser = getUser;
     console.log('Enabling auth mock as admin', authMocksEnabled)
   } else if (mocksEnabled === 'true') {
-    (window as any).__MOCK_SESSION__ = {
+    window.__MOCK_SESSION__ = {
       tokens: {
         accessToken: {
           payload: {
@@ -39,21 +39,21 @@ async function enableMocking() {
         },
       },
     };
-    (window as any).__store__ = store;
-    (window as any).getUser = getUser;
+    window.__store__ = store;
+    window.getUser = getUser;
     console.log('No auth mock enabled, default is read only', authMocksEnabled)
   }
 
   if (import.meta.env.VITE_MOCKS_ENABLED === 'true') {
     const { worker } = await import('./mocks/browser.ts')
- 
+
     // `worker.start()` returns a Promise that resolves
     // once the Service Worker is up and ready to intercept requests.
     return worker.start({
       serviceWorker: {
         url: '/mockServiceWorker.js',
       },
-    })  
+    })
   }
 }
 

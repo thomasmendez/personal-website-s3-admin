@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { Categories, SkillsTools } from "../types/skillsToolsTypes"
-import { axiosPostSkillsTools, axiosGetSkillsTools, axiosPutSkillsTools, axiosDeleteSkillsTools } from "../services/personalWebsiteApi"
+import { apiPostSkillsTools, apiGetSkillsTools, apiPutSkillsTools, apiDeleteSkillsTools } from "../services/personalWebsiteApi"
 
 export const postSkillsTools = createAsyncThunk(
     'post/skillsTools',
     async (postSkillsTools: SkillsTools, thunkApi) => {
         try {
-            const response = await axiosPostSkillsTools(postSkillsTools)
+            const response = await apiPostSkillsTools(postSkillsTools)
             console.log(`Response POST: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +21,7 @@ export const getSkillsTools = createAsyncThunk(
     'get/skillsTools',
     async (_, thunkApi) => {
         try {
-            const response = await axiosGetSkillsTools()
+            const response = await apiGetSkillsTools()
             console.log(`Response GET: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,7 +36,7 @@ export const putSkillsTools = createAsyncThunk(
     'put/skillsTools',
     async (updateSkillsTools: SkillsTools, thunkApi) => {
         try {
-            const response = await axiosPutSkillsTools(updateSkillsTools)
+            const response = await apiPutSkillsTools(updateSkillsTools)
             console.log(`Response PUT: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,7 +51,7 @@ export const deleteSkillsTools = createAsyncThunk(
     'delete/skillsTools',
     async (deleteSkillsTools: SkillsTools, thunkApi) => {
         try {
-            const response = await axiosDeleteSkillsTools(deleteSkillsTools)
+            const response = await apiDeleteSkillsTools(deleteSkillsTools)
             console.log(`Response DELETE: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

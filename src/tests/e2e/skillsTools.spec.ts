@@ -14,31 +14,31 @@ test.describe('skills tools page', () => {
   test('read only', async ( { page }) => {
 
     await mockAmplifySession(page, []);
-  
+
     await page.goto('http://localhost:5173/skills-tools')
-  
+
     await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Skills & Tools')
-  
+
     for (const [index, item] of SkillsToolsMock.entries()) {
       await validateSkillsToolsResponse(page, index, item)
       await validateButtonsExist(page, index, false)
     }
   })
-  
+
   test('admin default view', async ( { page }) => {
-  
+
     await mockAmplifySession(page, AdminUser.groups);
-  
+
     await page.goto('http://localhost:5173/skills-tools')
-  
+
     await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Skills & Tools')
-  
+
     for (const [index, item] of SkillsToolsMock.entries()) {
       await validateSkillsToolsResponse(page, index, item)
       await validateButtonsExist(page, index, true)
@@ -46,25 +46,25 @@ test.describe('skills tools page', () => {
   })
 
   test('admin edit fields', async ( { page }) => {
-    
+
     await mockAmplifySession(page, AdminUser.groups);
-  
+
     await page.goto('http://localhost:5173/skills-tools')
-  
+
     await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Skills & Tools')
-  
+
     for (const [index, item] of SkillsToolsMock.entries()) {
       await validateSkillsToolsResponse(page, index, item)
       await validateButtonsExist(page, index, true)
-  
+
       await page.getByTestId(`skills-tools-${index}-edit-button-default`).click()
       await page.getByTestId(`skills-tools-${index}-sort-value-input-field`).fill(`New Sort Value ${index}`)
       for (const [categoryIndex, category] of item.categories.entries()) {
         await page.getByTestId(`skills-tools-${index}-category-${categoryIndex}-input-field`).fill(`New Category ${categoryIndex}`)
-        for (const [listIndex, _] of category.list.entries()) {
+        for (const [listIndex] of category.list.entries()) {
           await page.getByTestId(`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-input-field`).fill(`New Value ${listIndex}`)
         }
       }

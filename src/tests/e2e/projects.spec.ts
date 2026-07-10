@@ -16,29 +16,29 @@ test.describe('projects - software engineering', () => {
     await mockAmplifySession(page, []);
 
     await page.goto('http://localhost:5173/software-engineering')
-  
+
     await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Software Engineering Projects')
-  
+
     for (const [index, item] of mockProjects.entries()) {
       await validateProjectResponse(page, index, item)
       await validateButtonsExist(page, index, false)
     }
   })
-  
+
   test('admin default view', async ( { page }) => {
-  
+
     await mockAmplifySession(page, AdminUser.groups);
-  
+
     await page.goto('http://localhost:5173/software-engineering')
-  
+
     await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Software Engineering Projects')
-  
+
     for (const [index, item] of mockProjects.entries()) {
       await validateProjectResponse(page, index, item)
       await validateButtonsExist(page, index, true)
@@ -47,41 +47,41 @@ test.describe('projects - software engineering', () => {
 
   test('admin edit fields', async ( { page }) => {
     await mockAmplifySession(page, AdminUser.groups);
-  
+
     await page.goto('http://localhost:5173/software-engineering')
-  
+
     await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Software Engineering Projects')
-  
+
     for (const [index, item] of mockProjects.entries()) {
       await validateProjectResponse(page, index, item)
       await validateButtonsExist(page, index, true)
-  
+
       await page.getByTestId(`projects-${index}-edit-button-default`).click()
       await page.getByTestId(`projects-${index}-sort-value-input-field`).fill(`New Sort Value ${index}`)
       await page.getByTestId(`projects-${index}-description-input-field`).fill(`New Description ${index}`)
       await page.getByTestId(`projects-${index}-features-description-input-field`).fill(`New Features Description ${index}`)
       await page.getByTestId(`projects-${index}-role-input-field`).fill(`New Role ${index}`)
-      for (const [listIndex, _] of item.tasks.entries()) {
+      for (const [listIndex] of item.tasks.entries()) {
         await page.getByTestId(`projects-${index}-tasks-${listIndex}-input-field`).fill(`New Task ${listIndex}`)
       }
       if (item.teamSize) {
         await page.getByTestId(`projects-${index}-team-size-input-field`).fill(`New Team Size ${index}`)
       }
       if (item.teamRoles) {
-        for (const [listIndex, _] of item.teamRoles.entries()) {
+        for (const [listIndex] of item.teamRoles.entries()) {
           await page.getByTestId(`projects-${index}-team-roles-${listIndex}-input-field`).fill(`New Team Role ${listIndex}`)
         }
       }
       if (item.cloudServices) {
-        for (const [listIndex, _] of item.cloudServices.entries()) {
+        for (const [listIndex] of item.cloudServices.entries()) {
           await page.getByTestId(`projects-${index}-cloud-services-${listIndex}-input-field`).fill(`New Cloud Service ${listIndex}`)
         }
       }
       if (item.tools) {
-        for (const [listIndex, _] of item.tools.entries()) {
+        for (const [listIndex] of item.tools.entries()) {
           await page.getByTestId(`projects-${index}-tools-${listIndex}-input-field`).fill(`New Tool ${listIndex}`)
         }
       }

@@ -50,18 +50,18 @@ test.describe('work page', () => {
   test('admin edit fields', async ( { page }) => {
 
     await mockAmplifySession(page, AdminUser.groups);
-  
+
     await page.goto('http://localhost:5173/work')
-  
+
     await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Where I Worked')
-  
+
     for (const [index, item] of mockWork.entries()) {
       await validateWorkResponse(page, index, item)
       await validateButtonsExist(page, index, true)
-  
+
       await page.getByTestId(`work-${index}-edit-button-default`).click()
       await page.getByTestId(`work-${index}-job-title-input-field`).fill(`New Job Title ${index}`)
       await page.getByTestId(`work-${index}-company-input-field`).fill(`New Company ${index}`)
@@ -70,7 +70,7 @@ test.describe('work page', () => {
       await page.getByTestId(`work-${index}-start-date-input-field`).fill(`2020-08-22`)
       await page.getByTestId(`work-${index}-end-date-input-field`).fill(`2026-03-24`)
       await page.getByTestId(`work-${index}-job-role-input-field`).fill(`New Job Role ${index}`)
-      for (const [listIndex, _] of item.jobDescription.entries()) {
+      for (const [listIndex] of item.jobDescription.entries()) {
         await page.getByTestId(`work-${index}-job-description-${listIndex}-input-field`).fill(`New Job Description ${listIndex}`)
       }
     }

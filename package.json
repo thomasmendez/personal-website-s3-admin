@@ -22,7 +22,6 @@
     "@aws-amplify/ui-react": "^6.1.12",
     "@reduxjs/toolkit": "^2.2.3",
     "aws-amplify": "^6.3.8",
-    "axios": "^1.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.1.1",

@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { Project } from "../types/projectTypes"
-import { axiosPostProject, axiosGetProjects, axiosPutProject, axiosDeleteProject } from "../services/personalWebsiteApi"
+import { apiRequestPostProject, apiRequestGetProjects, apiRequestPutProject, apiRequestDeleteProject } from "../services/personalWebsiteApi"
 
 export const postProjects = createAsyncThunk(
     'post/projects',
     async (postProjects: ProjectComponent, thunkApi) => {
         try {
-            const response = await axiosPostProject(postProjects)
+            const response = await apiRequestPostProject(postProjects)
             console.log(`Response POST: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +21,7 @@ export const getProjects = createAsyncThunk(
     'get/projects',
     async (_, thunkApi) => {
         try {
-            const response = await axiosGetProjects()
+            const response = await apiRequestGetProjects()
             console.log(`Response GET: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,7 +36,7 @@ export const putProjects = createAsyncThunk(
     'put/projects',
     async (updateProjects: ProjectComponent, thunkApi) => {
         try {
-            const response = await axiosPutProject(updateProjects)
+            const response = await apiRequestPutProject(updateProjects)
             console.log(`Response PUT: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,7 +51,7 @@ export const deleteProjects = createAsyncThunk(
     'delete/projects',
     async (deleteProjects: ProjectComponent, thunkApi) => {
         try {
-            const response = await axiosDeleteProject(deleteProjects)
+            const response = await apiRequestDeleteProject(deleteProjects)
             console.log(`Response DELETE: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -268,10 +268,10 @@ export const ProjectsSlice = createSlice({
                     action.payload.sort((a: Project, b: Project) => {
                         const dateA = new Date(a.endDate + " 01").getTime();
                         const dateB = new Date(b.endDate + " 01").getTime();
-                        return dateB - dateA; 
+                        return dateB - dateA;
                     });
                 }
-                state.entities = action.payload
+                state.entities = action.payload.map((p: Project) => ({ ...p, mediaPreview: null, image: null }))
                 state.mode.length = state.entities.length
                 for (let i = 0; i < state.entities.length; i++) {
                     state.mode[i] = 'view'
@@ -325,7 +325,7 @@ export const getProjectsError = (state: { projects: ProjectsState }) => state.pr
 
 export const { projectsAdded, projectsModeChange,
     projectsAdd, projectsDelete,
-    projectsValueChange, projectsDescriptionChange, 
+    projectsValueChange, projectsDescriptionChange,
     projectsRoleChange,
     projectsTasksListChange,
     projectsTeamSizeChange,
@@ -335,7 +335,7 @@ export const { projectsAdded, projectsModeChange,
     projectsDurationChange,
     projectsStartDateChange,
     projectsEndDateChange,
-    projectsNotesChange, 
+    projectsNotesChange,
     projectsMediaChange } = ProjectsSlice.actions
 
 export default ProjectsSlice.reducer

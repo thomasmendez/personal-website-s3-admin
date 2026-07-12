@@ -26,6 +26,9 @@ dist-ssr
 .env
 .env.*
 
+# Vite
+.vite/deps
+
 # Playwright
 /test-results/
 /playwright-report/

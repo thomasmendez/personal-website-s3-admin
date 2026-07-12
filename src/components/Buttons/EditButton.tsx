@@ -10,7 +10,7 @@ const EditButton: React.FC<EditButtonProps> = ({ onClick, 'data-testid': dataTes
 
   return (
     <button
-      className="after:content-['\0270F']" 
+      className="after:content-['\\270F']"
       data-testid={dataTestId}
       onClick={onClick}
     >

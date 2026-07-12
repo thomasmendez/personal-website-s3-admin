@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { Work } from "../types/workTypes"
-import { axiosPostWork, axiosGetWork, axiosPutWork, axiosDeleteWork } from "../services/personalWebsiteApi"
+import { apiRequestPostWork, apiRequestGetWork, apiRequestPutWork, apiRequestDeleteWork } from "../services/personalWebsiteApi"
 
 export const postWork = createAsyncThunk(
     'post/work',
     async (postWork: Work, thunkApi) => {
         try {
-            const response = await axiosPostWork(postWork)
+            const response = await apiRequestPostWork(postWork)
             console.log(`Response POST: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +21,7 @@ export const getWork = createAsyncThunk(
     'get/work',
     async (_, thunkApi) => {
         try {
-            const response = await axiosGetWork()
+            const response = await apiRequestGetWork()
             console.log(JSON.stringify(response.data))
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,7 +36,7 @@ export const putWork = createAsyncThunk(
     'put/work',
     async (updateWork: Work, thunkApi) => {
         try {
-            const response = await axiosPutWork(updateWork)
+            const response = await apiRequestPutWork(updateWork)
             console.log(`Response PUT: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,7 +51,7 @@ export const deleteWork = createAsyncThunk(
     'delete/work',
     async (deleteWork: Work, thunkApi) => {
         try {
-            const response = await axiosDeleteWork(deleteWork)
+            const response = await apiRequestDeleteWork(deleteWork)
             console.log(`Response DELETE: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -204,7 +204,7 @@ export const workSlice = createSlice({
             const { index, newItemIndex, newItem } = action.payload;
             if (index >= 0 && index < state.entities.length) {
                 state.entities[index].jobDescription.splice(newItemIndex, 0, newItem);
-                
+
             }
         },
         workJobDescriptionListRemove: (state, action) => {
@@ -228,7 +228,7 @@ export const workSlice = createSlice({
                 state.mode.length = state.entities.length
                 for (let i = 0; i < state.entities.length; i++) {
                     state.mode[i] = 'view'
-                }   
+                }
             })
             .addCase(getWork.rejected, (state, action) => {
                 state.status = 'failed'

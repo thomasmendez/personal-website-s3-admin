@@ -9,49 +9,49 @@ export const baseUrl = import.meta.env.VITE_API_GATEWAY_ENDPOINT
 // ============================================
 // Work
 // ============================================
-export async function axiosGetWork() {
+export async function apiRequestGetWork() {
   return apiRequest.get<Work[]>(`${baseUrl}/api/v1/work`)
 }
 
-export async function axiosPostWork(newWork: Work) {
+export async function apiRequestPostWork(newWork: Work) {
   return apiRequest.post<Work>(`${baseUrl}/api/v1/work`, newWork)
 }
 
-export async function axiosPutWork(updateWork: Work) {
+export async function apiRequestPutWork(updateWork: Work) {
   return apiRequest.put<Work>(`${baseUrl}/api/v1/work`, updateWork)
 }
 
-export async function axiosDeleteWork(deleteWork: Work) {
+export async function apiRequestDeleteWork(deleteWork: Work) {
   return apiRequest.delete(`${baseUrl}/api/v1/work`, { data: deleteWork })
 }
 
 // ============================================
 // Skills & Tools
 // ============================================
-export async function axiosGetSkillsTools() {
+export async function apiRequestGetSkillsTools() {
   return apiRequest.get<SkillsTools[]>(`${baseUrl}/api/v1/skillsTools`)
 }
 
-export async function axiosPostSkillsTools(newSkillsTools: SkillsTools) {
+export async function apiRequestPostSkillsTools(newSkillsTools: SkillsTools) {
   return apiRequest.post<SkillsTools>(`${baseUrl}/api/v1/skillsTools`, newSkillsTools)
 }
 
-export async function axiosPutSkillsTools(newSkillsTools: SkillsTools) {
+export async function apiRequestPutSkillsTools(newSkillsTools: SkillsTools) {
   return apiRequest.put<SkillsTools>(`${baseUrl}/api/v1/skillsTools`, newSkillsTools)
 }
 
-export async function axiosDeleteSkillsTools(deleteSkillsTools: SkillsTools) {
+export async function apiRequestDeleteSkillsTools(deleteSkillsTools: SkillsTools) {
   return apiRequest.delete(`${baseUrl}/api/v1/skillsTools`, { data: deleteSkillsTools })
 }
 
 // ============================================
 // Projects
 // ============================================
-export async function axiosGetProjects() {
+export async function apiRequestGetProjects() {
   return apiRequest.get<Project[]>(`${baseUrl}/api/v1/projects`)
 }
 
-export async function axiosPostProject(newProject: ProjectComponent) {
+export async function apiRequestPostProject(newProject: ProjectComponent) {
   if (newProject.image !== null) {
     const formData = projectToFormData(newProject)
     return apiRequest.post(`${baseUrl}/api/v1/projects`, formData)
@@ -59,7 +59,7 @@ export async function axiosPostProject(newProject: ProjectComponent) {
   return apiRequest.post(`${baseUrl}/api/v1/projects`, newProject)
 }
 
-export async function axiosPutProject(updateProject: ProjectComponent) {
+export async function apiRequestPutProject(updateProject: ProjectComponent) {
   if (updateProject.image !== null) {
     const formData = projectToFormData(updateProject)
     // NOTE: preserved from the original — this was a POST even in the
@@ -70,6 +70,6 @@ export async function axiosPutProject(updateProject: ProjectComponent) {
   return apiRequest.put(`${baseUrl}/api/v1/projects`, updateProject)
 }
 
-export async function axiosDeleteProject(deleteProject: Project) {
+export async function apiRequestDeleteProject(deleteProject: Project) {
   return apiRequest.delete(`${baseUrl}/api/v1/projects`, { data: deleteProject })
 }

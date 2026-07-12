@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { Project } from "../types/projectTypes"
-import { axiosPostProject, axiosGetProjects, axiosPutProject, axiosDeleteProject } from "../services/personalWebsiteApi"
+import { apiRequestPostProject, apiRequestGetProjects, apiRequestPutProject, apiRequestDeleteProject } from "../services/personalWebsiteApi"
 
 export const postProjects = createAsyncThunk(
     'post/projects',
     async (postProjects: ProjectComponent, thunkApi) => {
         try {
-            const response = await axiosPostProject(postProjects)
+            const response = await apiRequestPostProject(postProjects)
             console.log(`Response POST: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +21,7 @@ export const getProjects = createAsyncThunk(
     'get/projects',
     async (_, thunkApi) => {
         try {
-            const response = await axiosGetProjects()
+            const response = await apiRequestGetProjects()
             console.log(`Response GET: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,7 +36,7 @@ export const putProjects = createAsyncThunk(
     'put/projects',
     async (updateProjects: ProjectComponent, thunkApi) => {
         try {
-            const response = await axiosPutProject(updateProjects)
+            const response = await apiRequestPutProject(updateProjects)
             console.log(`Response PUT: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,7 +51,7 @@ export const deleteProjects = createAsyncThunk(
     'delete/projects',
     async (deleteProjects: ProjectComponent, thunkApi) => {
         try {
-            const response = await axiosDeleteProject(deleteProjects)
+            const response = await apiRequestDeleteProject(deleteProjects)
             console.log(`Response DELETE: ${JSON.stringify(response.data)}`)
             return response.data
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

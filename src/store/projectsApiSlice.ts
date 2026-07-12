@@ -268,10 +268,10 @@ export const ProjectsSlice = createSlice({
                     action.payload.sort((a: Project, b: Project) => {
                         const dateA = new Date(a.endDate + " 01").getTime();
                         const dateB = new Date(b.endDate + " 01").getTime();
-                        return dateB - dateA; 
+                        return dateB - dateA;
                     });
                 }
-                state.entities = action.payload
+                state.entities = action.payload.map((p: Project) => ({ ...p, mediaPreview: null, image: null }))
                 state.mode.length = state.entities.length
                 for (let i = 0; i < state.entities.length; i++) {
                     state.mode[i] = 'view'
@@ -325,7 +325,7 @@ export const getProjectsError = (state: { projects: ProjectsState }) => state.pr
 
 export const { projectsAdded, projectsModeChange,
     projectsAdd, projectsDelete,
-    projectsValueChange, projectsDescriptionChange, 
+    projectsValueChange, projectsDescriptionChange,
     projectsRoleChange,
     projectsTasksListChange,
     projectsTeamSizeChange,
@@ -335,7 +335,7 @@ export const { projectsAdded, projectsModeChange,
     projectsDurationChange,
     projectsStartDateChange,
     projectsEndDateChange,
-    projectsNotesChange, 
+    projectsNotesChange,
     projectsMediaChange } = ProjectsSlice.actions
 
 export default ProjectsSlice.reducer

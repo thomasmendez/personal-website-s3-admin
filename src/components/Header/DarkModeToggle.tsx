@@ -16,15 +16,17 @@ const DarkModeToggle = () => {
     dispatch(changeDarkMode(!darkMode))
   }
 
+  /* TODO: Update to ensure sun and moon paths in svg show up */
   return(
     <label className="grid cursor-pointer place-items-center">
       <input
         type="checkbox"
         checked={darkMode}
         onChange={toggleDarkMode}
-        className="toggle theme-controller bg-base-content col-span-2 col-start-1 row-start-1 [--tglbg:theme(colors.gray.600)] checked:bg-gray-300 checked:[--tglbg:theme(colors.gray.500)]" />
+        className="toggle theme-controller bg-base-content col-span-2 col-start-1 row-start-1 [--tglbg:var(--color-gray-600)] checked:bg-gray-300 checked:[--tglbg:var(--color-gray-500)]" />
       <svg
-        className="stroke-base-100 fill-base-100 col-start-1 row-start-1"
+        style={{ backgroundColor: 'lime', stroke: 'red', fill: 'red' }}
+        className="stroke-gray-800 fill-gray-800 dark:stroke-gray-100 dark:fill-gray-100 col-start-1 row-start-1"
         width="14"
         height="14"
         viewBox="0 0 24 24"
@@ -38,7 +40,8 @@ const DarkModeToggle = () => {
           d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
       </svg>
       <svg
-        className="stroke-base-100 fill-base-100 col-start-2 row-start-1"
+        style={{ backgroundColor: 'lime', stroke: 'red', fill: 'red' }}
+        className="stroke-gray-800 fill-gray-800 dark:stroke-gray-100 dark:fill-gray-100 col-start-2 row-start-1"
         width="14"
         height="14"
         viewBox="0 0 24 24"

@@ -133,7 +133,7 @@ const WorkView = () => {
                                         id={`${employment.jobTitle}-${index}`}
                                         data-testid={`work-${index}-job-title-input-field`}
                                         defaultValue={employment.jobTitle}
-                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 font-bold shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 font-bold shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.jobTitle.length + 1}ch`}}
                                         onChange={handleWorkValueChange(index)}
                                     />
@@ -148,7 +148,7 @@ const WorkView = () => {
                                         id={`${employment.company}-${index}`}
                                         data-testid={`work-${index}-company-input-field`}
                                         defaultValue={employment.company}
-                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.company.length + 1}ch`}}
                                         onChange={handleWorkCompanyChange(index)}
                                     />
@@ -162,7 +162,7 @@ const WorkView = () => {
                                         id={`${employment.location.city}-${index}`}
                                         data-testid={`work-${index}-city-input-field`}
                                         defaultValue={employment.location.city}
-                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.location.city.length + 1}ch`}}
                                         onChange={handleWorkLocationCityChange(index)}
                                     />
@@ -176,7 +176,7 @@ const WorkView = () => {
                                         id={`${employment.location.state}-${index}`}
                                         data-testid={`work-${index}-state-input-field`}
                                         defaultValue={employment.location.state}
-                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.location.state.length + 1}ch`}}
                                         onChange={handleWorkLocationStateChange(index)}
                                     />
@@ -193,7 +193,7 @@ const WorkView = () => {
                                     id={`${employment.startDate}-${index}`}
                                     data-testid={`work-${index}-start-date-input-field`}
                                     defaultValue={employment.startDate}
-                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.startDate).length + 1}ch`}}
                                     onChange={handleWorkStartDateChange(index)}
                                 />
@@ -207,7 +207,7 @@ const WorkView = () => {
                                     id={`${employment.endDate}-${index}`}
                                     data-testid={`work-${index}-end-date-input-field`}
                                     defaultValue={employment.endDate}
-                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.endDate).length + 1}ch`}}
                                     onChange={handleWorkEndDateChange(index)}
                                 />
@@ -242,7 +242,7 @@ const WorkView = () => {
                                     id={`${employment.jobRole}-${index}`}
                                     data-testid={`work-${index}-job-role-input-field`}
                                     defaultValue={employment.jobRole}
-                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.jobRole).length + 1}ch`}}
                                     onChange={handleWorkJobRoleChange(index)}
                                 />
@@ -256,14 +256,14 @@ const WorkView = () => {
                                     <li key={jobDescriptionIndex} data-testid={`work-${index}-job-description-${jobDescriptionIndex}-read`}>
                                         {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                             <React.Fragment>
-                                                <div className="flex rounded-lg shadow-sm">
+                                                <div className="flex rounded-lg shadow-xs">
                                                     <input
                                                         type="text"
                                                         name={`${task}-${jobDescriptionIndex}`}
                                                         id={`${task}-${jobDescriptionIndex}`}
                                                         data-testid={`work-${index}-job-description-${jobDescriptionIndex}-input-field`}
                                                         value={task}
-                                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${task.length + 1}ch`}}
                                                         onChange={handleWorkJobDescriptionListChange(index, jobDescriptionIndex)}
                                                     />

@@ -11,7 +11,7 @@ const Icon: FC<Icon> = ({ iconName, svgIcon, href }) => {
     <div className="flex">
       <button
         type="button"
-        className="rounded text-xs leading-normal pr-2"
+        className="rounded-sm text-xs leading-normal pr-2"
       >
         <a target="_blank" href={href}>
             <span className="[&>svg]:h-5 [&>svg]:w-5 dark:[&>svg]:fill-[white]">

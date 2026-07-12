@@ -168,7 +168,7 @@ const ProjectsView = () => {
                                         data-testid={`projects-${index}-sort-value-input-field`}
                                         placeholder="Project Name"
                                         defaultValue={project.sortValue}
-                                        className="block font-bold rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block font-bold rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1.125rem", lineHeight: "1.75rem"}}
                                         onChange={handleProjectsValueChange(index)}
                                     />
@@ -184,7 +184,7 @@ const ProjectsView = () => {
                                         id={`project-description-${index}`}
                                         data-testid={`projects-${index}-description-input-field`}
                                         defaultValue={project.description}
-                                        className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                         onChange={handleProjectsDescriptionChange(index)}
                                     />
@@ -250,7 +250,7 @@ const ProjectsView = () => {
                                             id={`startDate-${index}`}
                                             data-testid={`projects-${index}-start-date-input-field`}
                                             defaultValue={project.startDate}
-                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.startDate.length + 1}ch`}}
                                             onChange={handleProjectsStartDateChange(index)}
                                         />
@@ -261,7 +261,7 @@ const ProjectsView = () => {
                                             id={`endDate-${index}`}
                                             data-testid={`projects-${index}-end-date-input-field`}
                                             defaultValue={project.endDate}
-                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.endDate.length + 1}ch`}}
                                             onChange={handleProjectsEndDateChange(index)}
                                         />
@@ -276,7 +276,7 @@ const ProjectsView = () => {
                                     id={`project-notes-${index}`}
                                     data-testid={`projects-${index}-notes-input-field`}
                                     defaultValue={project.notes!}
-                                    className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                     onChange={handleProjectsNotesChange(index)}
                                 />
@@ -303,7 +303,7 @@ const ProjectsView = () => {
                                       />
                                       <button
                                         onClick={handleProjectsMediaRemoval(index)}
-                                        className="absolute top-2 right-2 w-6 h-6 bg-black bg-opacity-40 hover:bg-opacity-60 text-white rounded flex items-center justify-center text-sm font-bold transition-all duration-200 z-10"
+                                        className="absolute top-2 right-2 w-6 h-6 bg-black bg-opacity-40 hover:bg-opacity-60 text-white rounded-sm flex items-center justify-center text-sm font-bold transition-all duration-200 z-10"
                                         type="button"
                                       >
                                         ×
@@ -314,7 +314,7 @@ const ProjectsView = () => {
                                       className={`flex flex-col items-center justify-center dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`}
                                     >
                                       <p className="text-gray-600">Drag and drop a file here or click below</p>
-                                      <label className="mt-4 cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                      <label className="mt-4 cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-sm hover:bg-blue-600">
                                         Browse
                                         <input
                                           type="file"
@@ -338,7 +338,7 @@ const ProjectsView = () => {
                                         id={`features-description-${index}`}
                                         data-testid={`projects-${index}-features-description-input-field`}
                                         defaultValue={project.featuresDescription}
-                                        className="pt-2 pb-6 block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="pt-2 pb-6 block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                     />
                                 ) : (
@@ -352,7 +352,7 @@ const ProjectsView = () => {
                                                 id={`link-type-${index}`}
                                                 data-testid={`projects-${index}-link-type-input-field`}
                                                 defaultValue={project.linkType!}
-                                                className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                             />
                                             <input
@@ -360,7 +360,7 @@ const ProjectsView = () => {
                                                 id={`link-${index}`}
                                                 data-testid={`projects-${index}-link-input-field`}
                                                 defaultValue={project.link!}
-                                                className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                             />
                                         </div>

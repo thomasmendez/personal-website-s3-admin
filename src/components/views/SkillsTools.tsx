@@ -119,7 +119,7 @@ const SkillsToolsView = () => {
                                         id={`skills-tools-${index}`}
                                         data-testid={`skills-tools-${index}-sort-value-input-field`}
                                         defaultValue={skillsToolsValue.sortValue}
-                                        className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillsToolsValue.sortValue.length + 1}ch`}}
                                         onChange={handleSkillsToolsValueChange(index)}
                                     />:
@@ -156,7 +156,7 @@ const SkillsToolsView = () => {
                                                 id={`skills-tools-${index}-category-${categoryIndex}`}
                                                 data-testid={`skills-tools-${index}-category-${categoryIndex}-input-field`}
                                                 value={categories.category}
-                                                className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${categories.category.length + 1}ch`}}
                                                 onChange={handleSkillsToolsCategoryChange(index, categoryIndex)}
                                             />:
@@ -169,14 +169,14 @@ const SkillsToolsView = () => {
                                             <li key={`${skillsToolsValue.sortValue}-${categories.category}-${categoryIndex}-list-${listIndex}`} className='flex space-x-1' data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-read`}>
                                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                                     <React.Fragment>
-                                                        <div className="flex rounded-lg shadow-sm">
+                                                        <div className="flex rounded-lg shadow-xs">
                                                           <input
                                                             type="text"
                                                             name={`${skillsToolsValue.sortValue}-${categories.category}-${listIndex}`}
                                                             id={`${skillsToolsValue.sortValue}-${categories.category}-${listIndex}`}
                                                             data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-input-field`}
                                                             value={item}
-                                                            className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                             style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
                                                             onChange={handleSkillsToolsCategoryListChange(index, categoryIndex, listIndex)}
                                                           />

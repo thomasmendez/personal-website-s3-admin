@@ -8,7 +8,7 @@ interface FooterProps {
 
 const Footer: FC<FooterProps> = ({ websites }) => {
   return(
-    <footer className="md:grid md:grid-cols-6 pt-6 pb-6 items-center border-t-[1px] bg-neutral-100 border-gray-500 dark:bg-zinc-800">
+    <footer className="md:grid md:grid-cols-6 pt-6 pb-6 items-center border-t bg-neutral-100 border-gray-500 dark:bg-zinc-800">
       <section className="md:col-start-2 md:col-span-1 text-center">
         <p>
             ©
@@ -48,7 +48,7 @@ const Footer: FC<FooterProps> = ({ websites }) => {
         <div className="flex">
           <button
             type="button"
-            className="rounded text-xs leading-normal pr-2"
+            className="rounded-sm text-xs leading-normal pr-2"
           >
             <a target="_blank" href="mailto:thomasmendez01@gmail.com">
               <svg className="h-6 w-6 text-gray-900 dark:text-gray-300"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <rect x="3" y="5" width="18" height="14" rx="2" />  <polyline points="3 7 12 13 21 7" /></svg>

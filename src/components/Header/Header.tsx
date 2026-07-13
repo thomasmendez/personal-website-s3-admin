@@ -26,16 +26,15 @@ const Header = () => {
             <div className="space-x-4 items-center hidden lg:flex">
               <NavItem title="About" link="/about"/>
               <NavItem title="Work" link="/work"/>
-              <NavItem title="Skills & Tools" link="skills-tools"/>
-              <details className="relative group">
+              <NavItem title="Skills & Tools" link="/skills-tools"/>
+              {/*<details className="relative group">
                 <summary className="btn btn-ghost text-gray-300 dark:text-gray-400">Projects</summary>
                 <ul className="text-zinc-500 dark:text-zinc-300 absolute hidden space-y-2 group-hover:block shadow-lg p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900">
                   <li><a href="/software-engineering" className="btn btn-ghost text-gray-400">Software Engineering</a></li>
                   <li><a href="/vr-ar" className="btn btn-ghost text-gray-400">VR / AR</a></li>
                 </ul>
-              </details>
-              <NavItem title="Resume" link="/resume"/>
-              <NavItem title="Storybook" link="/storybook"/>
+              </details>*/}
+              <NavItem title="Projects" link="/software-engineering"/>
               <DarkModeToggle />
             </div>
             <div className="flex space-x-3 lg:hidden">
@@ -53,13 +52,14 @@ const Header = () => {
           <li><a href="/about" className="btn btn-ghost text-gray-400 dark:text-gray-400">About</a></li>
           <li><a href="/work" className="btn btn-ghost text-gray-400 dark:text-gray-400">Work</a></li>
           <li><a href="/skills-tools" className="btn btn-ghost text-gray-400 dark:text-gray-400">Skills & Tools</a></li>
-          <li><details className="relative group">
+          {/*<li><details className="relative group">
             <summary className="btn btn-ghost text-gray-400 dark:text-gray-400">Projects</summary>
             <ul className="text-zinc-500 dark:text-zinc-300 space-y-2 shadow-lg p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900">
               <li><a href="/software-engineering" className="btn btn-ghost text-gray-400">Software Engineering</a></li>
               <li><a href="/vr-ar" className="btn btn-ghost text-gray-400">VR / AR</a></li>
             </ul>
-          </details></li>
+          </details></li>*/}
+          <li><a href="/software-engineering" className="btn btn-ghost text-gray-400 dark:text-gray-400">Projects</a></li>
           <li><a href="/resume" className="btn btn-ghost text-gray-400 dark:text-gray-400">Resume</a></li>
           <li><a href="/storybook" className="btn btn-ghost text-gray-400 dark:text-gray-400">Storybook</a></li>
         </ul>

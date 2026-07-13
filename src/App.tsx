@@ -69,7 +69,7 @@ const AppRoutes = () => {
     { path: '/about', element: <AppPage pageComponent={<Home name="Thomas A. Mendez" jobTitle="Software Engineer and Game Developer" />} />},
     { path: '/work', element: <AppPage title='Where I Worked' pageComponent={<Work />} /> },
     { path: '/skills-tools', element: <AppPage title='Skills & Tools' pageComponent={<SkillsTools />} /> },
-    { path: '/vr-ar', element: <AppPage title='Virtual Reality (VR) / Augmented Reality (AR) Projects' pageComponent={<Projects />} /> },
+    // { path: '/vr-ar', element: <AppPage title='Virtual Reality (VR) / Augmented Reality (AR) Projects' pageComponent={<Projects />} /> },
     { path: '/software-engineering', element: <AppPage title='Software Engineering Projects' pageComponent={<Projects />} /> },
     { path: '/login', element: <Authenticator components={components}><LoginPage /></Authenticator> },
     { path: '/sign-out', element: <AppPage pageComponent={<SignOut />} /> },

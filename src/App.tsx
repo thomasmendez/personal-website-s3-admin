@@ -32,7 +32,7 @@ const AppPage: FC<AppPage> = ({ pageComponent, title }) => {
   const websites: Websites[] = [
     {
       text: "Created with React!",
-      link: "https://github.com/thomasmendez/personal-website-s3",
+      link: "https://github.com/thomasmendez/personal-website-s3-admin",
       icon: "react",
     },
     {

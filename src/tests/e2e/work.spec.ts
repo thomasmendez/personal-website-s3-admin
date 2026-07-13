@@ -19,8 +19,6 @@ test.describe('work page', () => {
 
     await page.goto('http://localhost:5173/work')
 
-    await page.locator('h1')
-
     const title = page.locator('h1')
     expect(title).toContainText('Where I Worked')
 
@@ -36,8 +34,6 @@ test.describe('work page', () => {
 
     await page.goto('http://localhost:5173/work')
 
-    await page.locator('h1')
-
     const title = page.locator('h1')
     expect(title).toContainText('Where I Worked')
 
@@ -50,18 +46,16 @@ test.describe('work page', () => {
   test('admin edit fields', async ( { page }) => {
 
     await mockAmplifySession(page, AdminUser.groups);
-  
+
     await page.goto('http://localhost:5173/work')
-  
-    await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Where I Worked')
-  
+
     for (const [index, item] of mockWork.entries()) {
       await validateWorkResponse(page, index, item)
       await validateButtonsExist(page, index, true)
-  
+
       await page.getByTestId(`work-${index}-edit-button-default`).click()
       await page.getByTestId(`work-${index}-job-title-input-field`).fill(`New Job Title ${index}`)
       await page.getByTestId(`work-${index}-company-input-field`).fill(`New Company ${index}`)
@@ -74,6 +68,42 @@ test.describe('work page', () => {
         await page.getByTestId(`work-${index}-job-description-${listIndex}-input-field`).fill(`New Job Description ${listIndex}`)
       }
     }
+  })
+
+  test('admin edit dates with native date inputs and present checkbox', async ( { page }) => {
+
+    await mockAmplifySession(page, AdminUser.groups);
+
+    await page.goto('http://localhost:5173/work')
+
+    // entry 0 has endDate 'Present', entry 1 has a real end date
+    await page.getByTestId(`work-0-edit-button-default`).click()
+
+    const startDate = page.getByTestId(`work-0-start-date-input-field`)
+    const endDate = page.getByTestId(`work-0-end-date-input-field`)
+    const presentCheckbox = page.getByTestId(`work-0-end-date-present-checkbox`)
+
+    await expect(startDate).toHaveAttribute('type', 'date')
+    await expect(endDate).toHaveAttribute('type', 'date')
+    await expect(startDate).toHaveValue(mockWork[0].startDate)
+
+    // endDate 'Present' renders as checked checkbox with empty date input
+    await expect(presentCheckbox).toBeChecked()
+    await expect(endDate).toHaveValue('')
+
+    // picking an end date overrides Present
+    await endDate.fill('2026-03-24')
+    await expect(endDate).toHaveValue('2026-03-24')
+    await expect(presentCheckbox).not.toBeChecked()
+
+    // re-checking Present clears the end date input
+    await presentCheckbox.check()
+    await expect(endDate).toHaveValue('')
+
+    // entry with a real end date shows it and is not Present
+    await page.getByTestId(`work-1-edit-button-default`).click()
+    await expect(page.getByTestId(`work-1-end-date-input-field`)).toHaveValue(mockWork[1].endDate)
+    await expect(page.getByTestId(`work-1-end-date-present-checkbox`)).not.toBeChecked()
   })
 })
 

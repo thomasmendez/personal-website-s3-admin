@@ -18,7 +18,7 @@ import { getWorkError, getWorkStatus, selectAllWork,
 import { getCurrentUser, getUser, getUserStatus } from "../../store/userSlice"
 import { AppDispatch } from "../../store/store"
 import { Work } from "../../types/workTypes"
-import { formatDateToMonthYear } from "../../utils/dateFormat"
+import { formatDateToMonthYear, asDateValue } from "../../utils/dateFormat"
 import Loading from "../Loading/Loading"
 import AddButton from "../Buttons/AddButton"
 import DeleteButton from "../Buttons/DeleteButton"
@@ -38,7 +38,7 @@ const WorkView = () => {
     const handleWorkAdd = (index: number) => () => {
       dispatch(workAdd({index}))
     }
-    
+
     const handleWorkDelete = (index: number) => () => {
       dispatch(workDelete({index}))
       dispatch(deleteWork(work[index]))
@@ -74,6 +74,10 @@ const WorkView = () => {
       dispatch(workEndDateChange({index, value: newValue}))
     }
 
+    const handleWorkEndDatePresentChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      dispatch(workEndDateChange({index, value: event.target.checked ? 'Present' : ''}))
+    }
+
     const handleWorkJobRoleChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
       dispatch(workJobRoleChange({index, value: newValue}))
@@ -97,16 +101,16 @@ const WorkView = () => {
             if (mode[i] === 'editDone') {
                 dispatch(putWork(work[i]))
                 dispatch(workModeChange({index: i, mode: 'updated'}))
-                // need to handle wait for response 
+                // need to handle wait for response
             }
             if (mode[i] === 'newItemDone') {
                 dispatch(postWork(work[i]))
                 dispatch(workModeChange({index: i, mode: 'created'}))
-                // need to handle wait for response 
+                // need to handle wait for response
             }
         }
-    }, [mode, work])
-    
+    }, [mode, work, dispatch])
+
     useEffect(() => {
         if (workStatus === 'idle') {
             dispatch(getWork())
@@ -188,29 +192,40 @@ const WorkView = () => {
                         <div className="flex sm:col-span-2 col-start-3 col-span-9 font-bold justify-end">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <input
-                                    type="text"
+                                    type="date"
                                     name={`${employment.startDate}-${index}`}
                                     id={`${employment.startDate}-${index}`}
                                     data-testid={`work-${index}-start-date-input-field`}
-                                    defaultValue={employment.startDate}
+                                    value={asDateValue(employment.startDate)}
                                     className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.startDate).length + 1}ch`}}
+                                    style={{ fontSize: "1rem", lineHeight: "1.5rem" }}
                                     onChange={handleWorkStartDateChange(index)}
                                 />
                             ) : (
                                 <p data-testid={`work-${index}-start-date-read`}>{formatDateToMonthYear(employment.startDate)}-</p>
                             )}
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                <input
-                                    type="text"
-                                    name={`${employment.endDate}-${index}`}
-                                    id={`${employment.endDate}-${index}`}
-                                    data-testid={`work-${index}-end-date-input-field`}
-                                    defaultValue={employment.endDate}
-                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.endDate).length + 1}ch`}}
-                                    onChange={handleWorkEndDateChange(index)}
-                                />
+                                <span className="flex items-center space-x-1">
+                                    <input
+                                        type="date"
+                                        name={`${employment.endDate}-${index}`}
+                                        id={`${employment.endDate}-${index}`}
+                                        data-testid={`work-${index}-end-date-input-field`}
+                                        value={asDateValue(employment.endDate)}
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        style={{ fontSize: "1rem", lineHeight: "1.5rem" }}
+                                        onChange={handleWorkEndDateChange(index)}
+                                    />
+                                    <label className="flex items-center space-x-1 font-normal" style={{ fontSize: "0.875rem" }}>
+                                        <input
+                                            type="checkbox"
+                                            data-testid={`work-${index}-end-date-present-checkbox`}
+                                            checked={employment.endDate === 'Present'}
+                                            onChange={handleWorkEndDatePresentChange(index)}
+                                        />
+                                        <span>Present</span>
+                                    </label>
+                                </span>
                             ) : (
                                 <p data-testid={`work-${index}-end-date-read`}>{formatDateToMonthYear(employment.endDate)}</p>
                             )}

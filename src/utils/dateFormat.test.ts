@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { formatDateToMonthYear } from './dateFormat'
+import { formatDateToMonthYear, asDateValue } from './dateFormat'
 
 import mockWork from "../mocks/__fixtures__/work"
 
@@ -37,4 +37,17 @@ test('format end date YYYY-MM-DD to Month Year', () => {
     const date4 = mockWork[3].endDate
     const formattedDate4 = formatDateToMonthYear(date4)
     expect(formattedDate4).toBe('May 2018')
+})
+
+test('asDateValue passes through YYYY-MM-DD dates', () => {
+    expect(asDateValue(mockWork[0].startDate)).toBe('2020-08-22')
+    expect(asDateValue(mockWork[1].endDate)).toBe('2020-03-01')
+})
+
+test('asDateValue returns empty string for non-date values', () => {
+    expect(asDateValue('Present')).toBe('')
+    expect(asDateValue('YYYY-MM-DD')).toBe('') // new item placeholder
+    expect(asDateValue('')).toBe('')
+    expect(asDateValue('2020-8-2')).toBe('') // not zero-padded
+    expect(asDateValue('August 2020')).toBe('')
 })

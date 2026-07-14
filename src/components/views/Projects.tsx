@@ -20,6 +20,8 @@ import { getProjectsError, getProjectsStatus, selectAllProjects,
 import React, { ChangeEvent, useEffect } from "react"
 import { AppDispatch } from "../../store/store"
 import Loading from "../Loading/Loading"
+import DateInput from "../DateInput/DateInput"
+import { formatDateToMonthYear } from "../../utils/dateFormat"
 import AddButton from "../Buttons/AddButton"
 import DeleteButton from "../Buttons/DeleteButton"
 import EditButton from "../Buttons/EditButton"
@@ -103,6 +105,10 @@ const ProjectsView = () => {
       dispatch(projectsEndDateChange({index, value: newValue}))
     }
 
+    const handleProjectsEndDatePresentChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      dispatch(projectsEndDateChange({index, value: event.target.checked ? 'Present' : ''}))
+    }
+
     const handleProjectsNotesChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
       dispatch(projectsNotesChange({index, value: newValue}))
@@ -131,16 +137,16 @@ const ProjectsView = () => {
             if (mode[i] === 'editDone') {
                 dispatch(putProjects(projects[i]))
                 dispatch(projectsModeChange({index: i, mode: 'updated'}))
-                // need to handle wait for response 
+                // need to handle wait for response
             }
             if (mode[i] === 'newItemDone') {
                 dispatch(postProjects(projects[i]))
                 dispatch(projectsModeChange({index: i, mode: 'created'}))
-                // need to handle wait for response 
+                // need to handle wait for response
             }
         }
     }, [mode, projects])
-    
+
     useEffect(() => {
         if (projectsStatus === 'idle') {
             dispatch(getProjects())
@@ -244,30 +250,23 @@ const ProjectsView = () => {
                                 <p className="underline">Project Date:</p>
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <section className="flex space-x-1">
-                                        <input
-                                            type="text"
+                                        <DateInput
                                             name={`startDate-${index}`}
-                                            id={`startDate-${index}`}
-                                            data-testid={`projects-${index}-start-date-input-field`}
-                                            defaultValue={project.startDate}
-                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.startDate.length + 1}ch`}}
+                                            data-testid={`projects-${index}-start-date`}
+                                            value={project.startDate}
                                             onChange={handleProjectsStartDateChange(index)}
                                         />
                                         <p>-</p>
-                                        <input
-                                            type="text"
+                                        <DateInput
                                             name={`endDate-${index}`}
-                                            id={`endDate-${index}`}
-                                            data-testid={`projects-${index}-end-date-input-field`}
-                                            defaultValue={project.endDate}
-                                            className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${project.endDate.length + 1}ch`}}
+                                            data-testid={`projects-${index}-end-date`}
+                                            value={project.endDate}
                                             onChange={handleProjectsEndDateChange(index)}
+                                            onPresentChange={handleProjectsEndDatePresentChange(index)}
                                         />
                                     </section>
                                 ) : (
-                                    <p data-testid={`projects-${index}-date-read`}>{project.startDate} - {project.endDate}</p>
+                                    <p data-testid={`projects-${index}-date-read`}>{formatDateToMonthYear(project.startDate)} - {formatDateToMonthYear(project.endDate)}</p>
                                 )}
                             </div>
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
@@ -289,16 +288,16 @@ const ProjectsView = () => {
                         <div className="sm:col-span-7 md:col-span-6 col-span-12">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <div
-                                className={project.mediaPreview ? 
-                                    `relative flex flex-col border-2 border-dashed border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200` : 
+                                className={project.mediaPreview ?
+                                    `relative flex flex-col border-2 border-dashed border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200` :
                                     `flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-500 dark:border-dashed dark:border-gray-300 rounded-lg transition-colors duration-200`
                                   }
                                 >
                                   {project.mediaPreview ? (
                                     <div className="relative inline-block">
-                                      <img 
-                                        src={project.mediaPreview} 
-                                        alt="Preview" 
+                                      <img
+                                        src={project.mediaPreview}
+                                        alt="Preview"
                                         className="w-full h-full object-cover rounded-lg"
                                       />
                                       <button

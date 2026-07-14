@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  Dev environment for a Vite React CRUD application hosted on S3 as a static website.
+
+Parameters:
+  AppName:
+    Type: String
+    Default: personal-website-s3-admin
+    Description: Name of the application (used for resource naming)
+
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - stg
+      - prd
+    Description: Environment
+
+Resources:
+
+  # ------------------------------
+  # S3 Bucket for Static Hosting
+  # ------------------------------
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${AppName}-${Environment}"
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        # Redirect all 404s to index.html so React Router handles routing
+        ErrorDocument: index.html
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: App
+          Value: !Ref AppName
+
+  # ------------------------------
+  # Bucket Policy — Public Read
+  # ------------------------------
+  WebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref WebsiteBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: "*"
+            Action: s3:GetObject
+            Resource: !Sub "${WebsiteBucket.Arn}/*"
+
+# ------------------------------
+# Outputs
+# ------------------------------
+Outputs:
+  BucketName:
+    Description: Name of the S3 bucket
+    Value: !Ref WebsiteBucket
+    Export:
+      Name: !Sub "${AppName}-${Environment}-BucketName"
+
+  WebsiteURL:
+    Description: S3 static website URL
+    Value: !GetAtt WebsiteBucket.WebsiteURL
+    Export:
+      Name: !Sub "${AppName}-${Environment}-WebsiteURL"
+
+  BucketArn:
+    Description: ARN of the S3 bucket
+    Value: !GetAtt WebsiteBucket.Arn
+
+  DeployCommand:
+    Description: AWS CLI command to deploy your React app
+    Value: !Sub 'aws s3 sync ./build s3://${WebsiteBucket} --delete'

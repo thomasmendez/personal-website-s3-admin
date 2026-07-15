@@ -110,7 +110,7 @@ const SkillsToolsView = () => {
             content = <React.Fragment>
                 {skillsTools.map((skillsToolsValue: SkillsTools, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
-                        <div className="col-start-2 col-span-10 sm:col-start-4 sm:col-span-8 min-w-0 space-y-2">
+                          <div className="col-start-2 col-span-8 sm:col-start-4 sm:col-span-8 min-w-0 space-y-2">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <div className="flex font-bold min-w-0">
                                     <input
@@ -128,7 +128,7 @@ const SkillsToolsView = () => {
                                 <p className="text-xl underline break-words" data-testid={`skills-tools-${index}-sort-value-read`}>{skillsToolsValue.sortValue}</p>
                             )}
                         </div>
-                        <div className="justify-center text-center col-span-12 sm:col-span-1 md:col-span-1 space-x-1">
+                        <div className="justify-center text-center col-span-3 sm:col-span-1 md:col-span-1 space-x-1">
                             {mode[index] === 'pending' ? (
                                 <span>💾</span>
                             ) : isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
@@ -215,7 +215,7 @@ const SkillsToolsView = () => {
                     <div className="col-start-2 col-span-10 sm:col-start-4 sm:col-span-8 min-w-0 space-y-2">
                         No skills tools found
                     </div>
-                    <div className="justify-center text-center col-span-12 sm:col-span-1 md:col-span-1 space-x-1">
+                    <div className="justify-center text-center col-span-3 sm:col-span-1 md:col-span-1 space-x-1">
                         {isAdmin && (mode[0] === 'edit' || mode[0] === 'newItem') ? (
                                 <EditButton data-testid={`skills-tools-${0}-edit-button-default`} onClick={() => {
                                     if (mode[0] === 'newItem') {

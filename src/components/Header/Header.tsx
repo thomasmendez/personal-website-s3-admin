@@ -1,4 +1,5 @@
 import { FC } from "react"
+import { Link } from "react-router-dom"
 import DarkModeToggle from "./DarkModeToggle"
 
 interface NavItem {
@@ -8,8 +9,14 @@ interface NavItem {
 
 const NavItem: FC<NavItem> = ({ title, link }) => {
   return(
-    <a href={link} className="btn btn-ghost text-gray-300 dark:text-gray-400">{title}</a>
+    <Link to={link} className="btn btn-ghost text-gray-300 dark:text-gray-400">{title}</Link>
   )
+}
+
+// client-side nav no longer reloads the page, so the drawer checkbox must be unchecked manually
+const closeDrawer = () => {
+  const drawer = document.getElementById('my-drawer') as HTMLInputElement | null
+  if (drawer) drawer.checked = false
 }
 
 const Header = () => {
@@ -21,7 +28,7 @@ const Header = () => {
         <div className="text-neutral-content p-4 flex justify-between items-center bg-zinc-500 dark:bg-zinc-800">
           <div className="container mx-auto flex justify-between items-center">
             <div className="text-xl normal-case text-gray-300 dark:text-gray-400">
-              <a href="/">Thomas A. Mendez</a>
+              <Link to="/">Thomas A. Mendez</Link>
             </div>
             <div className="space-x-4 items-center hidden lg:flex">
               <NavItem title="About" link="/about"/>
@@ -49,9 +56,9 @@ const Header = () => {
       <div className="drawer-side z-20">
         <label htmlFor="my-drawer" className="drawer-overlay w-screen"></label>
         <ul className="menu p-4 w-80 bg-base-100 dark:bg-zinc-800 text-base-content">
-          <li><a href="/about" className="btn btn-ghost text-gray-400 dark:text-gray-400">About</a></li>
-          <li><a href="/work" className="btn btn-ghost text-gray-400 dark:text-gray-400">Work</a></li>
-          <li><a href="/skills-tools" className="btn btn-ghost text-gray-400 dark:text-gray-400">Skills & Tools</a></li>
+          <li><Link to="/about" onClick={closeDrawer} className="btn btn-ghost text-gray-400 dark:text-gray-400">About</Link></li>
+          <li><Link to="/work" onClick={closeDrawer} className="btn btn-ghost text-gray-400 dark:text-gray-400">Work</Link></li>
+          <li><Link to="/skills-tools" onClick={closeDrawer} className="btn btn-ghost text-gray-400 dark:text-gray-400">Skills & Tools</Link></li>
           {/*<li><details className="relative group">
             <summary className="btn btn-ghost text-gray-400 dark:text-gray-400">Projects</summary>
             <ul className="text-zinc-500 dark:text-zinc-300 space-y-2 shadow-lg p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900">
@@ -59,7 +66,7 @@ const Header = () => {
               <li><a href="/vr-ar" className="btn btn-ghost text-gray-400">VR / AR</a></li>
             </ul>
           </details></li>*/}
-          <li><a href="/software-engineering" className="btn btn-ghost text-gray-400 dark:text-gray-400">Projects</a></li>
+          <li><Link to="/software-engineering" onClick={closeDrawer} className="btn btn-ghost text-gray-400 dark:text-gray-400">Projects</Link></li>
           <li><a href="/resume" className="btn btn-ghost text-gray-400 dark:text-gray-400">Resume</a></li>
           <li><a href="/storybook" className="btn btn-ghost text-gray-400 dark:text-gray-400">Storybook</a></li>
         </ul>

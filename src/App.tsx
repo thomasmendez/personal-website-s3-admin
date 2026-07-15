@@ -17,9 +17,15 @@ import Footer from './components/Footer/Footer';
 import { Websites } from './types/websiteTypes';
 
 import components from './auth/components';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { getDarkMode } from './store/darkModeSlice';
 import TitleHeader from './components/TitleHeader/TitleHeader';
+import { store, AppDispatch } from './store/store';
+import { getWork } from './store/workApiSlice';
+import { getSkillsTools } from './store/skillsToolsApiSlice';
+import { getProjects } from './store/projectsApiSlice';
+import { getUser } from './store/userSlice';
 
 interface AppPage {
   pageComponent: ReactNode
@@ -77,7 +83,23 @@ const AppRoutes = () => {
   return routes;
 }
 
+// Prefetch every page's data on first load so navigation is instant.
+// Views' own effects run before this one and may have already started a
+// fetch, so read the live store state here instead of useSelector (whose
+// values are snapshotted at render time, before those effects ran).
+const usePrefetch = () => {
+  const dispatch = useDispatch<AppDispatch>()
+  useEffect(() => {
+    const state = store.getState()
+    if (state.work.status === 'idle') dispatch(getWork())
+    if (state.skillsTools.status === 'idle') dispatch(getSkillsTools())
+    if (state.projects.status === 'idle') dispatch(getProjects())
+    if (state.user.status === 'idle') dispatch(getUser())
+  }, [dispatch])
+}
+
 const App = () => {
+  usePrefetch()
   return (
     <>
       <Router>

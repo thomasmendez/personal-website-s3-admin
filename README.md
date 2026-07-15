@@ -23,3 +23,13 @@ Note: For local deployment, can set `VITE_AUTH_ENABLED=false` and `VITE_MOCKS_EN
 ## Build
 
 `npm run build`
+
+## Deploy to S3
+
+### Windows
+
+sam.cmd deploy --guided --template-file=template.yaml --config-file=samconfig.toml
+
+### Linux/Mac
+
+sam deploy --guided --template-file=template.yaml --config-file=samconfig.toml

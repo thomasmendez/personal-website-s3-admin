@@ -1,6 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: >
-  Dev environment for a Vite React CRUD application hosted on S3 as a static website.
+  Vite React CRUD application hosted on S3. Dev serves directly from the S3
+  website endpoint; stg/prd serve a private bucket through CloudFront (OAC).
 
 Parameters:
   AppName:
@@ -17,6 +18,12 @@ Parameters:
       - prd
     Description: Environment
 
+Conditions:
+  UseCdn: !Or
+    - !Equals [!Ref Environment, stg]
+    - !Equals [!Ref Environment, prd]
+  IsDev: !Equals [!Ref Environment, dev]
+
 Resources:
 
   # ------------------------------
@@ -26,15 +33,30 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub "${AppName}-${Environment}"
-      WebsiteConfiguration:
-        IndexDocument: index.html
-        # Redirect all 404s to index.html so React Router handles routing
-        ErrorDocument: index.html
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: false
-        BlockPublicPolicy: false
-        IgnorePublicAcls: false
-        RestrictPublicBuckets: false
+      # Website hosting only in dev; CloudFront reads the REST endpoint via OAC
+      WebsiteConfiguration: !If
+        - IsDev
+        - IndexDocument: index.html
+          # Redirect all 404s to index.html so React Router handles routing
+          ErrorDocument: index.html
+        - !Ref AWS::NoValue
+      PublicAccessBlockConfiguration: !If
+        - UseCdn
+        - BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+        - BlockPublicAcls: true
+          BlockPublicPolicy: false
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: false
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
       Tags:
         - Key: Environment
           Value: !Ref Environment
@@ -42,7 +64,9 @@ Resources:
           Value: !Ref AppName
 
   # ------------------------------
-  # Bucket Policy — Public Read
+  # Bucket Policy
+  # dev: public read (S3 website endpoint is HTTP-only)
+  # stg/prd: CloudFront OAC only, TLS required
   # ------------------------------
   WebsiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -50,12 +74,88 @@ Resources:
       Bucket: !Ref WebsiteBucket
       PolicyDocument:
         Version: "2012-10-17"
-        Statement:
-          - Sid: PublicReadGetObject
-            Effect: Allow
-            Principal: "*"
-            Action: s3:GetObject
-            Resource: !Sub "${WebsiteBucket.Arn}/*"
+        Statement: !If
+          - UseCdn
+          - - Sid: AllowCloudFrontOAC
+              Effect: Allow
+              Principal:
+                Service: cloudfront.amazonaws.com
+              Action: s3:GetObject
+              Resource: !Sub "${WebsiteBucket.Arn}/*"
+              Condition:
+                StringEquals:
+                  AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
+            - Sid: DenyInsecureTransport
+              Effect: Deny
+              Principal: "*"
+              Action: "s3:*"
+              Resource:
+                - !GetAtt WebsiteBucket.Arn
+                - !Sub "${WebsiteBucket.Arn}/*"
+              Condition:
+                Bool:
+                  aws:SecureTransport: "false"
+          - - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action: s3:GetObject
+              Resource: !Sub "${WebsiteBucket.Arn}/*"
+
+  # ------------------------------
+  # CloudFront (stg/prd only)
+  # ------------------------------
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Condition: UseCdn
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${AppName}-${Environment}-oac"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Condition: UseCdn
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: !Sub "${AppName}-${Environment}"
+        DefaultRootObject: index.html
+        HttpVersion: http2and3
+        Origins:
+          - Id: s3-origin
+            DomainName: !GetAtt WebsiteBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt OriginAccessControl.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+        DefaultCacheBehavior:
+          TargetOriginId: s3-origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD]
+          Compress: true
+          # AWS managed policy: CachingOptimized
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          # AWS managed policy: SecurityHeadersPolicy (HSTS, X-Content-Type-Options,
+          # X-Frame-Options, Referrer-Policy, XSS-Protection)
+          ResponseHeadersPolicyId: 67f7725c-6f97-4210-82d7-5512b31e9d03
+        # Private bucket returns 403 for missing keys; hand both to React Router
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+        ViewerCertificate:
+          # ponytail: default *.cloudfront.net cert; switch to ACM cert +
+          # Aliases + MinimumProtocolVersion TLSv1.2_2021 when a custom domain lands
+          CloudFrontDefaultCertificate: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: App
+          Value: !Ref AppName
 
 # ------------------------------
 # Outputs
@@ -68,10 +168,20 @@ Outputs:
       Name: !Sub "${AppName}-${Environment}-BucketName"
 
   WebsiteURL:
-    Description: S3 static website URL
-    Value: !GetAtt WebsiteBucket.WebsiteURL
+    Description: Site URL (S3 website endpoint in dev, CloudFront in stg/prd)
+    Value: !If
+      - UseCdn
+      - !Sub "https://${Distribution.DomainName}"
+      - !GetAtt WebsiteBucket.WebsiteURL
     Export:
       Name: !Sub "${AppName}-${Environment}-WebsiteURL"
+
+  DistributionId:
+    Condition: UseCdn
+    Description: CloudFront distribution ID (for cache invalidations)
+    Value: !Ref Distribution
+    Export:
+      Name: !Sub "${AppName}-${Environment}-DistributionId"
 
   BucketArn:
     Description: ARN of the S3 bucket
@@ -79,4 +189,7 @@ Outputs:
 
   DeployCommand:
     Description: AWS CLI command to deploy your React app
-    Value: !Sub 'aws s3 sync ./build s3://${WebsiteBucket} --delete'
+    Value: !If
+      - UseCdn
+      - !Sub "aws s3 sync ./dist s3://${WebsiteBucket} --delete && aws cloudfront create-invalidation --distribution-id ${Distribution} --paths '/*'"
+      - !Sub "aws s3 sync ./dist s3://${WebsiteBucket} --delete"

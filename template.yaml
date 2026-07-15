@@ -18,6 +18,18 @@ Parameters:
       - prd
     Description: Environment
 
+  # API stack is a separate template; CloudFront only needs its endpoint.
+  # Override both in the prd samconfig.
+  ApiOriginDomain:
+    Type: String
+    Default: API_GATEWAY_ID.execute-api.us-east-2.amazonaws.com
+    Description: API Gateway domain proxied at /api/* (stg/prd only)
+
+  ApiOriginPath:
+    Type: String
+    Default: /Stg
+    Description: API Gateway stage path prefix
+
 Conditions:
   UseCdn: !Or
     - !Equals [!Ref Environment, stg]
@@ -114,6 +126,56 @@ Resources:
         SigningBehavior: always
         SigningProtocol: sigv4
 
+  # Short-TTL cache for anonymous API GETs. Authorization is in the cache key
+  # because that's the only way CloudFront forwards it on GET/HEAD — admin
+  # requests (unique tokens) get their own entries, anonymous visitors all
+  # share one. Writes (POST/PUT/DELETE) are never cached and always forward it.
+  ApiCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Condition: UseCdn
+    Properties:
+      CachePolicyConfig:
+        Name: !Sub "${AppName}-${Environment}-api-cache"
+        Comment: Cache API GETs briefly
+        MinTTL: 0
+        # ponytail: 60s = admin edits visible to visitors within a minute;
+        # bump DefaultTTL/MaxTTL if Lambda cold starts still annoy
+        DefaultTTL: 60
+        MaxTTL: 60
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          EnableAcceptEncodingBrotli: true
+          HeadersConfig:
+            HeaderBehavior: whitelist
+            Headers: [Authorization]
+          CookiesConfig:
+            CookieBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: all
+
+  # SPA routing moved here from CustomErrorResponses: error-page rewrites are
+  # distribution-wide, so they would have turned API 403/404s into a 200 with
+  # index.html — a failed admin PUT would have looked like success.
+  SpaRewriteFunction:
+    Type: AWS::CloudFront::Function
+    Condition: UseCdn
+    Properties:
+      Name: !Sub "${AppName}-${Environment}-spa-rewrite"
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Rewrite extensionless paths to index.html for React Router
+        Runtime: cloudfront-js-2.0
+      FunctionCode: |
+        function handler(event) {
+          var request = event.request;
+          if (request.uri.endsWith('/')) {
+            request.uri += 'index.html';
+          } else if (!request.uri.includes('.')) {
+            request.uri = '/index.html';
+          }
+          return request;
+        }
+
   Distribution:
     Type: AWS::CloudFront::Distribution
     Condition: UseCdn
@@ -129,6 +191,12 @@ Resources:
             OriginAccessControlId: !GetAtt OriginAccessControl.Id
             S3OriginConfig:
               OriginAccessIdentity: ""
+          - Id: api-origin
+            DomainName: !Ref ApiOriginDomain
+            OriginPath: !Ref ApiOriginPath
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols: [TLSv1.2]
         DefaultCacheBehavior:
           TargetOriginId: s3-origin
           ViewerProtocolPolicy: redirect-to-https
@@ -139,14 +207,19 @@ Resources:
           # AWS managed policy: SecurityHeadersPolicy (HSTS, X-Content-Type-Options,
           # X-Frame-Options, Referrer-Policy, XSS-Protection)
           ResponseHeadersPolicyId: 67f7725c-6f97-4210-82d7-5512b31e9d03
-        # Private bucket returns 403 for missing keys; hand both to React Router
-        CustomErrorResponses:
-          - ErrorCode: 403
-            ResponseCode: 200
-            ResponsePagePath: /index.html
-          - ErrorCode: 404
-            ResponseCode: 200
-            ResponsePagePath: /index.html
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt SpaRewriteFunction.FunctionMetadata.FunctionARN
+        CacheBehaviors:
+          # /api/* is matched before the default behavior, so API requests
+          # skip the SPA rewrite and error handling entirely
+          - PathPattern: "/api/*"
+            TargetOriginId: api-origin
+            ViewerProtocolPolicy: https-only
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachedMethods: [GET, HEAD]
+            Compress: true
+            CachePolicyId: !Ref ApiCachePolicy
         ViewerCertificate:
           # ponytail: default *.cloudfront.net cert; switch to ACM cert +
           # Aliases + MinimumProtocolVersion TLSv1.2_2021 when a custom domain lands

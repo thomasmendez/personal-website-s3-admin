@@ -59,7 +59,7 @@ const SkillsToolsView = () => {
     const handleSkillsToolsDeleteCategory = (index: number, categoryIndex: number) => () => {
       dispatch(skillsToolsDeleteCategory({index, categoryIndex}))
     }
-  
+
     const handleSkillsToolsAdd = (index: number) => () => {
       dispatch(skillsToolsAdd({index}))
     }
@@ -92,7 +92,7 @@ const SkillsToolsView = () => {
             }
         }
     }, [mode, skillsTools, dispatch])
-    
+
     useEffect(() => {
         if (skillsToolsStatus === 'idle') {
             dispatch(getSkillsTools())
@@ -110,25 +110,25 @@ const SkillsToolsView = () => {
             content = <React.Fragment>
                 {skillsTools.map((skillsToolsValue: SkillsTools, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
-                        <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
+                        <div className="col-start-2 col-span-10 sm:col-start-4 sm:col-span-8 min-w-0 space-y-2">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                <div className="flex font-bold">
+                                <div className="flex font-bold min-w-0">
                                     <input
                                         type="text"
                                         name={`skills-tools-${index}`}
                                         id={`skills-tools-${index}`}
                                         data-testid={`skills-tools-${index}-sort-value-input-field`}
                                         defaultValue={skillsToolsValue.sortValue}
-                                        className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block w-auto min-w-0 max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${skillsToolsValue.sortValue.length + 1}ch`}}
                                         onChange={handleSkillsToolsValueChange(index)}
                                     />:
                                 </div>
                             ) : (
-                                <p className="text-xl underline" data-testid={`skills-tools-${index}-sort-value-read`}>{skillsToolsValue.sortValue}</p>
+                                <p className="text-xl underline break-words" data-testid={`skills-tools-${index}-sort-value-read`}>{skillsToolsValue.sortValue}</p>
                             )}
                         </div>
-                        <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
+                        <div className="justify-center text-center col-span-12 sm:col-span-1 md:col-span-1 space-x-1">
                             {mode[index] === 'pending' ? (
                                 <span>💾</span>
                             ) : isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
@@ -146,37 +146,37 @@ const SkillsToolsView = () => {
                             {isAdmin && <DeleteButton data-testid={`skills-tools-${index}-delete-button`} onClick={() => dispatch(handleSkillsToolsDelete(index))} />}
                         </div>
                         {skillsToolsValue.categories?.map((categories: Categories, categoryIndex) => (
-                            <div key={`${skillsToolsValue.sortValue}-${categoryIndex}`} className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
-                                <div className="flex space-x-1">
+                            <div key={`${skillsToolsValue.sortValue}-${categoryIndex}`} className="col-start-2 col-span-10 sm:col-start-4 sm:col-span-8 min-w-0 space-y-2">
+                                <div className="flex flex-col sm:flex-row sm:items-baseline gap-x-1 gap-y-0.5 min-w-0">
                                     {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                        <div className="flex font-bold">
+                                        <div className="flex font-bold min-w-0 sm:shrink-0">
                                             <input
                                                 type="text"
                                                 name={`skills-tools-${index}-category-${categoryIndex}`}
                                                 id={`skills-tools-${index}-category-${categoryIndex}`}
                                                 data-testid={`skills-tools-${index}-category-${categoryIndex}-input-field`}
                                                 value={categories.category}
-                                                className="block w-auto rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                className="block w-auto min-w-0 max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${categories.category.length + 1}ch`}}
                                                 onChange={handleSkillsToolsCategoryChange(index, categoryIndex)}
                                             />:
                                         </div>
                                     ) : (
-                                        <p className="font-bold" data-testid={`skills-tools-${index}-category-${categoryIndex}-read`}>{categories.category}:</p>
+                                        <p className="font-bold break-words sm:shrink-0" data-testid={`skills-tools-${index}-category-${categoryIndex}-read`}>{categories.category}:</p>
                                     )}
-                                    <ul className="flex space-x-1">
+                                    <ul className="flex flex-wrap items-center gap-x-1 gap-y-1 min-w-0">
                                         {categories.list.map((item: string, listIndex) => (
-                                            <li key={`${skillsToolsValue.sortValue}-${categories.category}-${categoryIndex}-list-${listIndex}`} className='flex space-x-1' data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-read`}>
+                                            <li key={`${skillsToolsValue.sortValue}-${categories.category}-${categoryIndex}-list-${listIndex}`} className='flex items-center gap-1 min-w-0 whitespace-nowrap' data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-read`}>
                                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                                     <React.Fragment>
-                                                        <div className="flex rounded-lg shadow-sm">
+                                                        <div className="flex min-w-0 max-w-full rounded-lg shadow-sm">
                                                           <input
                                                             type="text"
                                                             name={`${skillsToolsValue.sortValue}-${categories.category}-${listIndex}`}
                                                             id={`${skillsToolsValue.sortValue}-${categories.category}-${listIndex}`}
                                                             data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-input-field`}
                                                             value={item}
-                                                            className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                            className="block min-w-0 max-w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                             style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${item.length + 1}ch`}}
                                                             onChange={handleSkillsToolsCategoryListChange(index, categoryIndex, listIndex)}
                                                           />
@@ -200,7 +200,7 @@ const SkillsToolsView = () => {
                                             </li>
                                         ))}
                                     </ul>
-                                </div> 
+                                </div>
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') && (categoryIndex === skillsToolsValue.categories.length - 1) && (
                                     <AddButton data-testid={`skills-tools-${index}-add-button`} onClick={() => dispatch(handleSkillsToolsAddCategory(index))} />
                                 )}
@@ -212,10 +212,10 @@ const SkillsToolsView = () => {
         } else if (Array.isArray(skillsTools) && skillsTools.length === 0) {
             content = <React.Fragment>
                 <section className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
-                    <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
+                    <div className="col-start-2 col-span-10 sm:col-start-4 sm:col-span-8 min-w-0 space-y-2">
                         No skills tools found
                     </div>
-                    <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
+                    <div className="justify-center text-center col-span-12 sm:col-span-1 md:col-span-1 space-x-1">
                         {isAdmin && (mode[0] === 'edit' || mode[0] === 'newItem') ? (
                                 <EditButton data-testid={`skills-tools-${0}-edit-button-default`} onClick={() => {
                                     if (mode[0] === 'newItem') {

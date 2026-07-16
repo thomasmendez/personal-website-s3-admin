@@ -129,7 +129,7 @@ const WorkView = () => {
             content = <React.Fragment>
                 {work.map((employment: Work, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
-                        <div className="flex col-start-3 col-span-9 sm:col-start-2 sm:col-span-7 lg:col-start-3 lg:col-span-7 justify-between">
+                        <div className="flex col-start-3 col-span-9 sm:col-start-2 sm:col-span-6 lg:col-start-3 lg:col-span-7 justify-between">
                             <div className="flex space-x-1 text-black dark:text-white">
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
@@ -190,7 +190,7 @@ const WorkView = () => {
                                 )}
                             </div>
                         </div>
-                        <div className="flex col-start-3 col-span-9 sm:col-start-9 sm:col-span-3 lg:col-start-10 lg:col-span-2 font-bold justify-end">
+                        <div className="flex col-start-3 col-span-9 sm:col-start-8 sm:col-span-4 lg:col-start-10 lg:col-span-2 font-bold justify-end">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <DateInput
                                     name={`startDate-${index}`}

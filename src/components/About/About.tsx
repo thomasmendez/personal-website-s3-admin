@@ -19,13 +19,15 @@ const About: FC<AboutProps> = ({ aboutMeDetails, educationDetails, educationStar
         </section>
         <section className="p-4 text-left col-span-12 space-y-2">
           <p className="text-left col-span-12 text-xl grid-cols-12 font-semibold">Education</p>
-          <div className="col-span-12">
-            <p className="text-left">
-              {educationDetails}
-            </p>
-            <p className="text-left">
-              {educationStartDate} - {educationEndDate}
-            </p>
+          <div className="col-span-12 space-y-2 ">
+            <div className="grid grid-cols-12">
+              <p className="col-span-9">
+                {educationDetails}
+              </p>
+              <p className="col-span-3 text-right">
+                {educationStartDate} - {educationEndDate}
+              </p>
+            </div>
             <ul className="text-left list-disc list-inside">
               {degreeMinors.map((minor, index) => (
                 <li key={index}>

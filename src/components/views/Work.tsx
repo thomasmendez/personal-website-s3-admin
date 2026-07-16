@@ -129,7 +129,7 @@ const WorkView = () => {
             content = <React.Fragment>
                 {work.map((employment: Work, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
-                        <div className="flex sm:col-start-3 sm:col-span-7 col-start-3 col-span-9 justify-between">
+                        <div className="flex col-start-3 col-span-9 sm:col-start-2 sm:col-span-7 lg:col-start-3 lg:col-span-7 justify-between">
                             <div className="flex space-x-1 text-black dark:text-white">
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
@@ -190,7 +190,7 @@ const WorkView = () => {
                                 )}
                             </div>
                         </div>
-                        <div className="flex sm:col-span-2 col-start-3 col-span-9 font-bold justify-end">
+                        <div className="flex col-start-3 col-span-9 sm:col-start-9 sm:col-span-3 lg:col-start-10 lg:col-span-2 font-bold justify-end">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <DateInput
                                     name={`startDate-${index}`}
@@ -213,7 +213,7 @@ const WorkView = () => {
                                 <p data-testid={`work-${index}-end-date-read`}>{formatDateToMonthYear(employment.endDate)}</p>
                             )}
                         </div>
-                        <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
+                        <div className="justify-center text-center col-span-12 sm:col-start-12 sm:col-span-1 space-x-1">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <EditButton data-testid={`work-${index}-edit-button-${mode[index]}`} onClick={() => {
                                     if (mode[index] === 'newItem') {
@@ -232,7 +232,7 @@ const WorkView = () => {
                             {isAdmin && <AddButton data-testid={`work-${index}-add-button`} onClick={() => dispatch(handleWorkAdd(index+1))} />}
                             {isAdmin && <DeleteButton data-testid={`work-${index}-delete-button`} onClick={() => dispatch(handleWorkDelete(index))} />}
                         </div>
-                        <div className="sm:col-start-3 sm:col-span-9 col-start-3 col-span-9">
+                        <div className="col-start-3 col-span-9 sm:col-start-2 sm:col-span-10 lg:col-start-3 lg:col-span-9">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <input
                                     type="text"
@@ -248,7 +248,7 @@ const WorkView = () => {
                                 <p className="italic" data-testid={`work-${index}-job-role-read`}>{employment.jobRole}</p>
                             )}
                         </div>
-                        <div className="sm:col-start-3 sm:col-span-9 col-start-3 col-span-9">
+                        <div className="col-start-3 col-span-9 sm:col-start-2 sm:col-span-10 lg:col-start-3 lg:col-span-9">
                             <ul className={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? "list-disc" : "list-disc list-inside"}>
                                 {employment.jobDescription.map((task: string, jobDescriptionIndex: number) => (
                                     <li key={jobDescriptionIndex} data-testid={`work-${index}-job-description-${jobDescriptionIndex}-read`}>
@@ -282,10 +282,10 @@ const WorkView = () => {
         } else if (Array.isArray(work) && work.length === 0) {
             content = <React.Fragment>
                 <section className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
-                    <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
+                    <div className="col-start-2 col-span-10 sm:col-start-2 sm:col-span-9 lg:col-start-3 lg:col-span-8 space-y-2">
                         No work found
                     </div>
-                    <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
+                    <div className="justify-center text-center col-span-12 sm:col-start-12 sm:col-span-1 space-x-1">
                         {isAdmin &&(mode[0] === 'edit' || mode[0] === 'newItem') ? (
                                 <EditButton data-testid={`work-${0}-edit-button-${mode[0]}`} onClick={() => {
                                     if (mode[0] === 'newItem') {

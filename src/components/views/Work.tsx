@@ -129,8 +129,8 @@ const WorkView = () => {
             content = <React.Fragment>
                 {work.map((employment: Work, index: number) => (
                     <section key={index} className="grid grid-cols-12 pt-4 pb-4 bg-neutral-100 dark:bg-neutral-900">
-                        <div className="flex col-start-3 col-span-9 sm:col-start-2 sm:col-span-6 lg:col-start-3 lg:col-span-7 justify-between">
-                            <div className="flex space-x-1 text-black dark:text-white">
+                        <div className="flex row-start-1 col-start-3 col-span-8 sm:row-start-auto sm:col-start-2 sm:col-span-6 lg:col-start-3 lg:col-span-7 justify-between">
+                            <div className="flex flex-wrap sm:flex-nowrap min-w-0 space-x-1 text-black dark:text-white">
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                     <input
                                         type="text"
@@ -138,12 +138,12 @@ const WorkView = () => {
                                         id={`${employment.jobTitle}-${index}`}
                                         data-testid={`work-${index}-job-title-input-field`}
                                         defaultValue={employment.jobTitle}
-                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 font-bold shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 font-bold shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 max-sm:basis-full max-sm:!w-full"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.jobTitle.length + 1}ch`}}
                                         onChange={handleWorkValueChange(index)}
                                     />
                                 ) : (
-                                    <span className="font-bold" data-testid={`work-${index}-job-title-read`}>{employment.jobTitle}</span>
+                                    <span className="font-bold max-sm:basis-full" data-testid={`work-${index}-job-title-read`}>{employment.jobTitle}</span>
                                 )}
                                 <span>at</span>
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
@@ -153,7 +153,7 @@ const WorkView = () => {
                                         id={`${employment.company}-${index}`}
                                         data-testid={`work-${index}-company-input-field`}
                                         defaultValue={employment.company}
-                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 max-sm:basis-full max-sm:!w-full"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.company.length + 1}ch`}}
                                         onChange={handleWorkCompanyChange(index)}
                                     />
@@ -167,7 +167,7 @@ const WorkView = () => {
                                         id={`${employment.location.city}-${index}`}
                                         data-testid={`work-${index}-city-input-field`}
                                         defaultValue={employment.location.city}
-                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 max-sm:basis-full max-sm:!w-full"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.location.city.length + 1}ch`}}
                                         onChange={handleWorkLocationCityChange(index)}
                                     />
@@ -181,7 +181,7 @@ const WorkView = () => {
                                         id={`${employment.location.state}-${index}`}
                                         data-testid={`work-${index}-state-input-field`}
                                         defaultValue={employment.location.state}
-                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 max-sm:basis-full max-sm:!w-full"
                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.location.state.length + 1}ch`}}
                                         onChange={handleWorkLocationStateChange(index)}
                                     />
@@ -190,7 +190,7 @@ const WorkView = () => {
                                 )}
                             </div>
                         </div>
-                        <div className="flex col-start-3 col-span-9 sm:col-start-8 sm:col-span-4 lg:col-start-10 lg:col-span-2 font-bold justify-end">
+                        <div className="flex flex-col items-start justify-start row-start-2 col-start-3 col-span-9 sm:flex-row sm:items-start sm:justify-end sm:row-start-1 sm:col-start-8 sm:col-span-4 lg:col-start-10 lg:col-span-2 font-bold">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <DateInput
                                     name={`startDate-${index}`}
@@ -213,7 +213,7 @@ const WorkView = () => {
                                 <p data-testid={`work-${index}-end-date-read`}>{formatDateToMonthYear(employment.endDate)}</p>
                             )}
                         </div>
-                        <div className="justify-center text-center col-span-12 sm:col-start-12 sm:col-span-1 space-x-1">
+                        <div className="justify-center text-center row-start-1 col-start-11 col-span-2 sm:row-start-auto sm:col-start-12 sm:col-span-1 space-x-1">
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                 <EditButton data-testid={`work-${index}-edit-button-${mode[index]}`} onClick={() => {
                                     if (mode[index] === 'newItem') {
@@ -240,8 +240,8 @@ const WorkView = () => {
                                     id={`${employment.jobRole}-${index}`}
                                     data-testid={`work-${index}-job-role-input-field`}
                                     defaultValue={employment.jobRole}
-                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${formatDateToMonthYear(employment.jobRole).length + 1}ch`}}
+                                    className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 max-sm:!w-full"
+                                    style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${employment.jobRole.length + 1}ch`}}
                                     onChange={handleWorkJobRoleChange(index)}
                                 />
                             ) : (
@@ -254,14 +254,14 @@ const WorkView = () => {
                                     <li key={jobDescriptionIndex} data-testid={`work-${index}-job-description-${jobDescriptionIndex}-read`}>
                                         {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                             <React.Fragment>
-                                                <div className="flex rounded-lg shadow-sm">
+                                                <div className="flex min-w-0 rounded-lg shadow-sm">
                                                     <input
                                                         type="text"
                                                         name={`${task}-${jobDescriptionIndex}`}
                                                         id={`${task}-${jobDescriptionIndex}`}
                                                         data-testid={`work-${index}-job-description-${jobDescriptionIndex}-input-field`}
                                                         value={task}
-                                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        className="block rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 max-sm:min-w-0 max-sm:!w-full"
                                                         style={{ fontSize: "1rem", lineHeight: "1.5rem", width: `${task.length + 1}ch`}}
                                                         onChange={handleWorkJobDescriptionListChange(index, jobDescriptionIndex)}
                                                     />

@@ -1,5 +1,5 @@
 import About from "../About/About"
-import ProfilePic from "../../../src/assets/pic.jpeg";
+import ProfilePic from "../../../src/assets/profile.jpeg";
 import { FC } from "react";
 
 export interface Home {
@@ -21,7 +21,7 @@ const HomeView: FC<Home> = ({name, jobTitle}) => {
       </section>
       <section className="flex justify-center">
         <About
-          aboutMeDetails="I am a passionate software engineer who loves to solve real world problems using new unexplored technologies. I enjoy developing good user experiences, wether it be for desktop, mobile, or video games. Always looking forward to working on the next big project."
+          aboutMeDetails="I am a passionate software engineer who loves to solve real world problems using new unexplored technologies. I enjoy developing good user experiences, wether it be for desktop, mobile, or video games. Always looking forward to working on the next big project!"
           educationDetails="Bachelor of Science in Arts and Entertainment Technologies, at The University of Texas at Austin"
           educationStartDate="August 2016"
           educationEndDate="May 2019"

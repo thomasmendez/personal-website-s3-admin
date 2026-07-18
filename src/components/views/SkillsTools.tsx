@@ -188,7 +188,7 @@ const SkillsToolsView = () => {
                                                           </span>
                                                         </div>
                                                         {(listIndex === categories.list.length - 1) && (
-                                                            <AddButton data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-add-button`} onClick={() => dispatch(handleSkillsToolsCategoryListAdd(index, categoryIndex, ''))} />
+                                                            <AddButton data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-add-button`} onClick={() => dispatch(handleSkillsToolsCategoryListAdd(index, categoryIndex, 'newItem'))} />
                                                         )}
                                                         {(listIndex === categories.list.length - 1) && (
                                                             <DeleteButton data-testid={`skills-tools-${index}-category-${categoryIndex}-list-${listIndex}-delete-button`} onClick={() => dispatch(handleSkillsToolsDeleteCategory(index, categoryIndex))} />

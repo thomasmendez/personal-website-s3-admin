@@ -13,7 +13,7 @@ const Icon: FC<Icon> = ({ iconName, svgIcon, href }) => {
         type="button"
         className="rounded text-xs leading-normal pr-2"
       >
-        <a target="_blank" href={href}>
+        <a target="_blank" href={href} className="hover:opacity-70">
             <span className="[&>svg]:h-5 [&>svg]:w-5 dark:[&>svg]:fill-[white]">
               {svgIcon}
             </span>

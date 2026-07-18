@@ -249,7 +249,7 @@ const WorkView = () => {
                             )}
                         </div>
                         <div className="col-start-3 col-span-9 sm:col-start-2 sm:col-span-10 lg:col-start-3 lg:col-span-9">
-                            <ul className={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? "list-disc" : "list-disc list-inside"}>
+                            <ul className={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? "list-disc space-y-2" : "list-disc list-inside space-y-2"}>
                                 {employment.jobDescription.map((task: string, jobDescriptionIndex: number) => (
                                     <li key={jobDescriptionIndex} data-testid={`work-${index}-job-description-${jobDescriptionIndex}-read`}>
                                         {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (

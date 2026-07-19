@@ -4,8 +4,11 @@ interface DarkModeState {
     darkMode: boolean
 }
 
+const stored = window.localStorage.getItem('DARK_MODE')
+const hour = new Date().getHours()
 const initialState: DarkModeState = {
-    darkMode: window.localStorage.getItem('DARK_MODE') == 'true' ? true : false
+    // first visit defaults to dark between 6pm and 8am, otherwise respect stored choice
+    darkMode: stored != null ? stored == 'true' : (hour >= 18 || hour < 8)
 }
 
 export const DarkModeSlice = createSlice({

@@ -10,6 +10,7 @@ import { getProjectsError, getProjectsStatus, selectAllProjects,
     projectsTeamRolesListChange,
     projectsCloudServicesListChange,
     projectsToolsListChange,
+    projectsListAdd, projectsListRemove,
     projectsDurationChange,
     projectsStartDateChange,
     projectsEndDateChange,
@@ -89,6 +90,14 @@ const ProjectsView = () => {
         const newValue = event.target.value
         dispatch(projectsToolsListChange({index, listIndex, value: newValue}))
       }
+
+    const handleProjectsListAdd = (index: number, field: string) => () => {
+      dispatch(projectsListAdd({index, field, newItem: 'newItem'}))
+    }
+
+    const handleProjectsListRemove = (index: number, field: string) => (listIndex: number) => () => {
+      dispatch(projectsListRemove({index, field, listIndex}))
+    }
 
     const handleProjectsDurationChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
       const newValue = event.target.value
@@ -208,6 +217,8 @@ const ProjectsView = () => {
                                 isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                 topic="My Tasks" list={project.tasks}
                                 onChange={(listIndex) => (e) => handleProjectsTasksListChange(index, listIndex)(e)}
+                                onAdd={handleProjectsListAdd(index, 'tasks')}
+                                onRemove={handleProjectsListRemove(index, 'tasks')}
                                 data-testid={`projects-${index}-tasks`}
                             />
                             {project.teamSize !== null && (<TopicInline
@@ -221,6 +232,8 @@ const ProjectsView = () => {
                                     isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                     topic="Team Roles" list={project.teamRoles}
                                     onChange={(listIndex) => (e) => handleProjectsTeamRolesListChange(index, listIndex)(e)}
+                                    onAdd={handleProjectsListAdd(index, 'teamRoles')}
+                                    onRemove={handleProjectsListRemove(index, 'teamRoles')}
                                     data-testid={`projects-${index}-team-roles`}
                                 />
                             )}
@@ -229,6 +242,8 @@ const ProjectsView = () => {
                                     isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                     topic="Cloud Services" list={project.cloudServices}
                                     onChange={(listIndex) => (e) => handleProjectsCloudServicesListChange(index, listIndex)(e)}
+                                    onAdd={handleProjectsListAdd(index, 'cloudServices')}
+                                    onRemove={handleProjectsListRemove(index, 'cloudServices')}
                                     data-testid={`projects-${index}-cloud-services`}
                                 />
                             )}
@@ -237,6 +252,8 @@ const ProjectsView = () => {
                                     isEditMode={isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem')}
                                     topic="Tools" list={project.tools}
                                     onChange={(listIndex) => (e) => handleProjectsToolsListChange(index, listIndex)(e)}
+                                    onAdd={handleProjectsListAdd(index, 'tools')}
+                                    onRemove={handleProjectsListRemove(index, 'tools')}
                                     data-testid={`projects-${index}-tools`}
                                 />
                             )}

@@ -16,29 +16,29 @@ test.describe('projects - software engineering', () => {
     await mockAmplifySession(page, []);
 
     await page.goto('http://localhost:5173/software-engineering')
-  
+
     await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Software Engineering Projects')
-  
+
     for (const [index, item] of mockProjects.entries()) {
       await validateProjectResponse(page, index, item)
       await validateButtonsExist(page, index, false)
     }
   })
-  
+
   test('admin default view', async ( { page }) => {
-  
+
     await mockAmplifySession(page, AdminUser.groups);
-  
+
     await page.goto('http://localhost:5173/software-engineering')
-  
+
     await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Software Engineering Projects')
-  
+
     for (const [index, item] of mockProjects.entries()) {
       await validateProjectResponse(page, index, item)
       await validateButtonsExist(page, index, true)
@@ -47,18 +47,18 @@ test.describe('projects - software engineering', () => {
 
   test('admin edit fields', async ( { page }) => {
     await mockAmplifySession(page, AdminUser.groups);
-  
+
     await page.goto('http://localhost:5173/software-engineering')
-  
+
     await page.locator('h1')
-  
+
     const title = page.locator('h1')
     expect(title).toContainText('Software Engineering Projects')
-  
+
     for (const [index, item] of mockProjects.entries()) {
       await validateProjectResponse(page, index, item)
       await validateButtonsExist(page, index, true)
-  
+
       await page.getByTestId(`projects-${index}-edit-button-default`).click()
       await page.getByTestId(`projects-${index}-sort-value-input-field`).fill(`New Sort Value ${index}`)
       await page.getByTestId(`projects-${index}-description-input-field`).fill(`New Description ${index}`)
@@ -159,3 +159,7 @@ async function validateButtonsExist(page: Page, index: number, isVisible: boolea
     await expect(page.getByTestId(`projects-${index}-delete-button`)).not.toBeVisible()
   }
 }
+
+// TODO: Add remove and add button tests for line items
+
+// TOOD: Add date tests for project similar to work page

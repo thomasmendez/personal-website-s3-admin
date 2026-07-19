@@ -207,6 +207,24 @@ export const ProjectsSlice = createSlice({
                 }
             }
         },
+        // one generic add/remove pair for all string-list fields (tasks, teamRoles, cloudServices, tools)
+        projectsListAdd: (state, action) => {
+            const { index, field, newItem } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                const list = state.entities[index][field as 'tasks'] ?? [];
+                list.push(newItem);
+                state.entities[index][field as 'tasks'] = list;
+            }
+        },
+        projectsListRemove: (state, action) => {
+            const { index, field, listIndex } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                const list = state.entities[index][field as 'tasks'];
+                if (list && listIndex >= 0 && listIndex < list.length) {
+                    list.splice(listIndex, 1);
+                }
+            }
+        },
         projectsDurationChange: (state, action) => {
             const { index, value } = action.payload;
             if (index >= 0 && index < state.entities.length) {
@@ -332,6 +350,7 @@ export const { projectsAdded, projectsModeChange,
     projectsTeamRolesListChange,
     projectsCloudServicesListChange,
     projectsToolsListChange,
+    projectsListAdd, projectsListRemove,
     projectsDurationChange,
     projectsStartDateChange,
     projectsEndDateChange,

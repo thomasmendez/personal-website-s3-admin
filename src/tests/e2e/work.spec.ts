@@ -131,3 +131,5 @@ async function validateButtonsExist(page: Page, index: number, isVisible: boolea
     await expect(page.getByTestId(`work-${index}-delete-button`)).not.toBeVisible()
   }
 }
+
+// TODO: Add remove and add button tests for line items

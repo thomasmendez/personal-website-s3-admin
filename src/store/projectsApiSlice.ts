@@ -212,7 +212,7 @@ export const ProjectsSlice = createSlice({
             if (index >= 0 && index < state.entities.length) {
                 state.entities[index] = {
                     ...state.entities[index],
-                    teamSize: value,
+                    duration: value,
                 };
             }
         },

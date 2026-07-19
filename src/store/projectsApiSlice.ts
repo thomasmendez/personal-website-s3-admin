@@ -283,11 +283,9 @@ export const ProjectsSlice = createSlice({
                 state.status = 'succeeded'
                 // sort in descending order (latest to oldest)
                 if (Array.isArray(action.payload)) {
-                    action.payload.sort((a: Project, b: Project) => {
-                        const dateA = new Date(a.endDate + " 01").getTime();
-                        const dateB = new Date(b.endDate + " 01").getTime();
-                        return dateB - dateA;
-                    });
+                    // 'Present' sorts newest; unparseable dates sort oldest ("+ 01" handles "Dec 2024"-style values)
+                    const ts = (d: string) => d === 'Present' ? Number.MAX_SAFE_INTEGER : (new Date(d).getTime() || new Date(d + " 01").getTime() || 0);
+                    action.payload.sort((a: Project, b: Project) => ts(b.endDate) - ts(a.endDate));
                 }
                 state.entities = action.payload.map((p: Project) => ({ ...p, mediaPreview: null, image: null }))
                 state.mode.length = state.entities.length

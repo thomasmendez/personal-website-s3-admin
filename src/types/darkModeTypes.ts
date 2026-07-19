@@ -1,3 +1,3 @@
 export interface DarkMode {
-    darkMode: boolean
+  darkMode: boolean
 }

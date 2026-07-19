@@ -1,4 +1,4 @@
 export interface User {
-    groups: string[]
-    isAdmin: boolean
+  groups: string[]
+  isAdmin: boolean
 }

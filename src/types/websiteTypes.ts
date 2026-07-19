@@ -1,5 +1,5 @@
 export interface Websites {
-    text: string
-    link: string
-    icon: string
+  text: string
+  link: string
+  icon: string
 }

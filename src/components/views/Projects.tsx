@@ -32,6 +32,7 @@ import TopicInline from "../TopicInline/TopicInline"
 import { getCurrentUser, getUser, getUserStatus } from "../../store/userSlice"
 
 const ProjectsView = () => {
+    const INPUT_THRESHOLD = 40
     const dispatch = useDispatch<AppDispatch>()
     const projects = useSelector(selectAllProjects)
     const projectsStatus = useSelector(getProjectsStatus)
@@ -56,7 +57,7 @@ const ProjectsView = () => {
       dispatch(projectsValueChange({index, value: newValue}))
     }
 
-    const handleProjectsDescriptionChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+    const handleProjectsDescriptionChange = (index: number) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const newValue = event.target.value
       dispatch(projectsDescriptionChange({index, value: newValue}))
     }
@@ -118,7 +119,7 @@ const ProjectsView = () => {
       dispatch(projectsEndDateChange({index, value: event.target.checked ? 'Present' : ''}))
     }
 
-    const handleProjectsNotesChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+    const handleProjectsNotesChange = (index: number) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const newValue = event.target.value
       dispatch(projectsNotesChange({index, value: newValue}))
     }
@@ -194,15 +195,28 @@ const ProjectsView = () => {
                             <div>
                                 <p className="underline">Project Description:</p>
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                    <input
-                                        name={`project-description-${index}`}
-                                        id={`project-description-${index}`}
-                                        data-testid={`projects-${index}-description-input-field`}
-                                        defaultValue={project.description}
-                                        className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
-                                        onChange={handleProjectsDescriptionChange(index)}
-                                    />
+                                    project.description.length > INPUT_THRESHOLD ? (
+                                        <textarea
+                                            name={`project-description-${index}`}
+                                            id={`project-description-${index}`}
+                                            data-testid={`projects-${index}-description-input-field`}
+                                            value={project.description}
+                                            className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", minHeight: "2.5rem" }}
+                                            onChange={handleProjectsDescriptionChange(index)}
+                                        />
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            name={`project-description-${index}`}
+                                            id={`project-description-${index}`}
+                                            data-testid={`projects-${index}-description-input-field`}
+                                            value={project.description}
+                                            className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                            onChange={handleProjectsDescriptionChange(index)}
+                                        />
+                                    )
                                 ) : (
                                     <p data-testid={`projects-${index}-description-read`}>{project.description}</p>
                                 )}
@@ -287,15 +301,28 @@ const ProjectsView = () => {
                                 )}
                             </div>
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                <input
-                                    name={`project-notes-${index}`}
-                                    id={`project-notes-${index}`}
-                                    data-testid={`projects-${index}-notes-input-field`}
-                                    defaultValue={project.notes!}
-                                    className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
-                                    onChange={handleProjectsNotesChange(index)}
-                                />
+                                (project.notes ?? '').length > INPUT_THRESHOLD ? (
+                                    <textarea
+                                        name={`project-notes-${index}`}
+                                        id={`project-notes-${index}`}
+                                        data-testid={`projects-${index}-notes-input-field`}
+                                        value={project.notes ?? ''}
+                                        className="italic block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", minHeight: "2.5rem" }}
+                                        onChange={handleProjectsNotesChange(index)}
+                                    />
+                                ) : (
+                                    <input
+                                        type="text"
+                                        name={`project-notes-${index}`}
+                                        id={`project-notes-${index}`}
+                                        data-testid={`projects-${index}-notes-input-field`}
+                                        value={project.notes ?? ''}
+                                        className="italic block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                        onChange={handleProjectsNotesChange(index)}
+                                    />
+                                )
                             ) : (
                                 <div className="space-x-1">
                                     <p className="italic" data-testid={`projects-${index}-notes-read`}>*{project.notes}*</p>

@@ -147,7 +147,7 @@ const SkillsToolsView = () => {
                         </div>
                         {skillsToolsValue.categories?.map((categories: Categories, categoryIndex) => (
                             <div key={`${skillsToolsValue.sortValue}-${categoryIndex}`} className="col-start-2 col-span-10 sm:col-start-4 sm:col-span-8 min-w-0 space-y-2">
-                                <div className="flex flex-col sm:flex-row sm:items-baseline gap-x-1 gap-y-0.5 min-w-0 space-y-2">
+                                <div className="flex flex-col sm:flex-row sm:items-baseline gap-x-1 gap-y-0.5 min-w-0 md:space-y-2 sm:space-y-1">
                                     {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
                                         <div className="flex font-bold min-w-0 sm:shrink-0">
                                             <input

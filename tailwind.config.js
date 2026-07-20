@@ -11,6 +11,8 @@ export default {
     },
   },
   plugins: [require('daisyui'),],
+  daisyui: {
+    base: false, // disables DaisyUI's base/root theme styles
+  },
   darkMode: "class",
 }
-

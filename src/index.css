@@ -10,4 +10,7 @@
   p, li {
     @apply text-black dark:text-white;
   }
+  body {
+    @apply bg-neutral-100 dark:bg-zinc-800 min-h-screen;
+  }
 }

@@ -48,8 +48,12 @@ const AppPage: FC<AppPage> = ({ pageComponent, title }) => {
     }
   ]
 
+  useEffect(() => {
+      document.documentElement.classList.toggle('dark', darkMode)
+    }, [darkMode])
+
   return(
-    <div className={`${darkMode && "dark"}`}>
+    <div>
       <Header/>
       {title && <TitleHeader title={title}/>}
       {pageComponent}

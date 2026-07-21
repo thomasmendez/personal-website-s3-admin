@@ -439,9 +439,9 @@ const ProjectsView = () => {
         } else if (Array.isArray(projects) && projects.length === 0) {
             content = <React.Fragment>
                 <section className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
-                    <div className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
+                    <p className="sm:col-start-4 sm:col-span-8 col-start-2 space-y-2">
                         No projects found
-                    </div>
+                    </p>
                     <div className="justify-center text-center sm:col-span-1 md:col-span-1 col-span-12 space-x-1">
                         {isAdmin && (mode[0] === 'edit' || mode[0] === 'newItem' ? (
                                 <EditButton data-testid={`projects-0-edit-button-${mode[0]}`} onClick={() => {

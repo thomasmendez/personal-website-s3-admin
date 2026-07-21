@@ -282,9 +282,9 @@ const WorkView = () => {
         } else if (Array.isArray(work) && work.length === 0) {
             content = <React.Fragment>
                 <section className="grid grid-cols-12 p-4 bg-neutral-100 dark:bg-neutral-900">
-                    <div className="col-start-2 col-span-10 sm:col-start-2 sm:col-span-9 lg:col-start-3 lg:col-span-8 space-y-2">
+                    <p className="col-start-2 col-span-10 sm:col-start-2 sm:col-span-9 lg:col-start-3 lg:col-span-8 space-y-2">
                         No work found
-                    </div>
+                    </p>
                     <div className="justify-center text-center col-span-12 sm:col-start-12 sm:col-span-1 space-x-1">
                         {isAdmin &&(mode[0] === 'edit' || mode[0] === 'newItem') ? (
                                 <EditButton data-testid={`work-${0}-edit-button-${mode[0]}`} onClick={() => {

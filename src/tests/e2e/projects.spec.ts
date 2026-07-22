@@ -130,15 +130,18 @@ async function validateInputTextareaToggle(page: Page, index: number, testIdSuff
   // mock data for this field starts long, so it should render as a textarea
   await expect(page.locator(`textarea[data-testid="${testId}"]`)).toBeVisible()
 
-  // typing a short value should swap it to a single-line input
+  // typing a short value should swap it to a single-line input, and the new
+  // element should end up focused so the user doesn't have to reselect it
   await page.locator(`textarea[data-testid="${testId}"]`).fill(SHORT_VALUE)
   await expect(page.locator(`input[data-testid="${testId}"]`)).toBeVisible()
   await expect(page.locator(`input[data-testid="${testId}"]`)).toHaveValue(SHORT_VALUE)
+  await expect(page.locator(`input[data-testid="${testId}"]`)).toBeFocused()
 
-  // typing a long value should swap it back to a textarea
+  // typing a long value should swap it back to a textarea, again staying focused
   await page.locator(`input[data-testid="${testId}"]`).fill(LONG_VALUE)
   await expect(page.locator(`textarea[data-testid="${testId}"]`)).toBeVisible()
   await expect(page.locator(`textarea[data-testid="${testId}"]`)).toHaveValue(LONG_VALUE)
+  await expect(page.locator(`textarea[data-testid="${testId}"]`)).toBeFocused()
 }
 
 async function validateProjectResponse(page: Page, index: number, item: Project) {

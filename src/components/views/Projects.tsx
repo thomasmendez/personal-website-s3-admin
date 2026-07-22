@@ -32,10 +32,10 @@ import EditButton from "../Buttons/EditButton"
 import CardMedia from "../CardMedia/CardMedia"
 import TopicList from "../TopicList/TopicList"
 import TopicInline from "../TopicInline/TopicInline"
+import ExpandingTextInput from "../ExpandingTextInput/ExpandingTextInput"
 import { getCurrentUser, getUser, getUserStatus } from "../../store/userSlice"
 
 const ProjectsView = () => {
-    const INPUT_THRESHOLD = 40
     const dispatch = useDispatch<AppDispatch>()
     const projects = useSelector(selectAllProjects)
     const projectsStatus = useSelector(getProjectsStatus)
@@ -213,28 +213,12 @@ const ProjectsView = () => {
                             <div>
                                 <p className="underline">Project Description:</p>
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                    project.description.length > INPUT_THRESHOLD ? (
-                                        <textarea
-                                            name={`project-description-${index}`}
-                                            id={`project-description-${index}`}
-                                            data-testid={`projects-${index}-description-input-field`}
-                                            value={project.description}
-                                            className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", minHeight: "2.5rem" }}
-                                            onChange={handleProjectsDescriptionChange(index)}
-                                        />
-                                    ) : (
-                                        <input
-                                            type="text"
-                                            name={`project-description-${index}`}
-                                            id={`project-description-${index}`}
-                                            data-testid={`projects-${index}-description-input-field`}
-                                            value={project.description}
-                                            className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
-                                            onChange={handleProjectsDescriptionChange(index)}
-                                        />
-                                    )
+                                    <ExpandingTextInput
+                                        name={`project-description-${index}`}
+                                        value={project.description}
+                                        onChange={handleProjectsDescriptionChange(index)}
+                                        data-testid={`projects-${index}-description-input-field`}
+                                    />
                                 ) : (
                                     <p data-testid={`projects-${index}-description-read`}>{project.description}</p>
                                 )}
@@ -319,28 +303,13 @@ const ProjectsView = () => {
                                 )}
                             </div>
                             {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                (project.notes ?? '').length > INPUT_THRESHOLD ? (
-                                    <textarea
-                                        name={`project-notes-${index}`}
-                                        id={`project-notes-${index}`}
-                                        data-testid={`projects-${index}-notes-input-field`}
-                                        value={project.notes ?? ''}
-                                        className="italic block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        style={{ fontSize: "1rem", lineHeight: "1.5rem", minHeight: "2.5rem" }}
-                                        onChange={handleProjectsNotesChange(index)}
-                                    />
-                                ) : (
-                                    <input
-                                        type="text"
-                                        name={`project-notes-${index}`}
-                                        id={`project-notes-${index}`}
-                                        data-testid={`projects-${index}-notes-input-field`}
-                                        value={project.notes ?? ''}
-                                        className="italic block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
-                                        onChange={handleProjectsNotesChange(index)}
-                                    />
-                                )
+                                <ExpandingTextInput
+                                    name={`project-notes-${index}`}
+                                    value={project.notes ?? ''}
+                                    onChange={handleProjectsNotesChange(index)}
+                                    data-testid={`projects-${index}-notes-input-field`}
+                                    className="italic"
+                                />
                             ) : (
                                 <div className="space-x-1">
                                     <p className="italic" data-testid={`projects-${index}-notes-read`}>*{project.notes}*</p>
@@ -394,28 +363,13 @@ const ProjectsView = () => {
                               <div className="card-body">
                                 <p className="card-title">{project.name} Features</p>
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                    project.featuresDescription.length > INPUT_THRESHOLD ? (
-                                        <textarea
-                                            name={`features-description-${index}`}
-                                            id={`features-description-${index}`}
-                                            data-testid={`projects-${index}-features-description-input-field`}
-                                            value={project.featuresDescription}
-                                            className="pt-2 pb-6 block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", minHeight: "2.5rem" }}
-                                            onChange={handleProjectsFeaturesDescriptionChange(index)}
-                                        />
-                                    ) : (
-                                        <input
-                                            type="text"
-                                            name={`features-description-${index}`}
-                                            id={`features-description-${index}`}
-                                            data-testid={`projects-${index}-features-description-input-field`}
-                                            value={project.featuresDescription}
-                                            className="pt-2 pb-6 block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
-                                            onChange={handleProjectsFeaturesDescriptionChange(index)}
-                                        />
-                                    )
+                                    <ExpandingTextInput
+                                        name={`features-description-${index}`}
+                                        value={project.featuresDescription}
+                                        onChange={handleProjectsFeaturesDescriptionChange(index)}
+                                        data-testid={`projects-${index}-features-description-input-field`}
+                                        className="pt-2 pb-6"
+                                    />
                                 ) : (
                                     <p className="pt-2 pb-6" data-testid={`projects-${index}-features-description-read`}>{project.featuresDescription}</p>
                                 )}

@@ -262,6 +262,24 @@ export const ProjectsSlice = createSlice({
                 };
             }
         },
+        projectsLinkChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    link: value,
+                };
+            }
+        },
+        projectsLinkTypeChange: (state, action) => {
+            const { index, value } = action.payload;
+            if (index >= 0 && index < state.entities.length) {
+                state.entities[index] = {
+                    ...state.entities[index],
+                    linkType: value,
+                };
+            }
+        },
         projectsMediaChange: (state, action) => {
             const { index, mediaLink, mediaPreview, image } = action.payload;
             if (index >= 0 && index < state.entities.length) {
@@ -353,6 +371,8 @@ export const { projectsAdded, projectsModeChange,
     projectsStartDateChange,
     projectsEndDateChange,
     projectsNotesChange,
+    projectsLinkChange,
+    projectsLinkTypeChange,
     projectsMediaChange } = ProjectsSlice.actions
 
 export default ProjectsSlice.reducer

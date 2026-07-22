@@ -103,7 +103,43 @@ test.describe('projects - software engineering', () => {
       // }
     }
   })
+
+  test('admin input/textarea toggle', async ( { page }) => {
+    await mockAmplifySession(page, AdminUser.groups);
+
+    await page.goto('http://localhost:5173/software-engineering')
+
+    await page.locator('h1')
+
+    for (const [index] of mockProjects.entries()) {
+      await page.getByTestId(`projects-${index}-edit-button-default`).click()
+
+      await validateInputTextareaToggle(page, index, 'description')
+      await validateInputTextareaToggle(page, index, 'features-description')
+      await validateInputTextareaToggle(page, index, 'notes')
+    }
+  })
 })
+
+const SHORT_VALUE = 'Short value'
+const LONG_VALUE = 'This value is deliberately longer than the input threshold'
+
+async function validateInputTextareaToggle(page: Page, index: number, testIdSuffix: string) {
+  const testId = `projects-${index}-${testIdSuffix}-input-field`
+
+  // mock data for this field starts long, so it should render as a textarea
+  await expect(page.locator(`textarea[data-testid="${testId}"]`)).toBeVisible()
+
+  // typing a short value should swap it to a single-line input
+  await page.locator(`textarea[data-testid="${testId}"]`).fill(SHORT_VALUE)
+  await expect(page.locator(`input[data-testid="${testId}"]`)).toBeVisible()
+  await expect(page.locator(`input[data-testid="${testId}"]`)).toHaveValue(SHORT_VALUE)
+
+  // typing a long value should swap it back to a textarea
+  await page.locator(`input[data-testid="${testId}"]`).fill(LONG_VALUE)
+  await expect(page.locator(`textarea[data-testid="${testId}"]`)).toBeVisible()
+  await expect(page.locator(`textarea[data-testid="${testId}"]`)).toHaveValue(LONG_VALUE)
+}
 
 async function validateProjectResponse(page: Page, index: number, item: Project) {
   await expect(page.getByTestId(`projects-${index}-sort-value-read`)).toContainText(item.sortValue)

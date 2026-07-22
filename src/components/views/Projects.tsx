@@ -4,6 +4,7 @@ import { getProjectsError, getProjectsStatus, selectAllProjects,
     getProjects, postProjects, putProjects, deleteProjects,
     projectsAdd, projectsDelete,
     projectsValueChange, projectsDescriptionChange,
+    projectsFeaturesDescriptionChange,
     projectsRoleChange,
     projectsTasksListChange,
     projectsTeamSizeChange,
@@ -15,6 +16,8 @@ import { getProjectsError, getProjectsStatus, selectAllProjects,
     projectsStartDateChange,
     projectsEndDateChange,
     projectsNotesChange,
+    projectsLinkChange,
+    projectsLinkTypeChange,
     projectsMediaChange,
     ProjectComponent,
 } from "../../store/projectsApiSlice"
@@ -122,6 +125,21 @@ const ProjectsView = () => {
     const handleProjectsNotesChange = (index: number) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const newValue = event.target.value
       dispatch(projectsNotesChange({index, value: newValue}))
+    }
+
+    const handleProjectsFeaturesDescriptionChange = (index: number) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsFeaturesDescriptionChange({index, value: newValue}))
+    }
+
+    const handleProjectsLinkChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsLinkChange({index, value: newValue}))
+    }
+
+    const handleProjectsLinkTypeChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value
+      dispatch(projectsLinkTypeChange({index, value: newValue}))
     }
 
     const handleProjectsMediaChange = (index: number) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -376,14 +394,28 @@ const ProjectsView = () => {
                               <div className="card-body">
                                 <p className="card-title">{project.name} Features</p>
                                 {isAdmin && (mode[index] === 'edit' || mode[index] === 'newItem') ? (
-                                    <input
-                                        name={`features-description-${index}`}
-                                        id={`features-description-${index}`}
-                                        data-testid={`projects-${index}-features-description-input-field`}
-                                        defaultValue={project.featuresDescription}
-                                        className="pt-2 pb-6 block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
-                                    />
+                                    project.featuresDescription.length > INPUT_THRESHOLD ? (
+                                        <textarea
+                                            name={`features-description-${index}`}
+                                            id={`features-description-${index}`}
+                                            data-testid={`projects-${index}-features-description-input-field`}
+                                            value={project.featuresDescription}
+                                            className="pt-2 pb-6 block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            style={{ fontSize: "1rem", lineHeight: "1.5rem", minHeight: "2.5rem" }}
+                                            onChange={handleProjectsFeaturesDescriptionChange(index)}
+                                        />
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            name={`features-description-${index}`}
+                                            id={`features-description-${index}`}
+                                            data-testid={`projects-${index}-features-description-input-field`}
+                                            value={project.featuresDescription}
+                                            className="pt-2 pb-6 block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
+                                            onChange={handleProjectsFeaturesDescriptionChange(index)}
+                                        />
+                                    )
                                 ) : (
                                     <p className="pt-2 pb-6" data-testid={`projects-${index}-features-description-read`}>{project.featuresDescription}</p>
                                 )}
@@ -395,6 +427,7 @@ const ProjectsView = () => {
                                                 id={`link-type-${index}`}
                                                 data-testid={`projects-${index}-link-type-input-field`}
                                                 defaultValue={project.linkType!}
+                                                onChange={handleProjectsLinkTypeChange(index)}
                                                 className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                             />
@@ -403,6 +436,7 @@ const ProjectsView = () => {
                                                 id={`link-${index}`}
                                                 data-testid={`projects-${index}-link-input-field`}
                                                 defaultValue={project.link!}
+                                                onChange={handleProjectsLinkChange(index)}
                                                 className="block w-full rounded-md border-0 bg-white text-black dark:bg-black dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                 style={{ fontSize: "1rem", lineHeight: "1.5rem"}}
                                             />

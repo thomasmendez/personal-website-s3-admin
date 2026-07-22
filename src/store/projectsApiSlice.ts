@@ -262,6 +262,15 @@ export const ProjectsSlice = createSlice({
                 };
             }
         },
+        projectsFeaturesDescriptionChange: (state, action) => {
+          const { index, value } = action.payload;
+          if (index >= 0 && index < state.entities.length) {
+            state.entities[index] = {
+              ...state.entities[index],
+              featuresDescription: value,
+            };
+          }
+        },
         projectsLinkChange: (state, action) => {
             const { index, value } = action.payload;
             if (index >= 0 && index < state.entities.length) {
@@ -360,6 +369,7 @@ export const getProjectsError = (state: { projects: ProjectsState }) => state.pr
 export const { projectsAdded, projectsModeChange,
     projectsAdd, projectsDelete,
     projectsValueChange, projectsDescriptionChange,
+    projectsFeaturesDescriptionChange,
     projectsRoleChange,
     projectsTasksListChange,
     projectsTeamSizeChange,

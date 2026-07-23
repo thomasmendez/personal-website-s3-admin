@@ -15,7 +15,7 @@ test.describe('projects - software engineering', () => {
 
     await mockAmplifySession(page, []);
 
-    await page.goto('http://localhost:5173/software-engineering')
+    await page.goto('http://localhost:5173/projects')
 
     await page.locator('h1')
 
@@ -32,7 +32,7 @@ test.describe('projects - software engineering', () => {
 
     await mockAmplifySession(page, AdminUser.groups);
 
-    await page.goto('http://localhost:5173/software-engineering')
+    await page.goto('http://localhost:5173/projects')
 
     await page.locator('h1')
 
@@ -48,7 +48,7 @@ test.describe('projects - software engineering', () => {
   test('admin edit fields', async ( { page }) => {
     await mockAmplifySession(page, AdminUser.groups);
 
-    await page.goto('http://localhost:5173/software-engineering')
+    await page.goto('http://localhost:5173/projects')
 
     await page.locator('h1')
 
@@ -107,7 +107,7 @@ test.describe('projects - software engineering', () => {
   test('admin input/textarea toggle', async ( { page }) => {
     await mockAmplifySession(page, AdminUser.groups);
 
-    await page.goto('http://localhost:5173/software-engineering')
+    await page.goto('http://localhost:5173/projects')
 
     await page.locator('h1')
 

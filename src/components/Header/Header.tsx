@@ -37,11 +37,11 @@ const Header = () => {
               {/*<details className="relative group">
                 <summary className="btn btn-ghost text-gray-300 dark:text-gray-400">Projects</summary>
                 <ul className="text-zinc-500 dark:text-zinc-300 absolute hidden space-y-2 group-hover:block shadow-lg p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900">
-                  <li><a href="/software-engineering" className="btn btn-ghost text-gray-400">Software Engineering</a></li>
+                  <li><a href="/projects" className="btn btn-ghost text-gray-400">Software Engineering</a></li>
                   <li><a href="/vr-ar" className="btn btn-ghost text-gray-400">VR / AR</a></li>
                 </ul>
               </details>*/}
-              <NavItem title="Projects" link="/software-engineering"/>
+              <NavItem title="Projects" link="/projects"/>
               <DarkModeToggle />
             </div>
             <div className="flex space-x-3 lg:hidden">
@@ -62,11 +62,11 @@ const Header = () => {
           {/*<li><details className="relative group">
             <summary className="btn btn-ghost text-gray-400 dark:text-gray-400">Projects</summary>
             <ul className="text-zinc-500 dark:text-zinc-300 space-y-2 shadow-lg p-2 rounded-lg bg-neutral-100 dark:bg-neutral-900">
-              <li><a href="/software-engineering" className="btn btn-ghost text-gray-400">Software Engineering</a></li>
+              <li><a href="/projects" className="btn btn-ghost text-gray-400">Software Engineering</a></li>
               <li><a href="/vr-ar" className="btn btn-ghost text-gray-400">VR / AR</a></li>
             </ul>
           </details></li>*/}
-          <li><Link to="/software-engineering" onClick={closeDrawer} className="btn btn-ghost text-gray-400 dark:text-gray-400">Projects</Link></li>
+          <li><Link to="/projects" onClick={closeDrawer} className="btn btn-ghost text-gray-400 dark:text-gray-400">Projects</Link></li>
           <li><a href="/resume" className="btn btn-ghost text-gray-400 dark:text-gray-400">Resume</a></li>
           <li><a href="/storybook" className="btn btn-ghost text-gray-400 dark:text-gray-400">Storybook</a></li>
         </ul>

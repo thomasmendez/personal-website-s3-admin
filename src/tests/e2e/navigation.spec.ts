@@ -15,7 +15,7 @@ test('header navigation is client-side and keeps prefetched data', async ({ page
   // two "Projects" links exist (desktop nav + drawer); use the desktop one
   await page.getByRole('link', { name: 'Projects' }).first().click()
 
-  await expect(page.locator('h1')).toContainText('Software Engineering Projects')
+  await expect(page.locator('h1')).toContainText('Projects')
   await expect(page.getByTestId('projects-0-sort-value-read')).toContainText(mockProjects[0].sortValue)
 
   const marker = await page.evaluate(() => (window as Window & { __spaMarker?: boolean }).__spaMarker)

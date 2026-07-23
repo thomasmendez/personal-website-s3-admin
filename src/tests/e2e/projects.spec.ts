@@ -20,7 +20,7 @@ test.describe('projects - software engineering', () => {
     await page.locator('h1')
 
     const title = page.locator('h1')
-    expect(title).toContainText('Software Engineering Projects')
+    expect(title).toContainText('Projects')
 
     for (const [index, item] of mockProjects.entries()) {
       await validateProjectResponse(page, index, item)
@@ -37,7 +37,7 @@ test.describe('projects - software engineering', () => {
     await page.locator('h1')
 
     const title = page.locator('h1')
-    expect(title).toContainText('Software Engineering Projects')
+    expect(title).toContainText('Projects')
 
     for (const [index, item] of mockProjects.entries()) {
       await validateProjectResponse(page, index, item)
@@ -53,7 +53,7 @@ test.describe('projects - software engineering', () => {
     await page.locator('h1')
 
     const title = page.locator('h1')
-    expect(title).toContainText('Software Engineering Projects')
+    expect(title).toContainText('Projects')
 
     for (const [index, item] of mockProjects.entries()) {
       await validateProjectResponse(page, index, item)

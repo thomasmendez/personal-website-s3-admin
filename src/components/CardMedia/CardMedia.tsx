@@ -22,7 +22,7 @@ const CardMedia: FC<CardMediaProps> = ({ projectName, media }) => {
         switch(mediaType) {
             case 'mp4':
                 return(
-                    <video controls>
+                    <video controls className="w-full h-auto object-cover rounded-lg">
                         <source src={media} type="video/mp4"/>
                         Your browser does not support the video tag
                     </video>
@@ -49,7 +49,7 @@ const CardMedia: FC<CardMediaProps> = ({ projectName, media }) => {
     } else {
         // see if media is of type base64
         const cleanBase64 = media.replace(/^data:.*?;base64,/, '');
-    
+
         const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
         if (!base64Regex.test(cleanBase64) || cleanBase64.length % 4 !== 0) {
             console.error(`%c Media for "${projectName}" has an invalid value`, 'font-weight: bold; color: yellow');

@@ -312,7 +312,7 @@ const ProjectsView = () => {
                                 />
                             ) : (
                                 <div className="space-x-1">
-                                    <p className="italic" data-testid={`projects-${index}-notes-read`}>*{project.notes}*</p>
+                                    {project.notes && <p className="italic" data-testid={`projects-${index}-notes-read`}>*{project.notes}*</p>}
                                 </div>
                             )}
                         </div>
